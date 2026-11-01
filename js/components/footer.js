@@ -2,7 +2,8 @@
  * footer.js · Pie del sitio (4 columnas) a partir de data/course.js,
  * data/instructor.js y data/links.js.
  */
-import { COURSE, PROGRAM_PDF } from '../data/course.js';
+import { COURSE } from '../data/course.js';
+import { programButton } from './program-button.js';
 import { INSTRUCTOR } from '../data/instructor.js';
 import { FOOTER_LINKS } from '../data/links.js';
 import { escapeHtml } from '../utils/dom.js';
@@ -48,7 +49,7 @@ export function renderFooter(footer) {
 
         <div class="flex flex-col items-start gap-3">
           <h2 class="footer-title">Programa</h2>
-          <a class="btn btn--primary whitespace-nowrap" href="${PROGRAM_PDF}" download>${icon('download')}Descargar programa</a>
+          ${programButton({ variant: 'primary', className: 'whitespace-nowrap' })}
           <a class="btn btn--ghost" href="#inicio">${icon('arrowUp')}Volver arriba</a>
         </div>
       </div>

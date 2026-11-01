@@ -5,7 +5,8 @@
  * - Logo de Claude protagonista con halo y "respiración".
  * - Robots de Claude Code de fondo con flotación y parallax leve (decorativos).
  */
-import { COURSE, PROGRAM_PDF } from '../data/course.js';
+import { COURSE } from '../data/course.js';
+import { programButton } from './program-button.js';
 import { claudeCodeLogo, claudeLogo, icon } from '../utils/icons.js';
 import { escapeHtml, qs } from '../utils/dom.js';
 import { formatDay, formatTime } from '../utils/dates.js';
@@ -72,7 +73,7 @@ export function renderHero(section) {
 
         <div class="flex flex-wrap gap-3 pt-1">
           <a class="btn btn--primary" href="#unidades">Ver unidades ${icon('arrowUp', { className: 'size-5 rotate-180' })}</a>
-          <a class="btn btn--ghost" href="${PROGRAM_PDF}" download>${icon('download')} Descargar programa</a>
+          ${programButton()}
         </div>
       </div>
 

@@ -95,6 +95,14 @@
     color: var(--accent);
   }
 
+  .btn--disabled,
+  .btn--disabled:hover {
+    border-style: dashed;
+    border-color: var(--border-strong);
+    color: var(--text-soft);
+    cursor: default;
+  }
+
   .btn--icon {
     width: 44px;
     height: 44px;

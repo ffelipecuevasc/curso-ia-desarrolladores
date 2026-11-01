@@ -1,7 +1,7 @@
 /**
  * Unidad 3 · Fuente: fuentes/unidades/unidad-03.md
  */
-import { BIBLIO, DOCS, STANDARDS, academyVideo } from '../links.js';
+import { BIBLIO, DOCS, academyVideo } from '../links.js';
 
 export default {
   id: 'u03',

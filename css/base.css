@@ -121,13 +121,13 @@
     border-radius: 8px;
     background: var(--surface);
     color: var(--heading);
-    box-shadow: var(--elev-lift);
     font-weight: 600;
     text-decoration: none;
   }
 
   .skip-link:focus-visible {
     top: 1rem;
+    box-shadow: var(--elev-lift);
   }
 
   /* ---- Movimiento reducido: sin animaciones decorativas ----------------- */

@@ -8,6 +8,13 @@ export const PROGRAM_PDF = encodeURI(
   'assets/docs/Ementa V3 - Vela Latam - Turma 02 - Anthropic Claude ES.pdf',
 );
 
+/**
+ * TODO: el PDF del programa todavía no está en el repositorio.
+ * Súbelo a assets/docs/ con ese nombre exacto y cambia esto a true.
+ * Mientras sea false, los botones muestran "Programa: disponible pronto".
+ */
+export const PROGRAM_PDF_AVAILABLE = false;
+
 export const COURSE = {
   brand: 'IA para Desarrolladores',
   overline: 'Vela LATAM · Programa de capacitación · Grupo 02 · 2026',
@@ -18,8 +25,6 @@ export const COURSE = {
   pills: ['Claude · ecosistema de referencia', 'MCP', 'Agent Skills', 'AGENTS.md', 'SDD'],
   instructorLine: 'Felipe Cuevas · Claude Certified Developer – Foundations',
   organization: 'Vela LATAM · Grupo 02 · 2026',
-  summary:
-    'Programa de 30 horas para desarrollar software con IA de forma profesional: de los fundamentos de los LLM a la modernización de sistemas legados, CI/CD, code review, gobernanza y ROI.',
   footerSummary:
     'Programa de 30 horas para desarrollar software con IA de forma profesional, con Claude y Claude Code como ecosistema de referencia.',
   hours: 30,

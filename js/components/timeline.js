@@ -8,7 +8,7 @@
  */
 import { COURSE } from '../data/course.js';
 import { getUnit, UNITS, unitCode } from '../data/units/index.js';
-import { escapeHtml, qs, qsa } from '../utils/dom.js';
+import { escapeHtml, qs } from '../utils/dom.js';
 import { icon } from '../utils/icons.js';
 import { formatDay, formatRange } from '../utils/dates.js';
 import { getUnitDates, isUnlocked, lockedMessage, STATUS, STATUS_META } from '../utils/schedule.js';
