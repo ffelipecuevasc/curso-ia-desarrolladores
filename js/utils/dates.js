@@ -50,8 +50,13 @@ const keyFormatter = new Intl.DateTimeFormat('en-CA', {
 
 const toDate = (value) => (value instanceof Date ? value : new Date(value));
 
-/** "lunes 9 de noviembre" */
-export const formatDay = (value) => dayFormatter.format(toDate(value));
+/** "lunes 9 de noviembre" (sin la coma que agrega Intl después del día de la semana) */
+export function formatDay(value) {
+  const parts = Object.fromEntries(
+    dayFormatter.formatToParts(toDate(value)).map((part) => [part.type, part.value]),
+  );
+  return `${parts.weekday} ${parts.day} de ${parts.month}`;
+}
 
 /** "lun, 9 nov" */
 export const formatShortDay = (value) => shortDayFormatter.format(toDate(value));
