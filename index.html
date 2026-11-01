@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es-CL" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Desarrollando con Inteligencia · IA para Desarrolladores</title>
+    <meta
+      name="description"
+      content="Sitio de estudio del programa «Desarrollando con Inteligencia — IA para Desarrolladores» (Vela LATAM, Grupo 02): 10 unidades, 30 horas, ecosistema Claude y Claude Code."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#00131D" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+
+    <!-- Tema antes del primer pintado (sin parpadeo). DESIGN.md 5:
+         1) localStorage "theme"  2) prefers-color-scheme  3) oscuro. -->
+    <script>
+      (function () {
+        var theme = null;
+        try {
+          theme = localStorage.getItem('theme');
+        } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme =
+            window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+              ? 'light'
+              : 'dark';
+        }
+        var root = document.documentElement;
+        root.classList.toggle('dark', theme === 'dark');
+        root.classList.add('js');
+      })();
+    </script>
+
+    <!-- Tipografías (DESIGN.md 3.1) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Josefin+Sans:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap"
+    />
+
+    <!-- CSS estándar (funciona aunque Tailwind no cargue) -->
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components/navbar.css" />
+    <link rel="stylesheet" href="css/components/hero.css" />
+    <link rel="stylesheet" href="css/components/cards.css" />
+    <link rel="stylesheet" href="css/components/timeline.css" />
+    <link rel="stylesheet" href="css/components/unit-panel.css" />
+    <link rel="stylesheet" href="css/components/code.css" />
+    <link rel="stylesheet" href="css/components/modal.css" />
+    <link rel="stylesheet" href="css/utilities.css" />
+
+    <!-- Tailwind CSS v4 · build para navegador -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+      /* Modo oscuro por clase en <html> */
+      @custom-variant dark (&:where(.dark, .dark *));
+
+      /* Se eliminan los colores por defecto de Tailwind: solo existen los de DESIGN.md 2 */
+      @theme {
+        --color-*: initial;
+      }
+
+      /* Tokens: apuntan a las variables de css/tokens.css (cambian bajo .dark) */
+      @theme inline {
+        --color-orient-50: var(--orient-50);
+        --color-orient-100: var(--orient-100);
+        --color-orient-200: var(--orient-200);
+        --color-orient-300: var(--orient-300);
+        --color-orient-400: var(--orient-400);
+        --color-orient-500: var(--orient-500);
+        --color-orient-600: var(--orient-600);
+        --color-orient-700: var(--orient-700);
+        --color-orient-800: var(--orient-800);
+        --color-orient-900: var(--orient-900);
+        --color-orient-925: var(--orient-925);
+        --color-orient-950: var(--orient-950);
+        --color-stone: var(--stone);
+        --color-primary: var(--primary);
+        --color-vibrant: var(--vibrant);
+        --color-gold: var(--gold);
+        --color-gold-deep: var(--gold-deep);
+        --color-white: var(--white);
+        --color-claude: var(--claude);
+
+        --color-bg: var(--bg);
+        --color-bg-alt: var(--bg-alt);
+        --color-surface: var(--surface);
+        --color-surface-raised: var(--surface-raised);
+        --color-band: var(--band);
+        --color-footer: var(--footer);
+        --color-text: var(--text);
+        --color-heading: var(--heading);
+        --color-text-muted: var(--text-muted);
+        --color-text-soft: var(--text-soft);
+        --color-accent: var(--accent);
+        --color-kicker: var(--kicker);
+        --color-icon: var(--icon);
+        --color-border: var(--border);
+        --color-border-strong: var(--border-strong);
+        --color-focus: var(--focus);
+        --color-highlight: var(--highlight);
+        --color-highlight-fill: var(--highlight-fill);
+        --color-code-bg: var(--code-bg);
+        --color-code-text: var(--code-text);
+
+        --font-display: 'Cinzel', Georgia, serif;
+        --font-sans: 'Josefin Sans', system-ui, sans-serif;
+        --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+        --shadow-soft: var(--elev-soft);
+        --shadow-lift: var(--elev-lift);
+      }
+
+      @layer components {
+        /* Contenedor de página con gutter de 16 px en móvil */
+        .container-page {
+          @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+        }
+        /* h2 de sección (DESIGN 3.2) */
+        .section-title {
+          @apply font-display text-heading;
+          font-weight: 400;
+          font-size: clamp(2rem, 4.2vw, 3.1rem);
+          line-height: 1.2;
+        }
+        .section-lead {
+          @apply text-text-muted max-w-[68ch];
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-bg text-text font-sans">
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <!-- Navbar (js/components/navbar.js) -->
+    <header class="site-header" id="site-header" data-component="navbar"></header>
+
+    <main id="contenido" tabindex="-1">
+      <!-- Hero (js/components/hero.js) -->
+      <section class="hero" id="inicio" aria-labelledby="hero-title" data-component="hero"></section>
+
+      <!-- Resumen de unidades (js/components/overview.js) -->
+      <section id="unidades" class="section bg-bg-alt" aria-labelledby="unidades-title" data-component="overview"></section>
+
+      <!-- Ruta del curso (js/components/timeline.js) -->
+      <section id="ruta" class="section" aria-labelledby="ruta-title" data-component="timeline"></section>
+
+      <!-- Instructor (js/components/instructor.js) -->
+      <section id="instructor" class="section section--band" aria-labelledby="instructor-title" data-component="instructor"></section>
+
+      <!-- Contenido mínimo si JavaScript está desactivado (DESIGN.md 4.3).
+           Si cambias el título de una unidad, actualízalo también aquí. -->
+      <noscript>
+        <div class="noscript">
+          <p class="kicker">Vela LATAM · Programa de capacitación · Grupo 02 · 2026</p>
+          <h1>Desarrollando con Inteligencia</h1>
+          <p>IA para Desarrolladores · Enfocado en el ecosistema Anthropic: Claude y Claude Code.</p>
+          <p class="noscript-warning">
+            Activa JavaScript para ver la ruta del curso, los conceptos, los laboratorios y el material
+            de cada unidad.
+          </p>
+          <h2>Unidades</h2>
+          <ol>
+            <li>IA generativa aplicada al desarrollo moderno y al ciclo de vida del software (SDLC) <span class="meta">· Día 1, mañana</span></li>
+            <li>Desarrollo agéntico y desarrollo guiado por especificaciones (Spec-Driven Development) <span class="meta">· Día 1, tarde</span></li>
+            <li>Desarrollo asistido por IA: generación, refactorización y documentación <span class="meta">· Día 2, mañana</span></li>
+            <li>Análisis y diagnóstico de sistemas legados con IA <span class="meta">· Día 2, tarde</span></li>
+            <li>Modernización de sistemas legados y migración entre tecnologías <span class="meta">· Día 3, mañana</span></li>
+            <li>IA aplicada a la calidad, las pruebas y la integración y entrega continuas (CI/CD) <span class="meta">· Día 3, tarde</span></li>
+            <li>IA para revisión de código (code review), colaboración e ingeniería de software <span class="meta">· Día 4, mañana</span></li>
+            <li>Gobernanza, seguridad y uso responsable de la IA <span class="meta">· Día 4, tarde</span></li>
+            <li>Escalabilidad, madurez organizacional y adopción de la IA <span class="meta">· Día 5, mañana</span></li>
+            <li>Retorno de la inversión (ROI), productividad y taller integrador <span class="meta">· Día 5, tarde</span></li>
+          </ol>
+          <h2>Programa e instructor</h2>
+          <p>
+            <a href="assets/docs/Ementa%20V3%20-%20Vela%20Latam%20-%20Turma%2002%20-%20Anthropic%20Claude%20ES.pdf" download>Descargar programa (PDF)</a>
+          </p>
+          <p>
+            Felipe Cuevas ·
+            <a href="https://felipecuevas.dev">felipecuevas.dev</a> ·
+            <a href="https://www.linkedin.com/in/ffelipecuevasc/">LinkedIn</a>
+          </p>
+          <p><a href="https://academy.claude.com/es">Anthropic Academy</a> · <a href="https://code.claude.com/docs">Documentación de Claude Code</a></p>
+        </div>
+      </noscript>
+    </main>
+
+    <!-- Footer (js/components/footer.js) -->
+    <footer class="site-footer" data-component="footer"></footer>
+
+    <!-- Modal de concepto (js/components/concept-modal.js) -->
+    <dialog class="concept-modal" id="concept-modal" aria-labelledby="concept-modal-title"></dialog>
+
+    <!-- Región para avisos breves a lectores de pantalla (p. ej., "Código copiado") -->
+    <div class="visually-hidden" role="status" aria-live="polite" id="live-region"></div>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

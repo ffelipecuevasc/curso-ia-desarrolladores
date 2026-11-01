@@ -1,0 +1,105 @@
+/* ==========================================================================
+   tokens.css · Variables de color por modo
+   Fuente única: DESIGN.md, sección 2 (vinculante). No agregar colores
+   que no estén en esa sección.
+   - :root  → tema claro
+   - .dark  → tema oscuro (clase en <html>, la aplica el script del <head>)
+   Tailwind los consume desde el bloque <style type="text/tailwindcss">
+   de index.html mediante @theme inline (bg-surface, text-accent, etc.).
+   ========================================================================== */
+
+/* Orden de capas: las utilidades de Tailwind siempre ganan a los
+   componentes propios, y la base propia va después del preflight. */
+@layer theme, base, site-base, components, utilities;
+
+:root {
+  /* ---- 2.1 Paleta base ---------------------------------------------- */
+  --orient-50: #E4F3FF;
+  --orient-100: #B9E2FF;
+  --orient-200: #5DC9FF;
+  --orient-300: #00B0E8; /* = vibrant */
+  --orient-400: #0096C7;
+  --orient-500: #007EA7; /* = primary */
+  --orient-600: #00678A;
+  --orient-700: #005471;
+  --orient-800: #003B51;
+  --orient-900: #00212F;
+  --orient-925: #001A26;
+  --orient-950: #00131D;
+  --stone: #F5F9FC;
+  --primary: #007EA7;
+  --vibrant: #00B0E8;
+  --gold: #F8CD46;
+  --gold-deep: #7A5C00;
+  --white: #FFFFFF;
+
+  /* ---- 2.5 Marca de Claude (excepción cerrada: solo logos e íconos) --- */
+  --claude: #D97757;
+
+  /* ---- 2.2 Tokens semánticos · tema claro --------------------------- */
+  --bg: var(--white);
+  --bg-alt: var(--stone);
+  --surface: var(--white);
+  --surface-raised: var(--orient-50);
+  --band: var(--orient-50);
+  --band-image: none;
+  --footer: var(--orient-50);
+  --text: var(--orient-950);
+  --heading: var(--orient-950);
+  --text-muted: rgb(0 19 29 / 0.7);   /* orient-950 al 70 % */
+  --text-soft: rgb(0 19 29 / 0.6);    /* orient-950 al 60 % · opacidad mínima para texto */
+  --accent: var(--primary);
+  --kicker: var(--orient-600);
+  --icon: var(--orient-600);
+  --border: rgb(0 19 29 / 0.1);
+  --border-strong: rgb(0 19 29 / 0.22);
+  --focus: var(--primary);
+  --highlight: var(--gold-deep);      /* texto dorado en claro */
+  --highlight-fill: var(--gold);      /* relleno, regla o ícono grande */
+  --code-bg: var(--orient-950);
+  --code-text: var(--orient-50);
+
+  /* Sombras: solo negro con transparencia (excepción permitida en 2.1) */
+  --elev-soft: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px -12px rgb(0 0 0 / 0.12);
+  --elev-lift: 0 2px 4px rgb(0 0 0 / 0.05), 0 24px 48px -16px rgb(0 0 0 / 0.18);
+
+  /* Halo detrás del logo de Claude (4.2): primary al 20 % */
+  --halo: rgb(0 126 167 / 0.16);
+  /* Retícula / campo de puntos del hero */
+  --grid-dot: rgb(0 126 167 / 0.14);
+
+  color-scheme: light;
+}
+
+.dark {
+  /* ---- 2.2 Tokens semánticos · tema oscuro -------------------------- */
+  --bg: var(--orient-950);
+  --bg-alt: var(--orient-925);
+  --surface: var(--orient-900);
+  --surface-raised: var(--orient-800);
+  --band: var(--orient-800);
+  --band-image: linear-gradient(180deg, var(--orient-800), var(--orient-925));
+  --footer: var(--orient-950);
+  --text: var(--orient-50);
+  --heading: var(--white);
+  --text-muted: rgb(228 243 255 / 0.75); /* orient-50 al 75 % */
+  --text-soft: rgb(228 243 255 / 0.6);   /* orient-50 al 60 % */
+  --accent: var(--vibrant);
+  --kicker: var(--orient-400);
+  --icon: var(--orient-400);
+  --border: rgb(228 243 255 / 0.1);
+  --border-strong: rgb(228 243 255 / 0.22);
+  --focus: var(--vibrant);
+  --highlight: var(--gold);
+  --highlight-fill: var(--gold);
+  --code-bg: var(--orient-925);
+  --code-text: var(--orient-50);
+
+  --elev-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
+  --elev-lift: 0 2px 6px rgb(0 0 0 / 0.35), 0 28px 56px -20px rgb(0 0 0 / 0.7);
+
+  --halo: rgb(0 126 167 / 0.2);
+  --grid-dot: rgb(0 176 232 / 0.1);
+
+  color-scheme: dark;
+}
