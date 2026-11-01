@@ -1,0 +1,127 @@
+/* ==========================================================================
+   code.css · Bloques de código (oscuros en ambos temas) y resaltado
+   Colores según DESIGN.md 2.7, solo con tonos de la paleta.
+   ========================================================================== */
+
+@layer components {
+  .code-block {
+    position: relative;
+    margin: 0;
+    border-radius: 12px;
+    border: 1px solid rgb(228 243 255 / 0.08);
+    background: var(--code-bg);
+    color: var(--code-text);
+    overflow: hidden;
+  }
+
+  .code-block__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 44px;
+    padding: 0.2rem 0.4rem 0.2rem 1rem;
+    border-bottom: 1px solid rgb(228 243 255 / 0.08);
+  }
+
+  .code-block__name {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.8rem;
+    color: rgb(228 243 255 / 0.65);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .code-block pre {
+    margin: 0;
+    padding: 1rem 1.1rem 1.1rem;
+    overflow-x: auto;
+    font-size: 0.875rem; /* 14 px */
+    line-height: 1.6;
+    tab-size: 2;
+  }
+
+  .code-block code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  /* El foco dentro del bloque usa vibrant: contraste sobre el fondo oscuro */
+  .code-block :focus-visible {
+    outline-color: var(--vibrant);
+  }
+
+  .code-block pre:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 36px;
+    min-width: 44px;
+    padding: 0.35rem 0.7rem 0.25rem;
+    border-radius: 8px;
+    border: 1px solid rgb(228 243 255 / 0.18);
+    background: transparent;
+    color: var(--orient-50);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 200ms ease, color 200ms ease;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--vibrant);
+    color: var(--orient-200);
+  }
+
+  .copy-btn svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .copy-btn.is-copied {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  /* Tokens */
+  .tok-kw {
+    color: var(--orient-200);
+  }
+
+  .tok-str {
+    color: var(--gold);
+  }
+
+  .tok-com {
+    color: rgb(228 243 255 / 0.6);
+    font-style: italic;
+  }
+
+  .tok-num {
+    color: var(--orient-300);
+  }
+
+  .tok-hl {
+    display: inline-block;
+    width: 100%;
+    background: rgb(0 176 232 / 0.12);
+  }
+
+  /* Ejemplo en texto (no código) */
+  .example-text {
+    padding: 1rem 1.1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    background: var(--bg-alt);
+    color: var(--text);
+    line-height: 1.6;
+  }
+}

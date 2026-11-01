@@ -1,0 +1,65 @@
+/* ==========================================================================
+   footer.css · Pie profesional
+   ========================================================================== */
+
+@layer components {
+  .site-footer {
+    background: var(--footer);
+    border-top: 1px solid var(--border);
+    padding-block: 3.5rem 2rem;
+    font-size: 0.95rem;
+  }
+
+  .footer-title {
+    margin-bottom: 0.9rem;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--heading);
+  }
+
+  .footer-links {
+    display: grid;
+    gap: 0.15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 32px;
+    color: var(--text-muted);
+    text-decoration: none;
+    line-height: 1.35;
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .footer-links svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex: none;
+    color: var(--icon);
+  }
+
+  .footer-sub {
+    margin: 0.75rem 0 0.35rem;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+  }
+
+  .footer-bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--text-soft);
+  }
+}
