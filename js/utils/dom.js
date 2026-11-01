@@ -3,6 +3,7 @@
  * Los datos de las unidades usan una sintaxis tipo Markdown muy acotada:
  *   `código`  → <code>código</code>
  *   **fuerte** → <strong>fuerte</strong>
+ *   *cursiva*  → <em>cursiva</em>
  * Todo lo demás se escapa, así que los archivos de datos nunca inyectan HTML.
  */
 
@@ -23,7 +24,8 @@ export function escapeHtml(value = '') {
 export function rich(value = '') {
   return escapeHtml(value)
     .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*\w])\*([^*\s][^*]*?)\*(?=[^*\w]|$)/g, '$1<em>$2</em>');
 }
 
 /** Crea un elemento a partir de un string HTML (primer nodo). */
