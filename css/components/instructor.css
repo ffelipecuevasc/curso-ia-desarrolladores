@@ -1,0 +1,66 @@
+/* ==========================================================================
+   instructor.css · Banda compacta del instructor
+   ========================================================================== */
+
+@layer components {
+  /* En la banda oscura, el rótulo usa accent para mantener el contraste */
+  .dark .section--band .kicker {
+    color: var(--accent);
+  }
+
+  .instructor {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .instructor {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 2.5rem;
+    }
+  }
+
+  .avatar {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 7.5rem;
+    height: 7.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--orient-800); /* DESIGN 2.3: avatar de iniciales */
+    color: var(--white);
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 500;
+    font-size: 2.4rem;
+    box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--border-strong);
+  }
+
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .metric__value {
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.2rem, 3vw, 3rem);
+    line-height: 1;
+    color: var(--highlight);
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  .metric__label {
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    line-height: 1.35;
+    color: var(--text-muted);
+  }
+
+  .credential--featured {
+    border-color: var(--gold);
+    color: var(--heading);
+  }
+}
