@@ -20,12 +20,19 @@ export function escapeHtml(value = '') {
     .replaceAll("'", '&#39;');
 }
 
-/** Convierte texto de datos (con `código` y **negrita**) en HTML seguro. */
+/** Convierte texto de datos (con `código`, **negrita** y *cursiva*) en HTML seguro. */
 export function rich(value = '') {
-  return escapeHtml(value)
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/(^|[^*\w])\*([^*\s][^*]*?)\*(?=[^*\w]|$)/g, '$1<em>$2</em>');
+  // Los segmentos impares son código: no se les aplica negrita ni cursiva.
+  return String(value)
+    .split('`')
+    .map((segment, index) => {
+      const safe = escapeHtml(segment);
+      if (index % 2 === 1) return `<code>${safe}</code>`;
+      return safe
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/(^|[^*\w])\*([^*\s][^*]*?)\*(?=[^*\w]|$)/g, '$1<em>$2</em>');
+    })
+    .join('');
 }
 
 /** Crea un elemento a partir de un string HTML (primer nodo). */

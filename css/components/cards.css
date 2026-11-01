@@ -1,1 +1,162 @@
-/* cards.css · se completa en su etapa */
+/* ==========================================================================
+   cards.css · Secciones, tarjetas del resumen, badges de estado y progreso
+   ========================================================================== */
+
+@layer components {
+  .section {
+    padding-block: clamp(4rem, 8vw, 6.5rem);
+  }
+
+  .section--band {
+    background-color: var(--band);
+    background-image: var(--band-image);
+  }
+
+  /* ---- Badge de estado (DESIGN 2.6: ícono + texto, nunca solo color) ---- */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem 0.22rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .status-badge svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex: none;
+  }
+
+  .status-badge--bloqueada {
+    color: var(--text-soft);
+    border: 1px dashed var(--border-strong);
+  }
+
+  .status-badge--en-curso {
+    background: var(--gold);
+    color: var(--orient-950);
+  }
+
+  .status-badge--abierta {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  .status-badge--completada {
+    color: var(--kicker);
+    border-color: var(--border-strong);
+  }
+
+  /* ---- Tarjeta del resumen ------------------------------------------- */
+  .unit-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    height: 100%;
+    padding: 1rem 1rem 1.1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--elev-soft);
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 250ms ease, transform 400ms ease, box-shadow 400ms ease;
+  }
+
+  .unit-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+    transform: translateY(-3px);
+    box-shadow: var(--elev-lift);
+  }
+
+  .unit-card__number {
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--heading);
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  .unit-card__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    color: var(--heading);
+  }
+
+  .unit-card__desc {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .unit-card__meta {
+    margin-top: auto;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--text-soft);
+  }
+
+  .unit-card--bloqueada {
+    border-style: dashed;
+    border-color: var(--border-strong);
+    box-shadow: none;
+    background: color-mix(in srgb, var(--surface) 55%, transparent);
+  }
+
+  .unit-card--bloqueada .unit-card__number,
+  .unit-card--bloqueada .unit-card__title {
+    color: var(--text-muted);
+  }
+
+  .unit-card--en-curso {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 1px var(--gold), var(--elev-lift);
+  }
+
+  .unit-card--en-curso .unit-card__number {
+    color: var(--highlight);
+  }
+
+  /* Con 2 columnas en pantallas chicas, la tarjeta se compacta */
+  @media (max-width: 479px) {
+    .unit-card {
+      padding: 0.85rem 0.8rem 0.9rem;
+    }
+
+    .unit-card__number {
+      font-size: 1.6rem;
+    }
+
+    .unit-card__desc {
+      display: none;
+    }
+  }
+
+  /* ---- Barra de progreso del curso ------------------------------------ */
+  .course-progress__track {
+    position: relative;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--border);
+    overflow: hidden;
+  }
+
+  .course-progress__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: inherit;
+    background: var(--accent);
+    transition: width 400ms ease;
+  }
+}
