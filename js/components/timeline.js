@@ -99,8 +99,9 @@ export function renderTimeline(element) {
           <p class="kicker kicker--rule">Caso integrador · ${escapeHtml(COURSE.integrator)}</p>
           <h2 class="section-title" id="ruta-title">Ruta del curso</h2>
           <p class="section-lead">
-            Cinco días, dos unidades por día. Cada unidad se abre en su horario y cada entregable
-            alimenta al siguiente hasta llegar al plan integrado.
+            Cinco días, dos unidades por día. Cada unidad dura 3 horas (85 minutos de clase,
+            15 de receso y 80 de taller), se abre en su horario y su entregable alimenta al siguiente
+            hasta llegar al plan integrado.
           </p>
           ${legend()}
         </div>

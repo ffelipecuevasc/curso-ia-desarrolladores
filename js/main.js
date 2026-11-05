@@ -13,8 +13,7 @@ import { REFRESH_INTERVAL_MS } from './config/units.config.js';
 import { UNITS } from './data/units/index.js';
 import { renderNavbar } from './components/navbar.js';
 import { renderHero, updateHeroStatus } from './components/hero.js';
-import { renderOverview, updateOverview } from './components/overview.js';
-import { renderTimeline, updateTimeline, handleHash, scrollToLiveUnit } from './components/timeline.js';
+import { renderTimeline, updateTimeline, handleHash } from './components/timeline.js';
 import { initConceptModal } from './components/concept-modal.js';
 import { initLiteEmbeds } from './components/unit-panel.js';
 import { updateProgress } from './components/progress.js';
@@ -43,7 +42,6 @@ const mount = (name, render) => {
 
 mount('navbar', renderNavbar);
 const hero = mount('hero', renderHero);
-const overview = mount('overview', renderOverview);
 const timeline = mount('timeline', renderTimeline);
 mount('instructor', renderInstructor);
 mount('footer', renderFooter);
@@ -63,17 +61,17 @@ function refresh() {
     }
   };
   if (hero) safely('hero', () => updateHeroStatus(hero, state));
-  if (overview) safely('overview', () => updateOverview(overview, state));
   if (timeline) safely('timeline', () => updateTimeline(timeline, state));
   safely('progress', () => updateProgress(document, state));
   return state;
 }
 
-const initialState = refresh();
+refresh();
 setInterval(refresh, REFRESH_INTERVAL_MS);
 
-// Deep links (#u03, #u02/concepto/plan-mode) o, sin hash, la unidad en curso.
-if (!handleHash({ initial: true })) scrollToLiveUnit(initialState.current);
+// Deep links (#u03, #u02/concepto/plan-mode). Sin hash, la página parte arriba:
+// el botón del hero lleva a la clase de hoy cuando el alumno lo decide.
+handleHash({ initial: true });
 window.addEventListener('hashchange', () => handleHash());
 
 initReveal();
@@ -90,7 +88,7 @@ if (isPreview || isSimulatedNow) {
   ]
     .filter(Boolean)
     .join(' · ')}</span>`;
-  document.body.append(notice);
+  document.body.prepend(notice);
 }
 
 // Validación de datos en desarrollo: agrega ?debug a la URL.

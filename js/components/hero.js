@@ -72,7 +72,7 @@ export function renderHero(section) {
         <div data-hero-status aria-live="polite"></div>
 
         <div class="flex flex-wrap gap-3 pt-1">
-          <a class="btn btn--primary" href="#unidades">Ver unidades ${icon('arrowUp', { className: 'size-5 rotate-180' })}</a>
+          <a class="btn btn--primary" href="#ruta">Ver la ruta del curso ${icon('arrowUp', { className: 'size-5 rotate-180' })}</a>
           ${programButton()}
         </div>
       </div>

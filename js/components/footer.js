@@ -49,6 +49,7 @@ export function renderFooter(footer) {
 
         <div class="flex flex-col items-start gap-3">
           <h2 class="footer-title">Programa</h2>
+          <p class="text-sm text-text-muted max-w-[30ch]">Diez entregables, un solo caso: <strong class="text-heading font-semibold">${escapeHtml(COURSE.integrator)}</strong>.</p>
           ${programButton({ variant: 'primary', className: 'whitespace-nowrap' })}
           <a class="btn btn--ghost" href="#inicio">${icon('arrowUp')}Volver arriba</a>
         </div>

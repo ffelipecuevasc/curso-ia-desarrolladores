@@ -22,7 +22,6 @@ $RECYCLE.BIN/
 node_modules/
 .npm/
 .pnpm-store/
-.claude/
 
 # Logs
 *.log

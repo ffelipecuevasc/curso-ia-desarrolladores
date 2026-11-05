@@ -36,7 +36,7 @@ export const COURSE = {
 
   /** Distribución de cada unidad (3 h). */
   distribution: [
-    { label: 'Cátedra', minutes: 85 },
+    { label: 'Clase', minutes: 85 },
     { label: 'Receso', minutes: 15 },
     { label: 'Taller', minutes: 80 },
   ],
@@ -54,7 +54,7 @@ export const COURSE = {
 
 /** Enlaces de navegación principal (anclas). */
 export const NAV_LINKS = [
-  { href: '#unidades', label: 'Unidades' },
+  { href: '#inicio', label: 'Inicio' },
   { href: '#ruta', label: 'Ruta del curso' },
   { href: '#instructor', label: 'Instructor' },
 ];

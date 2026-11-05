@@ -41,7 +41,7 @@ export function renderNavbar(header) {
       <nav class="container-page py-2" aria-label="Principal (móvil)">
         <ul class="list-none m-0 p-0">
           ${NAV_LINKS.map((link) => `<li><a href="${link.href}" data-nav-link>${escapeHtml(link.label)}</a></li>`).join('')}
-          <li>${programMenuItem()}</li>
+          ${programMenuItem() ? `<li>${programMenuItem()}</li>` : ''}
         </ul>
       </nav>
     </div>`;

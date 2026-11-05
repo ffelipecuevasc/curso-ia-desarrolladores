@@ -1,0 +1,30 @@
+/* fonts.css · Tipografías autoalojadas (subconjunto latino, fuentes variables).
+   Cinzel, Josefin Sans y JetBrains Mono: SIL Open Font License 1.1 (assets/fonts/OFL-*.txt). */
+@font-face {
+  font-family: 'Cinzel';
+  src: url('../assets/fonts/cinzel-latin-wght.woff') format('woff');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url('../assets/fonts/josefin-sans-latin-wght.woff') format('woff');
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url('../assets/fonts/josefin-sans-latin-italic-wght.woff') format('woff');
+  font-weight: 100 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../assets/fonts/jetbrains-mono-latin-wght.woff') format('woff');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}

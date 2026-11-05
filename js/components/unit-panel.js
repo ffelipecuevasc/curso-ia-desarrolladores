@@ -1,6 +1,6 @@
 /**
- * unit-panel.js · Contenido desplegable de una unidad: 6 pestañas
- * (Resumen, Conceptos, Laboratorio, Material, Videos y Entregable).
+ * unit-panel.js · Contenido desplegable de una unidad: 4 pestañas
+ * (Resumen, Conceptos, Taller = laboratorio + entregable, Recursos = material + videos).
  * Todo se genera desde js/data/units/uXX.js: para agregar un concepto,
  * un material o un video, basta con editar ese archivo.
  */
@@ -9,16 +9,14 @@ import { getUnit, unitCode } from '../data/units/index.js';
 import { attr, escapeHtml, qsa, rich } from '../utils/dom.js';
 import { icon } from '../utils/icons.js';
 import { codeBlock } from '../utils/code.js';
-import { CLASS_TIME_LABEL, formatDay, formatRange } from '../utils/dates.js';
+import { formatDay, formatRange } from '../utils/dates.js';
 import { getUnitDates } from '../utils/schedule.js';
 
 export const TABS = [
   { key: 'resumen', label: 'Resumen', icon: 'article' },
   { key: 'conceptos', label: 'Conceptos', icon: 'lightbulb' },
-  { key: 'laboratorio', label: 'Laboratorio', icon: 'science' },
-  { key: 'material', label: 'Material', icon: 'folder' },
-  { key: 'videos', label: 'Videos', icon: 'play' },
-  { key: 'entregable', label: 'Entregable', icon: 'assignment' },
+  { key: 'taller', label: 'Taller', icon: 'science' },
+  { key: 'recursos', label: 'Recursos', icon: 'folder' },
 ];
 
 const list = (items, className = 'prose-list') =>
@@ -30,7 +28,6 @@ const block = (title, content) =>
 /* ---------------------------------------------------------------- Resumen */
 function summaryTab(unit) {
   const { startsAt, endsAt } = getUnitDates(unit.id);
-  const total = COURSE.distribution.reduce((sum, part) => sum + part.minutes, 0);
 
   const requirements = (unit.requisitos ?? [])
     .map(
@@ -57,29 +54,23 @@ function summaryTab(unit) {
     <p class="lead-text">${rich(unit.foco)}</p>
 
     <section class="content-block">
-      <dl class="info-grid m-0">
-        <div class="info-tile">
-          <dt>Día y horario</dt>
-          <dd class="tabular">Día ${unit.dia} · ${formatDay(startsAt)}<br />
-            Bloque ${escapeHtml(unit.bloque)} · ${formatRange(startsAt, endsAt)} h
-            <span class="text-text-soft text-sm">(${CLASS_TIME_LABEL})</span></dd>
+      <div class="today-card">
+        <div class="today-card__body">
+          <p class="today-card__label">Taller · ${unit.laboratorio.duracion} min</p>
+          <p class="today-card__name">${escapeHtml(unit.laboratorio.nombre)}</p>
+          <p class="today-card__goal">${rich(unit.laboratorio.objetivo)}</p>
+          <p class="today-card__deliverable">${icon('assignment')}<span>Entregable: <strong>${escapeHtml(unit.entregable.nombre)}</strong></span></p>
         </div>
-        <div class="info-tile">
-          <dt>Distribución · 3 horas</dt>
-          <dd>${COURSE.distribution.map((part) => `${part.minutes} min de ${part.label.toLowerCase()}`).join(' · ')}
-            <span class="distribution" aria-hidden="true">
-              ${COURSE.distribution.map((part) => `<span style="flex:${part.minutes / total}"></span>`).join('')}
-            </span>
-          </dd>
-        </div>
-        <div class="info-tile">
-          <dt>Licencias</dt>
-          <dd>${unit.licencias.map(rich).join(' · ')}</dd>
-        </div>
-        <div class="info-tile">
-          <dt>Nivel del recorrido</dt>
-          <dd class="tabular">${escapeHtml(unit.nivel)} <span class="text-text-soft text-sm">(de 0 a 100)</span></dd>
-        </div>
+        <button type="button" class="btn btn--primary" data-goto-tab="taller">Ir al taller ${icon('arrowForward', { className: 'size-5' })}</button>
+      </div>
+    </section>
+
+    <section class="content-block">
+      <dl class="meta-line m-0">
+        <div><dt>Horario</dt><dd class="tabular">Día ${unit.dia} · ${formatDay(startsAt)} · ${formatRange(startsAt, endsAt)} h</dd></div>
+        <div><dt>3 horas</dt><dd>${COURSE.distribution.map((part) => `${part.minutes}′ ${part.label.toLowerCase()}`).join(' · ')}</dd></div>
+        <div><dt>Licencias</dt><dd>${unit.licencias.map(rich).join(' · ')}</dd></div>
+        <div><dt>Nivel</dt><dd class="tabular">${escapeHtml(unit.nivel)} <span class="text-text-soft">de 100</span></dd></div>
       </dl>
     </section>
 
@@ -88,7 +79,7 @@ function summaryTab(unit) {
     ${block('Herramientas', `<ul class="flex flex-wrap gap-2 list-none m-0 p-0">${unit.herramientas.map((tool) => `<li class="tag">${rich(tool)}</li>`).join('')}</ul>`)}
     ${requirements ? `<section class="content-block flex flex-col gap-3"><h5 class="content-title">Antes de la clase</h5>${requirements}</section>` : ''}
     ${block(
-      'Cátedra · 85 minutos',
+      'Clase · 85 minutos',
       `<ol class="agenda">${unit.catedra
         .map((item) => `<li><span>${item.minutos}′</span><span>${rich(item.titulo)}</span></li>`)
         .join('')}</ol>`,
@@ -117,7 +108,7 @@ function conceptsTab(unit) {
     <section class="concept-group">
       <div class="concept-group__head">
         <h5 class="concept-group__title">Conceptos fundamentales</h5>
-        <p class="concept-group__hint">La base teórica de la unidad (C1 a C4 de la cátedra).</p>
+        <p class="concept-group__hint">La base teórica de la unidad (C1 a C4 de la clase).</p>
       </div>
       <ul class="chips">${unit.conceptos.fundamentales.map((c, i) => chip(c, 'core', i)).join('')}</ul>
     </section>
@@ -282,10 +273,9 @@ function deliverableTab(unit) {
 const RENDERERS = {
   resumen: summaryTab,
   conceptos: conceptsTab,
-  laboratorio: labTab,
-  material: materialTab,
-  videos: videosTab,
-  entregable: deliverableTab,
+  taller: (unit) => `${labTab(unit)}<section class="content-block content-block--split"><h5 class="content-title">Entregable</h5>${deliverableTab(unit)}</section>`,
+  recursos: (unit) => `<section class="content-block"><h5 class="content-title">Material descargable</h5>${materialTab(unit)}</section>
+    <section class="content-block content-block--split"><h5 class="content-title">Videos y cursos</h5>${videosTab(unit)}</section>`,
 };
 
 /** Markup del cuerpo desplegable (pestañas + paneles). */
@@ -335,6 +325,13 @@ export function initTabs(container) {
   tablist.addEventListener('click', (event) => {
     const tab = event.target.closest('[role="tab"]');
     if (tab) selectTab(container, tab.dataset.tab);
+  });
+
+  container.addEventListener('click', (event) => {
+    const goto = event.target.closest('[data-goto-tab]');
+    if (!goto) return;
+    selectTab(container, goto.dataset.gotoTab, { focus: true });
+    tablist.scrollIntoView({ block: 'nearest' });
   });
 
   tablist.addEventListener('keydown', (event) => {

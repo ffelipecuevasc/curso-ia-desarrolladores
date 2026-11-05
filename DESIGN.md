@@ -124,7 +124,7 @@ Sobre `code-bg`, solo con tonos de la paleta: texto `orient-50`, palabras clave 
 | `font-mono` | **JetBrains Mono** (OFL 1.1) | 400, 500 | Solo código, comandos y nombres de archivo (`AGENTS.md`, `/compact`) | ui-monospace, monospace |
 
 - `font-mono` es una incorporación propia de este sitio, necesaria por su contenido técnico. No se usa para decorar.
-- Las fuentes se cargan desde Google Fonts con `preconnect` y `display=swap`, o se autoalojan en `assets/fonts/` si se prefiere no depender de terceros.
+- Las fuentes se autoalojan en `assets/fonts/` (WOFF variable, subconjunto latino, `display=swap`). No se depende de Google Fonts.
 
 ### 3.2 Escala
 
@@ -154,6 +154,8 @@ Sobre `code-bg`, solo con tonos de la paleta: texto `orient-50`, palabras clave 
 - Las mayúsculas se aplican con `text-transform`, nunca escritas en el contenido.
 
 ## 4. Lo que es libre (criterios sugeridos)
+
+> **v1.1 (05-11-2026):** se elimina la grilla duplicada de unidades; la portada mantiene el logo de Claude como protagonista con los robots de Claude Code de fondo.
 
 Todo lo siguiente es propio de este sitio y puede diseñarse distinto a felipecuevas.dev. Son sugerencias para mantener coherencia con la dirección "Orient Night".
 
@@ -202,8 +204,8 @@ Todo lo siguiente es propio de este sitio y puede diseñarse distinto a felipecu
 
 ## 7. Tailwind CSS v4 por CDN
 
-- Build de navegador: `<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>`.
-- Los tokens se declaran en un bloque `<style type="text/tailwindcss">` de `index.html`, con `@theme inline` apuntando a variables CSS definidas en `css/tokens.css` (los semánticos cambian de valor bajo `.dark`).
+- Tailwind se **precompila** con el CLI (`css/tailwind.input.css` → `css/tailwind.css`); no se usa el build de navegador por CDN.
+- Los tokens se declaran en `css/tailwind.input.css`, con `@theme inline` apuntando a variables CSS definidas en `css/tokens.css` (los semánticos cambian de valor bajo `.dark`).
 - Variante oscura por clase: `@custom-variant dark (&:where(.dark, .dark *));`.
 - Nombres de tokens:
   - paleta base: `--color-orient-50` … `--color-orient-950`, `--color-orient-925`, `--color-stone`, `--color-primary`, `--color-vibrant`, `--color-gold`, `--color-gold-deep`, `--color-claude`;

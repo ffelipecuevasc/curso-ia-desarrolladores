@@ -379,26 +379,25 @@
   }
 
   /* Aviso de vista previa del instructor */
+  /* Barra superior de vista previa: empuja el contenido, no lo tapa */
   .preview-notice {
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    z-index: 45;
-    display: inline-flex;
+    position: relative;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    padding: 0.55rem 0.9rem 0.45rem;
-    border-radius: 999px;
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    box-shadow: var(--elev-lift);
-    font-size: 0.85rem;
-    color: var(--text);
+    margin: 0;
+    padding: 0.4rem 1rem 0.3rem;
+    background: var(--highlight-fill);
+    color: var(--orient-950);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-align: center;
   }
 
   .preview-notice svg {
-    width: 1.1rem;
-    height: 1.1rem;
-    color: var(--icon);
+    width: 1.05rem;
+    height: 1.05rem;
+    flex: none;
   }
 }

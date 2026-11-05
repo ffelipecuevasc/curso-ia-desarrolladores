@@ -191,7 +191,7 @@ export default {
       'Si Claude implementa algo que no está en la spec, eso es un hallazgo de revisión, no un regalo.',
     ],
     siTeTrabas: [
-      'Para los criterios de aceptación, la plantilla de spec comentada de la cátedra.',
+      'Para los criterios de aceptación, la plantilla de spec comentada de la clase.',
       'Para el plan, la lección de plan mode del AI-native SDLC playbook.',
       'Para estructurar el `AGENTS.md`, agents.md.',
     ],

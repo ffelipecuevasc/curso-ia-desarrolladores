@@ -1,0 +1,85 @@
+/*
+ * tailwind.input.css · Fuente de css/tailwind.css (NO se carga en el navegador).
+ * Después de editar este archivo o de usar clases nuevas de Tailwind en
+ * index.html o js/, vuelve a compilar (ver README, "Compilar Tailwind"):
+ *   npx @tailwindcss/cli -i css/tailwind.input.css -o css/tailwind.css --minify
+ */
+@import "tailwindcss";
+@source "../index.html";
+@source "../js";
+
+      /* Modo oscuro por clase en <html> */
+      @custom-variant dark (&:where(.dark, .dark *));
+
+      /* Se eliminan los colores por defecto de Tailwind: solo existen los de DESIGN.md 2 */
+      @theme {
+        --color-*: initial;
+      }
+
+      /* Tokens: apuntan a las variables de css/tokens.css (cambian bajo .dark) */
+      @theme inline {
+        --color-orient-50: var(--orient-50);
+        --color-orient-100: var(--orient-100);
+        --color-orient-200: var(--orient-200);
+        --color-orient-300: var(--orient-300);
+        --color-orient-400: var(--orient-400);
+        --color-orient-500: var(--orient-500);
+        --color-orient-600: var(--orient-600);
+        --color-orient-700: var(--orient-700);
+        --color-orient-800: var(--orient-800);
+        --color-orient-900: var(--orient-900);
+        --color-orient-925: var(--orient-925);
+        --color-orient-950: var(--orient-950);
+        --color-stone: var(--stone);
+        --color-primary: var(--primary);
+        --color-vibrant: var(--vibrant);
+        --color-gold: var(--gold);
+        --color-gold-deep: var(--gold-deep);
+        --color-white: var(--white);
+        --color-claude: var(--claude);
+
+        --color-bg: var(--bg);
+        --color-bg-alt: var(--bg-alt);
+        --color-surface: var(--surface);
+        --color-surface-raised: var(--surface-raised);
+        --color-band: var(--band);
+        --color-footer: var(--footer);
+        --color-text: var(--text);
+        --color-heading: var(--heading);
+        --color-text-muted: var(--text-muted);
+        --color-text-soft: var(--text-soft);
+        --color-accent: var(--accent);
+        --color-kicker: var(--kicker);
+        --color-icon: var(--icon);
+        --color-border: var(--border);
+        --color-border-strong: var(--border-strong);
+        --color-focus: var(--focus);
+        --color-highlight: var(--highlight);
+        --color-highlight-fill: var(--highlight-fill);
+        --color-code-bg: var(--code-bg);
+        --color-code-text: var(--code-text);
+
+        --font-display: 'Cinzel', Georgia, serif;
+        --font-sans: 'Josefin Sans', system-ui, sans-serif;
+        --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+        --shadow-soft: var(--elev-soft);
+        --shadow-lift: var(--elev-lift);
+      }
+
+      @layer components {
+        /* Contenedor de página con gutter de 16 px en móvil */
+        .container-page {
+          @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+        }
+        /* h2 de sección (DESIGN 3.2) */
+        .section-title {
+          @apply font-display text-heading;
+          font-weight: 400;
+          font-size: clamp(2rem, 4.2vw, 3.1rem);
+          line-height: 1.2;
+        }
+        .section-lead {
+          @apply text-text-muted max-w-[68ch];
+        }
+      }

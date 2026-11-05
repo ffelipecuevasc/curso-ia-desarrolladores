@@ -26,7 +26,7 @@ export default {
   requisitos: [
     {
       titulo: 'Docker funcionando antes de la clase',
-      texto: 'Verifica con `docker --version`. Durante la cátedra se levanta PostgreSQL con un solo comando. La contraseña es solo para el curso; nunca se usa así en producción.',
+      texto: 'Verifica con `docker --version`. Durante la clase se levanta PostgreSQL con un solo comando. La contraseña es solo para el curso; nunca se usa así en producción.',
       codigo: {
         lenguaje: 'bash',
         contenido: `docker run -d --name pedidos-pg --restart unless-stopped -p 5432:5432 -e POSTGRES_USER=pedidos -e POSTGRES_PASSWORD=pedidos123 -e POSTGRES_DB=pedidos_web -e POSTGRES_INITDB_ARGS="--encoding=UTF8" -e TZ=America/Santiago -e PGTZ=America/Santiago -v pedidos-pgdata:/var/lib/postgresql/data postgres:16-alpine
