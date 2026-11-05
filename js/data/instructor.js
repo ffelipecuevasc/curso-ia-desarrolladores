@@ -6,10 +6,10 @@ export const INSTRUCTOR = {
   name: 'Felipe Cuevas',
   fullName: 'Francisco Felipe Cuevas Cerón',
   role: 'Ingeniero informático · instructor experto en desarrollo web asistido por IA',
-  // Foto: súbela a assets/img/felipe-cuevas.webp y cambia photoAvailable a true.
+  // Foto: assets/img/felipe-cuevas.webp (720 × 900 px, 4:5). Para cambiarla, reemplaza ese archivo.
   // Mientras sea false (o si la imagen no carga) se muestran las iniciales.
   photo: 'assets/img/felipe-cuevas.webp',
-  photoAvailable: false,
+  photoAvailable: true,
   initials: 'FC',
   metrics: [
     { value: '12+', label: 'años de docencia y desarrollo' },
