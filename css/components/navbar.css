@@ -35,8 +35,20 @@
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
-    line-height: 1.1;
+    line-height: 1;
     letter-spacing: 0.01em;
+  }
+
+  /* Centrado óptico: el texto se mide por mayúsculas y línea base, no por su caja de línea. */
+  .brand span {
+    text-box: trim-both cap alphabetic;
+  }
+
+  /* Respaldo (Firefox): sin text-box, la caja del texto queda ~0,15em más arriba que sus mayúsculas. */
+  @supports not (text-box: trim-both cap alphabetic) {
+    .brand span {
+      transform: translateY(0.15em);
+    }
   }
 
   .brand svg {
@@ -44,6 +56,8 @@
     height: 2rem;
     color: var(--accent);
     flex: none;
+    /* El trazo de wand-stars queda 0,5/24 más arriba del centro de su viewBox. */
+    transform: translateY(0.04rem);
   }
 
   @media (min-width: 640px) {
