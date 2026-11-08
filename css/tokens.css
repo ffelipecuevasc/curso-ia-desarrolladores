@@ -68,6 +68,9 @@
   /* Retícula / campo de puntos del hero */
   --grid-dot: rgb(0 126 167 / 0.14);
 
+  /* ---- Movimiento ---------------------------------------------------- */
+  --expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+
   color-scheme: light;
 }
 

@@ -1,0 +1,38 @@
+/* theme-transition.css · Barrido diagonal al cambiar de tema (View Transitions API).
+   La vista vieja queda quieta debajo; la nueva se revela en diagonal.
+   Hacia oscuro entra desde arriba a la izquierda; hacia claro, desde abajo a la derecha.
+   Con movimiento reducido, theme-toggle.js no inicia la transición. */
+@layer components {
+  ::view-transition-group(root) {
+    animation-duration: 0.7s;
+    animation-timing-function: var(--expo-out);
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    mix-blend-mode: normal; /* sin cross-fade */
+  }
+
+  ::view-transition-old(root) {
+    animation: none;
+    z-index: -1;
+  }
+
+  ::view-transition-new(root) {
+    animation: reveal-light 0.7s var(--expo-out) both;
+  }
+
+  .dark::view-transition-new(root) {
+    animation-name: reveal-dark;
+  }
+
+  @keyframes reveal-dark {
+    from { clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%); }
+    to   { clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%); }
+  }
+
+  @keyframes reveal-light {
+    from { clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%); }
+    to   { clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%); }
+  }
+}
