@@ -52,6 +52,6 @@ export const COURSE = {
 /** Enlaces de navegación principal (anclas). */
 export const NAV_LINKS = [
   { href: '#inicio', label: 'Inicio' },
-  { href: '#ruta', label: 'Ruta del curso' },
   { href: '#instructor', label: 'Instructor' },
+  { href: '#ruta', label: 'Ruta del curso' },
 ];
