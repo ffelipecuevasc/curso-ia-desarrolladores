@@ -6,10 +6,12 @@
 import { UNITS, unitCode } from '../data/units/index.js';
 import { escapeHtml, qsa } from '../utils/dom.js';
 import { icon } from '../utils/icons.js';
-import { STATUS, STATUS_META } from '../utils/schedule.js';
+import { isStatusShown, STATUS, STATUS_META } from '../utils/schedule.js';
 
 /** Texto para lectores de pantalla; la unidad en curso se anuncia como «En curso». */
 const srLabel = (status) => (status === STATUS.LIVE ? 'En curso' : STATUS_META[status].label);
+/** Valor de data-status: los estados que no se muestran quedan neutros (sin color ni ícono). */
+const shownStatus = (status) => (isStatusShown(status) ? status : 'neutral');
 
 export const indexMarkup = () => `
   <nav class="unit-index" aria-label="Índice de unidades">
@@ -41,9 +43,9 @@ export const stripMarkup = () => `
 export function updateIndex(root, statuses) {
   qsa('[data-index-link]', root).forEach((link) => {
     const status = statuses[link.dataset.indexLink];
-    if (link.dataset.status === status) return;
-    link.dataset.status = status;
-    link.querySelector('[data-index-icon]').innerHTML = icon(STATUS_META[status].icon);
+    if (link.dataset.status === shownStatus(status)) return;
+    link.dataset.status = shownStatus(status);
+    link.querySelector('[data-index-icon]').innerHTML = isStatusShown(status) ? icon(STATUS_META[status].icon) : '';
 
     // Etiqueta visible «En curso» solo en la lista lateral (aria-hidden: el lector usa el texto oculto).
     link.querySelector('.unit-index__live')?.remove();
@@ -53,7 +55,7 @@ export function updateIndex(root, statuses) {
 
     const label = link.querySelector('.visually-hidden') ?? link.appendChild(document.createElement('span'));
     label.className = 'visually-hidden';
-    label.textContent = ` (${srLabel(status)})`;
+    label.textContent = isStatusShown(status) ? ` (${srLabel(status)})` : '';
   });
 }
 

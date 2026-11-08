@@ -69,6 +69,12 @@ export function lockedMessage(id) {
   return `Se abre el ${formatDay(opensAt)}, ${formatTime(opensAt)} h`;
 }
 
+/**
+ * true si el estado se muestra al alumno. Con TODAS_LAS_UNIDADES_ABIERTAS,
+ * «Abierta» no informa nada (todas lo están): no se muestra badge, ícono ni texto.
+ */
+export const isStatusShown = (status) => !(TODAS_LAS_UNIDADES_ABIERTAS && status === STATUS.OPEN);
+
 /** Metadatos visibles de cada estado (DESIGN.md 2.6: ícono + texto). */
 export const STATUS_META = {
   [STATUS.LOCKED]: { label: 'Bloqueada', icon: 'lock' },

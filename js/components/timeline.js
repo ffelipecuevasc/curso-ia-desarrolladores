@@ -11,7 +11,7 @@ import { getUnit, UNITS, unitCode } from '../data/units/index.js';
 import { escapeHtml, qs } from '../utils/dom.js';
 import { icon } from '../utils/icons.js';
 import { formatDay, formatRange } from '../utils/dates.js';
-import { getUnitDates, isUnlocked, lockedMessage, STATUS, STATUS_META } from '../utils/schedule.js';
+import { getUnitDates, isStatusShown, isUnlocked, lockedMessage, STATUS, STATUS_META } from '../utils/schedule.js';
 import { statusBadge } from './status-badge.js';
 import { progressMarkup } from './progress.js';
 import { TODAS_LAS_UNIDADES_ABIERTAS } from '../config/units.config.js';
@@ -89,7 +89,7 @@ function timelineRows() {
 const legend = () => `
   <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Estados de una unidad">
     ${Object.keys(STATUS_META)
-      .filter((status) => status !== STATUS.LOCKED || !TODAS_LAS_UNIDADES_ABIERTAS)
+      .filter((status) => isStatusShown(status) && (status !== STATUS.LOCKED || !TODAS_LAS_UNIDADES_ABIERTAS))
       .map((status) => `<li>${statusBadge(status)}</li>`)
       .join('')}
   </ul>`;
@@ -171,8 +171,9 @@ function renderUnit(unit, status) {
   if (expanded.has(unit.id) && isUnlocked(status)) fillBody(unit);
 
   const node = qs(`[data-node="${unit.id}"]`, section);
-  node.className = `timeline-node timeline-node--${status}`;
-  node.innerHTML = icon(STATUS_META[status].icon);
+  const shown = isStatusShown(status);
+  node.className = shown ? `timeline-node timeline-node--${status}` : 'timeline-node';
+  node.innerHTML = shown ? icon(STATUS_META[status].icon) : '';
 }
 
 function fillBody(unit, tab = 'resumen') {

@@ -222,8 +222,14 @@
   }
 
   /* ---- Bloques de contenido ------------------------------------------ */
-  .content-block + .content-block {
+  .content-block + .content-block,
+  .content-block > p + .content-block {
     margin-top: 1.75rem;
+  }
+
+  /* Tras la grilla de tarjetas, más aire: el titular abre un bloque nuevo */
+  .resource-grid + .content-block {
+    margin-top: 2.5rem;
   }
 
   .content-title {
