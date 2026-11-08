@@ -286,6 +286,49 @@
     color: var(--highlight);
   }
 
+  /* Unidad en curso: fila teñida de dorado (DESIGN.md 2.6). Va después de
+     [aria-current] para que el tinte gane; aria-current conserva su regla
+     izquierda de acento, así las dos señales conviven en la misma fila. */
+  .unit-index a[data-status='en-curso'] {
+    background: color-mix(in srgb, var(--highlight-fill) 18%, transparent);
+    color: var(--heading);
+  }
+
+  .unit-index__live {
+    grid-column: 3; /* segunda línea, bajo el título: el índice es angosto */
+    justify-self: start;
+    margin-bottom: 0.15rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    background: var(--highlight-fill);
+    color: var(--orient-950);
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .unit-index .unit-index__live svg {
+    width: 0.8rem;
+    height: 0.8rem;
+    color: currentColor;
+    animation: unit-live-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes unit-live-pulse {
+    50% {
+      opacity: 0.45;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .unit-index .unit-index__live svg {
+      animation: none;
+    }
+  }
+
   .unit-index [data-status='completada'] svg {
     color: var(--kicker);
   }
@@ -370,6 +413,11 @@
 
   .unit-strip a[aria-current='true'] {
     box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  /* En curso y en pantalla: el anillo se separa del relleno dorado. */
+  .unit-strip a[data-status='en-curso'][aria-current='true'] {
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
   }
 
   @media (min-width: 1024px) {

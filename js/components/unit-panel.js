@@ -36,6 +36,7 @@ function summaryTab(unit) {
           <div class="flex flex-col gap-3 min-w-0">
             <p><strong>${escapeHtml(req.titulo)}.</strong> ${rich(req.texto)}</p>
             ${req.codigo ? codeBlock(req.codigo) : ''}
+            ${req.enlace ? `<p><a href="${escapeHtml(req.enlace.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(req.enlace.titulo)}${icon('external')}<span class="visually-hidden"> (se abre en una pestaña nueva)</span></a></p>` : ''}
           </div>
         </div>`,
     )
@@ -158,7 +159,7 @@ function labTab(unit) {
 }
 
 /* --------------------------------------------------------------- Material */
-const MATERIAL_ICONS = { pdf: 'pdf', png: 'image', jpg: 'image', webp: 'image' };
+const MATERIAL_ICONS = { pdf: 'pdf', png: 'image', jpg: 'image', webp: 'image', enlace: 'link' };
 
 function materialTab(unit) {
   if (!unit.material?.length) return '<p class="text-text-muted">Esta unidad todavía no tiene material.</p>';
@@ -177,6 +178,19 @@ function materialTab(unit) {
               </div>
             </div>
           </li>`;
+      }
+      if (item.tipo === 'enlace') {
+        return `
+        <li>
+          <a class="resource-card" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">
+            <span class="resource-card__icon">${icon(iconName)}</span>
+            <span>
+              <span class="resource-card__title block">${escapeHtml(item.titulo)}</span>
+              ${item.descripcion ? `<span class="block mt-1 text-sm text-text-muted">${rich(item.descripcion)}</span>` : ''}
+              <span class="resource-card__meta">Enlace · <span class="resource-card__action inline-flex items-center gap-1">${icon('external')}Abrir<span class="visually-hidden"> (se abre en una pestaña nueva)</span></span></span>
+            </span>
+          </a>
+        </li>`;
       }
       return `
         <li>

@@ -53,6 +53,20 @@
     border-color: var(--border-strong);
   }
 
+  .course-progress__status {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .course-progress__status svg {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.1rem;
+    color: var(--icon);
+  }
+
   .course-progress__track {
     position: relative;
     height: 6px;

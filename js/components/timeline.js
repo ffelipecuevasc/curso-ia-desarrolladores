@@ -14,6 +14,7 @@ import { formatDay, formatRange } from '../utils/dates.js';
 import { getUnitDates, isUnlocked, lockedMessage, STATUS, STATUS_META } from '../utils/schedule.js';
 import { statusBadge } from './status-badge.js';
 import { progressMarkup } from './progress.js';
+import { TODAS_LAS_UNIDADES_ABIERTAS } from '../config/units.config.js';
 import { indexMarkup, initIndexSpy, stripMarkup, updateIndex } from './unit-index.js';
 import { initTabs, selectTab, unitBodyMarkup } from './unit-panel.js';
 import { openConcept } from './concept-modal.js';
@@ -100,8 +101,12 @@ export function renderTimeline(element) {
           <h2 class="section-title" id="ruta-title">Ruta del curso</h2>
           <p class="section-lead">
             Cinco días, dos unidades por día. Cada unidad dura 3 horas (85 minutos de clase,
-            15 de receso y 80 de taller), se abre en su horario y su entregable alimenta al siguiente
-            hasta llegar al plan integrado.
+            15 de receso y 80 de taller)${TODAS_LAS_UNIDADES_ABIERTAS ? '' : ', se abre en su horario'} y su entregable
+            alimenta al siguiente hasta llegar al plan integrado.${
+              TODAS_LAS_UNIDADES_ABIERTAS
+                ? ' Todas las unidades están abiertas; la que se está dictando se marca en amarillo.'
+                : ''
+            }
           </p>
           ${legend()}
         </div>

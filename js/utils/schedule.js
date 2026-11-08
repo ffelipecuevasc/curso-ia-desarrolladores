@@ -3,12 +3,14 @@
  *
  * | Estado      | Cuándo                                                      |
  * |-------------|-------------------------------------------------------------|
- * | bloqueada   | antes de `abreEl`, o `forzar: 'bloqueada'`                  |
+ * | bloqueada   | `forzar: 'bloqueada'`, o antes de `abreEl` si               |
+ * |             | TODAS_LAS_UNIDADES_ABIERTAS es false                        |
  * | en-curso    | entre `abreEl` y `cierraEl`                                 |
- * | abierta     | `forzar: 'abierta'` (o ?preview=all) antes de su hora       |
+ * | abierta     | antes de su hora con TODAS_LAS_UNIDADES_ABIERTAS,           |
+ * |             | `forzar: 'abierta'` o ?preview=all                          |
  * | completada  | después de `cierraEl`                                       |
  */
-import { UNITS_SCHEDULE } from '../config/units.config.js';
+import { TODAS_LAS_UNIDADES_ABIERTAS, UNITS_SCHEDULE } from '../config/units.config.js';
 import { formatDay, formatTime } from './dates.js';
 
 export const STATUS = Object.freeze({
@@ -40,7 +42,7 @@ export function getUnitStatus(id, now, { preview = isPreview } = {}) {
   if (forced === 'bloqueada' && !preview) return STATUS.LOCKED;
   if (now >= endsAt) return STATUS.DONE;
   if (now >= opensAt) return STATUS.LIVE;
-  if (forced === 'abierta' || preview) return STATUS.OPEN;
+  if (forced === 'abierta' || preview || TODAS_LAS_UNIDADES_ABIERTAS) return STATUS.OPEN;
   return STATUS.LOCKED;
 }
 
@@ -49,14 +51,15 @@ export const isUnlocked = (status) => status !== STATUS.LOCKED;
 
 /**
  * Estado global del curso: estado por unidad, unidad en curso,
- * próxima unidad y cantidad de unidades abiertas.
+ * próxima unidad, cantidad de unidades abiertas y de completadas.
  */
 export function getCourseState(unitIds, now) {
   const statuses = Object.fromEntries(unitIds.map((id) => [id, getUnitStatus(id, now)]));
   const current = unitIds.find((id) => statuses[id] === STATUS.LIVE) ?? null;
   const next = unitIds.find((id) => getUnitDates(id).startsAt > now) ?? null;
   const unlockedCount = unitIds.filter((id) => isUnlocked(statuses[id])).length;
-  return { statuses, current, next, unlockedCount, total: unitIds.length };
+  const doneCount = unitIds.filter((id) => statuses[id] === STATUS.DONE).length;
+  return { statuses, current, next, unlockedCount, doneCount, total: unitIds.length };
 }
 
 /** Texto del estado bloqueado: "Se abre el lunes 9 de noviembre, 12:45 h". */

@@ -6,7 +6,10 @@
 import { UNITS, unitCode } from '../data/units/index.js';
 import { escapeHtml, qsa } from '../utils/dom.js';
 import { icon } from '../utils/icons.js';
-import { STATUS_META } from '../utils/schedule.js';
+import { STATUS, STATUS_META } from '../utils/schedule.js';
+
+/** Texto para lectores de pantalla; la unidad en curso se anuncia como «En curso». */
+const srLabel = (status) => (status === STATUS.LIVE ? 'En curso' : STATUS_META[status].label);
 
 export const indexMarkup = () => `
   <nav class="unit-index" aria-label="Índice de unidades">
@@ -41,9 +44,16 @@ export function updateIndex(root, statuses) {
     if (link.dataset.status === status) return;
     link.dataset.status = status;
     link.querySelector('[data-index-icon]').innerHTML = icon(STATUS_META[status].icon);
+
+    // Etiqueta visible «En curso» solo en la lista lateral (aria-hidden: el lector usa el texto oculto).
+    link.querySelector('.unit-index__live')?.remove();
+    if (status === STATUS.LIVE && link.closest('.unit-index')) {
+      link.insertAdjacentHTML('beforeend', `<span class="unit-index__live" aria-hidden="true">${icon('schedule')}En curso</span>`);
+    }
+
     const label = link.querySelector('.visually-hidden') ?? link.appendChild(document.createElement('span'));
     label.className = 'visually-hidden';
-    label.textContent = ` (${STATUS_META[status].label})`;
+    label.textContent = ` (${srLabel(status)})`;
   });
 }
 

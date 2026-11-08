@@ -4,39 +4,28 @@
  * Política de URLs: nunca inventar una URL.
  * - DOCS: páginas de code.claude.com verificadas el 01-11-2026.
  * - BIBLIO: fuentes 34–57 de fuentes/bibliografia-curso.md (entregadas por el instructor).
- * - ACADEMY_COURSES: la URL individual de cada curso NO se pudo verificar desde el
- *   entorno de desarrollo (academy.claude.com no respondió), así que todas apuntan
- *   al catálogo. Cuando verifiques una, reemplaza `url` y marca `verificado: true`.
+ * - ACADEMY_COURSES: URL de cada curso verificada en el catálogo oficial
+ *   (anthropic.skilljar.com) el 07-11-2026: HTTP 200 y título coincidente.
  */
 
 export const ACADEMY_CATALOG = 'https://academy.claude.com/es';
 
+const SKILLJAR = 'https://anthropic.skilljar.com';
+
 /** Cursos de Anthropic Academy mencionados en las unidades. */
 export const ACADEMY_COURSES = {
-  // TODO: verificar URL del curso (hoy apunta al catálogo)
-  aiFluency: { titulo: 'AI Fluency: Framework & Foundations', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  aiFluencyBuilders: { titulo: 'AI Fluency for builders', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  claude101: { titulo: 'Claude 101', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  claudeCode101: { titulo: 'Claude Code 101', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  claudeCodeInAction: { titulo: 'Claude Code in Action', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  agentSkills: { titulo: 'Introduction to agent skills', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  subagents: { titulo: 'Introduction to subagents', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  mcp: { titulo: 'Introduction to MCP', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  mcpAdvanced: { titulo: 'MCP: Advanced Topics', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  aiNativeSdlc: { titulo: 'AI-native SDLC playbook', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  deployingEnterprise: { titulo: 'Deploying Claude Enterprise with confidence', url: ACADEMY_CATALOG, verificado: false },
-  // TODO: verificar URL del curso
-  claudePlatform101: { titulo: 'Claude Platform 101', url: ACADEMY_CATALOG, verificado: false },
+  aiFluency: { titulo: 'AI Fluency: Framework & Foundations', url: `${SKILLJAR}/ai-fluency-framework-foundations`, verificado: true },
+  aiFluencyBuilders: { titulo: 'AI Fluency for Builders', url: `${SKILLJAR}/ai-fluency-for-builders`, verificado: true },
+  claude101: { titulo: 'Claude 101', url: `${SKILLJAR}/claude-101`, verificado: true },
+  claudeCode101: { titulo: 'Claude Code 101', url: `${SKILLJAR}/claude-code-101`, verificado: true },
+  claudeCodeInAction: { titulo: 'Claude Code in Action', url: `${SKILLJAR}/claude-code-in-action`, verificado: true },
+  agentSkills: { titulo: 'Introduction to agent skills', url: `${SKILLJAR}/introduction-to-agent-skills`, verificado: true },
+  subagents: { titulo: 'Introduction to subagents', url: `${SKILLJAR}/introduction-to-subagents`, verificado: true },
+  mcp: { titulo: 'Introduction to Model Context Protocol', url: `${SKILLJAR}/introduction-to-model-context-protocol`, verificado: true },
+  mcpAdvanced: { titulo: 'Model Context Protocol: Advanced Topics', url: `${SKILLJAR}/model-context-protocol-advanced-topics`, verificado: true },
+  aiNativeSdlc: { titulo: 'AI-native SDLC playbook', url: 'https://academy.claude.com/courses/ai-native-sdlc-playbook', verificado: true },
+  deployingEnterprise: { titulo: 'Deploying Claude Enterprise with Confidence', url: `${SKILLJAR}/deploying-claude-enterprise-with-confidence`, verificado: true },
+  claudePlatform101: { titulo: 'Claude Platform 101', url: `${SKILLJAR}/claude-platform-101`, verificado: true },
 };
 
 /** Convierte un curso de la Academy en una tarjeta de la pestaña Videos. */
@@ -108,7 +97,11 @@ export const BIBLIO = {
   certEligibility: { titulo: 'Who can take a Claude certification exam', url: 'https://anthropic-partners.skilljar.com/page/certification-eligibility' },
   codeMigrationBlog: { titulo: 'Claude Blog · AI code migration', url: 'https://claude.com/blog/ai-code-migration' },
   dora: { titulo: 'DORA · métricas de entrega de software', url: 'https://dora.dev/' },
+  aiNativeSdlcEs: { titulo: 'Manual de estrategias de SDLC nativo de IA', url: 'https://claude.com/es/resources/articles/the-ai-native-sdlc-playbook' },
 };
+
+/** Repositorio con los proyectos de las demos y los talleres. */
+export const MATERIAL_REPO = { titulo: 'Repositorio de material (demos y talleres)', url: 'https://github.com/ffelipecuevasc/material-curso-ia-desarrolladores' };
 
 /** Columna "Enlaces de interés" del footer. */
 export const FOOTER_LINKS = {

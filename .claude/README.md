@@ -68,7 +68,7 @@ Más ejemplos válidos:
 
 Sitio de estudio del programa **«Desarrollando con Inteligencia — IA para Desarrolladores»** (Vela LATAM, Grupo 02, 2026): 30 horas, 10 unidades, 5 días, enfocado en el ecosistema Anthropic (Claude y Claude Code).
 
-Reemplaza los PDF y PPT del curso. Aquí los alumnos entienden el programa, estudian cada unidad (conceptos, laboratorio, material, videos y entregable), descargan material y llegan a los recursos oficiales. Las unidades se abren según el calendario de clases.
+Reemplaza los PDF y PPT del curso. Aquí los alumnos entienden el programa, estudian cada unidad (conceptos, laboratorio, material, videos y entregable), descargan material y llegan a los recursos oficiales. Por pedido del cliente, todas las unidades están abiertas; el calendario marca la unidad en curso.
 
 Es un sitio **estático**: HTML5, Tailwind CSS v4 por CDN, CSS modular y JavaScript ES6+ con módulos nativos. No usa frameworks, bundler ni build step. Se publica tal cual en GitHub Pages.
 
@@ -103,7 +103,7 @@ El modo oscuro es el predeterminado. El modo claro tiene la misma terminación.
 │   ├── README.md              Este archivo
 │   └── settings.json          Permisos del agente
 ├── assets/
-│   ├── docs/                  PDF del programa (ver "Pendientes")
+│   ├── docs/                  PDF del Programa y glosario del curso
 │   ├── img/                   favicon.svg y foto del instructor (opcional)
 │   ├── icons/                 SVG de Claude, Claude Code y Material Symbols Light
 │   └── material/u01 … u10/    PDF y PNG de cada unidad
@@ -175,10 +175,25 @@ u03: { abreEl: '2026-11-10T08:45:00-03:00', inicio: '2026-11-10T09:00:00-03:00',
 
 | Estado | Cuándo |
 |---|---|
-| `bloqueada` | Antes de `abreEl`, o con `forzar: 'bloqueada'`. |
-| `en-curso` | Entre `abreEl` y `cierraEl`. Se destaca en dorado y se despliega sola. |
-| `abierta` | Con `forzar: 'abierta'` (o `?preview=all`) antes de su hora. |
+| `bloqueada` | Con `forzar: 'bloqueada'`. Solo si `TODAS_LAS_UNIDADES_ABIERTAS` es `false`: también antes de `abreEl`. |
+| `en-curso` | Entre `abreEl` (15 min antes del inicio) y `cierraEl`. Se destaca en dorado y se despliega sola. |
+| `abierta` | Antes de su hora, con `TODAS_LAS_UNIDADES_ABIERTAS`, `forzar: 'abierta'` o `?preview=all`. |
 | `completada` | Después de `cierraEl`. |
+
+### Todas las unidades abiertas (pedido del cliente)
+
+En `js/config/units.config.js`, `TODAS_LAS_UNIDADES_ABIERTAS = true` deja todas las unidades abiertas desde ya: ninguna se bloquea por fecha y el calendario solo sirve para marcar la unidad en curso. Para volver al calendario (cada unidad se abre en su `abreEl`), cámbialo a `false`. `forzar: 'bloqueada'` en una unidad sigue mandando siempre: es la salida de emergencia. Toda la decisión está en `getUnitStatus()` (`js/utils/schedule.js`).
+
+### Unidad en curso resaltada
+
+`getCourseState()` entrega `current` (la unidad `en-curso`) y `main.js` lo recalcula cada 60 s, al volver a la pestaña (`visibilitychange`) y al recuperar el foco. Con eso:
+
+- En el índice de escritorio (`.unit-index`), la fila de la unidad en curso lleva un fondo dorado suave y la etiqueta «En curso» con un reloj. En la barra móvil (`.unit-strip`), relleno dorado. Los lectores de pantalla oyen «(En curso)».
+- Es una señal distinta de `aria-current="true"` (la unidad que el alumno está mirando, por scroll): esa conserva su regla izquierda de acento y pueden coexistir en la misma fila.
+- El contador de la ruta dice «En curso: U01 · …», «Próxima: U02 · … · día, hora h» o «Curso completado · 10 de 10 unidades», y su barra muestra las unidades completadas.
+- Entre las 12:00 y las 12:45 (almuerzo) no hay unidad en curso.
+
+Para probarlo, simula la hora: `?now=2026-11-10T09:30:00-03:00` deja la U03 en curso; `?now=2026-11-09T12:30:00-03:00`, ninguna (próxima U02). Las fechas llevan `-03:00`, así que el resultado no depende de la zona horaria del navegador.
 
 El estado se recalcula al cargar y **cada 60 segundos**, sin recargar la página. Las horas son UTC-03:00 y se muestran en formato `es-CL`.
 
@@ -186,7 +201,7 @@ El estado se recalcula al cargar y **cada 60 segundos**, sin recargar la página
 
 ### 5.1 Dejar que se abran por fecha
 
-No hacer nada. Cada unidad se abre en su `abreEl` (15 minutos antes de la clase) y queda completada en su `cierraEl`.
+Con `TODAS_LAS_UNIDADES_ABIERTAS = false`, no hacer nada más: cada unidad se abre en su `abreEl` (15 minutos antes de la clase) y queda completada en su `cierraEl`.
 
 ### 5.2 Forzar apertura o bloqueo
 
@@ -217,6 +232,17 @@ Después del cambio, el agente propone el mensaje de commit (§0.2). El desarrol
    ```
 
 3. Para una tarjeta nueva, agregar otro objeto al arreglo. `tipo` puede ser `pdf`, `png`, `jpg` o `webp` (cualquier otro usa un ícono genérico).
+4. **Enlace externo** (formulario, repositorio, archivo en GitHub): `tipo: 'enlace'` con `url` en vez de `archivo`, y `descripcion` opcional. Se abre en pestaña nueva y la tarjeta dice «Abrir» en vez de «Descargar»:
+
+   ```js
+   { tipo: 'enlace', titulo: 'Cuestionario de madurez (formulario)', descripcion: 'Lo respondes en el paso 2 del taller.', url: 'https://forms.gle/…', disponible: true },
+   ```
+
+5. **Requisitos con enlace** («Antes de la clase», en `requisitos`): campo opcional `enlace: { titulo, url }`, que se muestra como enlace externo debajo del texto (y del bloque de `codigo`, si lo hay):
+
+   ```js
+   { titulo: 'SDK de .NET 10 instalado antes de la clase', texto: 'Verifica con `dotnet --version`.', enlace: { titulo: 'Descargar el SDK de .NET 10 (sitio oficial)', url: 'https://dotnet.microsoft.com/en-us/download/dotnet/10.0' } },
+   ```
 
 Mientras `disponible` sea `false`, la tarjeta dice «Disponible pronto» y no hay enlace roto. **Nunca** marcar `disponible: true` si el archivo no existe en la ruta.
 
@@ -308,12 +334,9 @@ Notas para el agente:
 
 ## 14. Pendientes (TODO)
 
-- **PDF del programa:** no está en el repositorio. Debe ir en `assets/docs/Ementa V3 - Vela Latam - Turma 02 - Anthropic Claude ES.pdf`; después, `PROGRAM_PDF_AVAILABLE` a `true` en `js/data/course.js`.
-- **URLs de cursos de Anthropic Academy:** sin verificar (todas apuntan al catálogo `https://academy.claude.com/es`). Ver `// TODO` en `js/data/links.js`.
 - **Webinar «Modernizing Legacy Code with Claude Code»** (U04 y U05): sin URL en la bibliografía.
-- **Material de las unidades:** todas las tarjetas están en «Disponible pronto».
-- **Modalidad del taller de la U01:** el archivo fuente no la indica.
-- **Errores frecuentes** de los laboratorios: los archivos fuente no los traen (la sección se oculta mientras esté vacía).
+- **Material de las unidades U02–U10** (incluidas sus infografías): las tarjetas están en «Disponible pronto».
+- **Errores frecuentes** de los laboratorios U02–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía).
 - **Foto del instructor:** opcional (`photoAvailable`).
 
 ---

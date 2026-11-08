@@ -2,7 +2,7 @@
  * Unidad 1 · Fuente: fuentes/unidades/unidad-01.md
  * Sintaxis de texto: `código` y **negrita** (ver js/utils/dom.js → rich()).
  */
-import { ACADEMY_CATALOG, BIBLIO, DOCS, STANDARDS, academyVideo } from '../links.js';
+import { ACADEMY_COURSES, BIBLIO, DOCS, STANDARDS, academyVideo } from '../links.js';
 
 export default {
   id: 'u01',
@@ -28,8 +28,33 @@ export default {
     'WebStorm y Rider',
     'Plugin Claude Code [Beta] para JetBrains',
     'Claude web (Projects)',
+    'SDK de .NET 10',
+    'Git + cuenta de GitHub',
   ],
-  requisitos: [],
+  requisitos: [
+    {
+      titulo: 'SDK de .NET 10 instalado antes de la clase',
+      texto: 'Lo necesitas en el paso 1 del taller. Verifica con `dotnet --version` (debe empezar con 10).',
+      enlace: { titulo: 'Descargar el SDK de .NET 10 (sitio oficial)', url: 'https://dotnet.microsoft.com/en-us/download/dotnet/10.0' },
+    },
+    {
+      titulo: 'Git y una cuenta de GitHub',
+      texto: 'En el taller copias el proyecto `pedidos-web` a tu propio repositorio de GitHub y lo usas hasta la Unidad 10.',
+      codigo: {
+        lenguaje: 'bash',
+        titulo: 'Terminal',
+        contenido: `git clone https://github.com/ffelipecuevasc/material-curso-ia-desarrolladores.git
+cp -r material-curso-ia-desarrolladores/unidad-1/taller/pedidos-web ./pedidos-web
+cd pedidos-web
+git init -b main`,
+      },
+      enlace: { titulo: 'Instrucciones completas en el README del proyecto', url: 'https://github.com/ffelipecuevasc/material-curso-ia-desarrolladores/tree/main/unidad-1/taller/pedidos-web' },
+    },
+    {
+      titulo: 'Invitación a Claude Team aceptada y licencia JetBrains activa',
+      texto: 'Llega con las dos listas: el taller empieza instalando y conectando.',
+    },
+  ],
   pendientes: [],
   catedra: [
     { titulo: 'Presentación del curso: instructor, mapa de 0 a 100, modalidad y proyecto integrador', minutos: 12 },
@@ -50,7 +75,7 @@ export default {
         explicacion: [
           '`AGENTS.md` es un archivo Markdown en la raíz del repositorio con las instrucciones del proyecto para agentes de código: cómo se instala, cómo se prueban los cambios, qué convenciones se siguen y qué está prohibido.',
           'En este curso usamos `AGENTS.md` en lugar de `CLAUDE.md` porque es un estándar abierto que leen agentes de distintos proveedores. Así, las reglas del equipo no quedan atadas a una sola herramienta.',
-          'Claude Code lo acepta desde la versión **2.1.277**, pero solo como respaldo: lo lee únicamente si no existe ningún `CLAUDE.md`, ni en el proyecto ni en carpetas superiores (por ejemplo, el home). Por eso, en el taller verificas que no haya un `CLAUDE.md` que lo tape.',
+          'Desde la versión **2.1.277**, Claude Code lo lee automáticamente como respaldo: solo cuando no hay ningún `CLAUDE.md` en el proyecto ni en las carpetas superiores. No hay que activarlo. Por eso, en el taller verificas con `/memory` que no haya un `CLAUDE.md` que lo tape.',
         ],
         ejemplo: {
           tipo: 'codigo',
@@ -86,7 +111,10 @@ export default {
           contenido: `# Debe mostrar 2.1.277 o superior
 claude --version
 
-# Dentro de Claude Code: revisar la configuración
+# Dentro de Claude Code: qué archivos de instrucciones cargó
+/memory
+
+# Dentro de Claude Code: revisar Project instructions
 /config
 
 # Si el plugin del IDE falla, conectar desde una terminal externa
@@ -114,7 +142,7 @@ claude --version
 | Diseño | ... | ... | ... | ... | ... |`,
         },
         nota: '',
-        fuente: { titulo: 'AI-native SDLC playbook (Anthropic Academy)', url: ACADEMY_CATALOG },
+        fuente: BIBLIO.aiNativeSdlcEs,
       },
     ],
     fundamentales: [
@@ -173,26 +201,27 @@ claude --version
           contenido: 'Escribir tests de un formulario de login: se delega con revisión. Aprobar un PR propio: no se delega.',
         },
         nota: '',
-        fuente: { titulo: 'AI Fluency: Framework & Foundations (Anthropic Academy)', url: ACADEMY_CATALOG },
+        fuente: ACADEMY_COURSES.aiFluency,
       },
     ],
   },
 
   laboratorio: {
     nombre: 'Mi entorno y mi mapa',
-    modalidad: '', // TODO: el archivo fuente no indica la modalidad (individual/parejas/tríos)
+    modalidad: 'Individual',
     duracion: 80,
     caso: 'Ingresas como desarrollador al equipo que heredó **"Pedidos Legado → Pedidos Web"**, el sistema de pedidos de una distribuidora, hecho en Delphi con DBISAM. La empresa quiere un portal web nuevo y migrar parte del legado a .NET + PostgreSQL.',
     problematica: 'El equipo trabaja sin IA o con vibe coding aislado: cada uno usa la herramienta a su manera y nadie sabe en qué etapas ayuda de verdad. El líder técnico pide un entorno profesional igual para todos y un mapa de dónde la IA aporta y con qué control.',
     objetivo: 'Dejar tu entorno listo y construir, con ayuda de Claude, el mapa de uso de IA del proyecto.',
     pasos: [
-      { minutos: 35, texto: 'Instalar Claude Code, autenticarte con la cuenta Team y verificar con `claude --version` que sea **2.1.277 o superior**. Activar la lectura de instrucciones del proyecto en `/config` y confirmar que no exista ningún `CLAUDE.md` en el home ni en carpetas superiores. Activar la licencia JetBrains, instalar WebStorm y Rider, instalar el plugin Claude Code [Beta] y abrir `claude` desde la terminal integrada. Crear un Project en Claude web con el README del caso.', conceptos: ['C2'] },
-      { minutos: 8, texto: 'Responder el cuestionario de madurez entregado y pedirle a Claude que tabule las respuestas.', conceptos: ['C4'] },
+      { minutos: 35, texto: 'Crear tu repo `pedidos-web` desde el material del curso (ver «Antes de la clase»). Instalar Claude Code, autenticarte con la cuenta Team y verificar con `claude --version` que sea **2.1.277 o superior**. Compilar y correr `dotnet build` y `dotnet test`: deben fallar 3 tests y es lo esperado (así la descarga de NuGet ocurre ahora y no en el paso 3). Activar la licencia JetBrains, instalar Rider (y WebStorm), instalar el plugin Claude Code [Beta] y abrir `claude` desde la terminal integrada. Confirmar con `/memory` que no se cargó ningún `CLAUDE.md`: Claude Code lee `AGENTS.md` solo cuando no hay ningún `CLAUDE.md` en el proyecto ni en las carpetas superiores. Crear un Project en Claude web con el README del caso.', conceptos: ['C2'] },
+      { minutos: 8, texto: 'Responder el cuestionario de madurez (está en la pestaña Recursos) y pedirle a Claude que tabule las respuestas.', conceptos: ['C4'] },
       { minutos: 12, texto: 'Implementar la función `formatearFolio()` descrita en el README, primero sin IA y después con Claude Code. Registrar tiempo, errores y qué tuviste que corregir.', conceptos: ['C1', 'C4'] },
-      { minutos: 20, texto: 'Construir `docs/mapa-sdlc.md`: para cada etapa del SDLC, qué tarea se delega a Claude, qué artefacto queda versionado, qué revisa una persona, qué riesgo hay y en qué evento de Scrum ocurre.', conceptos: ['C3', 'C4'] },
-      { minutos: 5, texto: 'Commit del mapa y cierre grupal: cada fila comparte una etapa.', conceptos: [] },
+      { minutos: 20, texto: 'Copiar `docs/plantilla-mapa-sdlc.md` como `docs/mapa-sdlc.md` y completarlo: para cada etapa del SDLC, qué tarea se delega a Claude, qué artefacto queda versionado, qué revisa una persona, qué riesgo hay y en qué evento de Scrum ocurre.', conceptos: ['C3', 'C4'] },
+      { minutos: 5, texto: 'Commit y push del mapa a tu repo, y cierre grupal: cada fila comparte una etapa.', conceptos: [] },
     ],
     puntosControl: [
+      '`dotnet test` corre en tu repo y muestra 3 tests en rojo con `NotImplementedException`.',
       'Claude Code responde dentro del repo desde el IDE y, al preguntarle por las reglas del proyecto, cita el `AGENTS.md` de ejemplo.',
     ],
     resultadoEsperado: [
@@ -201,23 +230,41 @@ claude --version
     ],
     siTeTrabas: [
       'La guía de instalación del plugin para JetBrains y la lección "Installing Claude Code" de Claude Code 101.',
-      'Cómo se activa `AGENTS.md` en Claude Code.',
+      'Cómo lee Claude Code `AGENTS.md` (respaldo de `CLAUDE.md`): página «Memory» de la documentación de Claude Code.',
       'Para el mapa, la tabla tradicional frente a AI-native del playbook.',
     ],
-    erroresFrecuentes: [], // TODO: el archivo fuente no trae una lista de errores frecuentes
+    erroresFrecuentes: [
+      '`claude: command not found` después de instalar → abre una terminal nueva (o reinicia el IDE); si persiste, revisa la guía de instalación.',
+      '`claude --version` es menor a 2.1.277 → ejecuta `claude update` y vuelve a verificar.',
+      'Claude Code entró con una cuenta personal → `/logout` y luego `/login` con la cuenta Team.',
+      'Claude no cita el `AGENTS.md` → ejecuta `/memory`: solo lo lee si no hay ningún `CLAUDE.md` en el proyecto ni en las carpetas superiores; si aparece uno, renómbralo o usa `/config` → Project instructions, y abre `claude` dentro de la carpeta del repo.',
+      '`dotnet` no se reconoce o la versión no es 10 → instala el SDK de .NET 10 y abre una terminal nueva.',
+      '`dotnet test` se queda descargando o falla por red → es la descarga de NuGet; avisa al instructor (puede ser el proxy corporativo).',
+      'El plugin de JetBrains no detecta Claude Code → reinicia el IDE; si sigue, ejecuta `claude` en una terminal externa y conéctate con `/ide`.',
+      'La licencia de JetBrains no se activa → inicia sesión con la JetBrains Account invitada; mientras tanto, usa una terminal externa.',
+      'Claude "hace todo" el mapa → pídele que proponga y critique, pero la columna «Revisa una persona» la decides y escribes tú.',
+    ],
     planB: [
       'Si falla la terminal, usar la pestaña "Code" de Claude Desktop.',
       'Si falla el plugin, ejecutar `claude` en una terminal externa y conectarse con `/ide`.',
-      'Si falla la red, hacer el mapa en papel con la plantilla impresa.',
+      'Si falla la red, hacer el mapa en papel copiando la tabla de la plantilla y transcribirlo después.',
     ],
     extension: '',
   },
 
   material: [
-    { tipo: 'pdf', titulo: 'Guía del taller "Mi entorno y mi mapa"', archivo: 'assets/material/u01/guia-taller.pdf', disponible: false },
-    { tipo: 'pdf', titulo: 'Caso guiado Scrum + SDD', archivo: 'assets/material/u01/caso-scrum-y-sdd.pdf', disponible: false },
-    { tipo: 'pdf', titulo: 'Plantilla impresa del mapa SDLC', archivo: 'assets/material/u01/plantilla-mapa-sdlc.pdf', disponible: false },
-    { tipo: 'png', titulo: 'Infografía de la unidad', archivo: 'assets/material/u01/infografia.png', disponible: false },
+    { tipo: 'pdf', titulo: 'Guía del taller "Mi entorno y mi mapa"', archivo: 'assets/material/u01/guia-taller.pdf', disponible: true },
+    { tipo: 'pdf', titulo: 'Caso guiado Scrum + SDD', archivo: 'assets/material/u01/caso-scrum-y-sdd.pdf', disponible: true },
+    { tipo: 'enlace', titulo: 'Plantilla del mapa SDLC (Markdown)', url: 'https://github.com/ffelipecuevasc/material-curso-ia-desarrolladores/blob/main/unidad-1/taller/pedidos-web/docs/plantilla-mapa-sdlc.md', disponible: true },
+    { tipo: 'png', titulo: 'Infografía de la unidad', archivo: 'assets/material/u01/infografia.png', disponible: true },
+    {
+      tipo: 'enlace',
+      titulo: 'Cuestionario de madurez (formulario)',
+      descripcion: 'Lo respondes en el paso 2 del taller. Tarda unos 6 minutos y no es una evaluación.',
+      url: 'https://forms.gle/TMQtJaEaLxG6pJzr7',
+      disponible: true,
+    },
+    { tipo: 'enlace', titulo: 'Proyectos de la Unidad 1 (demos y taller)', url: 'https://github.com/ffelipecuevasc/material-curso-ia-desarrolladores/tree/main/unidad-1', disponible: true },
   ],
 
   videos: [

@@ -1,19 +1,16 @@
 /**
  * course.js · Datos generales del curso.
- * Portada tomada del programa oficial (Ementa V3 · Vela LATAM · Grupo 02).
+ * Portada tomada del Programa oficial del curso (Vela LATAM · Grupo 02).
  */
 
-/** Ruta del PDF del programa. encodeURI codifica los espacios (%20). */
-export const PROGRAM_PDF = encodeURI(
-  'assets/docs/Ementa V3 - Vela Latam - Turma 02 - Anthropic Claude ES.pdf',
-);
+/** Ruta del PDF del Programa. */
+export const PROGRAM_PDF = 'assets/docs/programa-desarrollando-con-ia.pdf';
 
-/**
- * TODO: el PDF del programa todavía no está en el repositorio.
- * Súbelo a assets/docs/ con ese nombre exacto y cambia esto a true.
- * Mientras sea false, los botones muestran "Programa: disponible pronto".
- */
-export const PROGRAM_PDF_AVAILABLE = false;
+/** Si es false, los botones del Programa no se muestran. */
+export const PROGRAM_PDF_AVAILABLE = true;
+
+/** Glosario del curso (descarga, footer «Material del curso»). */
+export const GLOSSARY_PDF = 'assets/docs/glosario-del-curso.pdf';
 
 export const COURSE = {
   brand: 'IA para Desarrolladores',
@@ -23,7 +20,7 @@ export const COURSE = {
   subtitle: 'IA para Desarrolladores',
   lead: 'Enfocado en el ecosistema Anthropic: Claude y Claude Code',
   pills: ['Claude · ecosistema de referencia', 'MCP', 'Agent Skills', 'AGENTS.md', 'SDD'],
-  instructorLine: 'Felipe Cuevas · Claude Certified Developer – Foundations',
+  instructorLine: 'Felipe Cuevas · Claude Certified Developer',
   organization: 'Vela LATAM · Grupo 02 · 2026',
   footerSummary:
     'Programa de 30 horas para desarrollar software con IA de forma profesional, con Claude y Claude Code como ecosistema de referencia.',

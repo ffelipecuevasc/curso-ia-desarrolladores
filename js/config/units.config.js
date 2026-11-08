@@ -2,14 +2,17 @@
  * units.config.js · CALENDARIO Y CONTROL DE APERTURA DE LAS UNIDADES
  * ---------------------------------------------------------------------------
  * Este es el ÚNICO archivo que hay que tocar para abrir o bloquear unidades.
- * El bloqueo es un ritmo pedagógico, no una medida de seguridad: todo el
- * contenido está en el repositorio.
+ * Por pedido del cliente, hoy TODAS las unidades están abiertas
+ * (TODAS_LAS_UNIDADES_ABIERTAS = true): el calendario ya no bloquea y solo
+ * sirve para marcar la unidad en curso (en amarillo en el índice).
  *
  * Zona horaria de las clases: UTC-03:00
- * abreEl:   cuándo se abre sola la unidad (15 min antes de la clase).
+ * abreEl:   desde cuándo la unidad está "en curso" (15 min antes de la clase).
+ *           Con el interruptor en false, también es cuándo se abre.
  * inicio:   inicio de la clase (se muestra como horario).
  * cierraEl: fin de la clase. Después de esta hora la unidad queda "completada".
- * forzar:   null (usa las fechas) | 'abierta' | 'bloqueada' (manda sobre las fechas)
+ * forzar:   null (usa las fechas) | 'abierta' | 'bloqueada' (manda sobre las
+ *           fechas y sobre el interruptor: es la salida de emergencia)
  *
  * Ejemplos:
  *   u03: { ..., forzar: 'abierta' }    → U03 abierta ahora, sin esperar la fecha.
@@ -18,6 +21,13 @@
  * Vista del instructor: agrega ?preview=all a la URL para ver todo abierto.
  * Solo para pruebas:    agrega ?now=2026-11-10T14:00:00-03:00 para simular la hora.
  */
+/**
+ * Pedido del cliente: todas las unidades abiertas desde ya.
+ * true  → ninguna unidad se bloquea por fecha (abierta → en curso → completada).
+ * false → vuelve al calendario: cada unidad se abre en su `abreEl`.
+ */
+export const TODAS_LAS_UNIDADES_ABIERTAS = true;
+
 export const UNITS_SCHEDULE = {
   u01: { abreEl: '2026-11-09T08:45:00-03:00', inicio: '2026-11-09T09:00:00-03:00', cierraEl: '2026-11-09T12:00:00-03:00', forzar: null },
   u02: { abreEl: '2026-11-09T12:45:00-03:00', inicio: '2026-11-09T13:00:00-03:00', cierraEl: '2026-11-09T16:00:00-03:00', forzar: null },

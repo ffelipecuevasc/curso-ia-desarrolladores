@@ -68,6 +68,11 @@ function refresh() {
 
 refresh();
 setInterval(refresh, REFRESH_INTERVAL_MS);
+// Los temporizadores de pestañas en segundo plano se frenan: recalcular al volver.
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) refresh();
+});
+window.addEventListener('focus', refresh);
 
 // Deep links (#u03, #u02/concepto/plan-mode). Sin hash, la página parte arriba:
 // el botón del hero lleva a la clase de hoy cuando el alumno lo decide.
