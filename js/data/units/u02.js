@@ -176,6 +176,8 @@ export default {
     caso: 'Primer sprint del **portal web de Pedidos**: los vendedores necesitan consultar pedidos desde el navegador, sin entrar al sistema Delphi. Se construye una API nueva en ASP.NET Core, con datos de ejemplo en memoria.',
     problematica: 'La historia del backlog, "Como vendedor, quiero listar pedidos filtrando por cliente, estado y rango de fechas", es vaga: no dice qué estados existen, qué pasa si las fechas vienen invertidas ni cuántos resultados se devuelven.',
     objetivo: 'Hacer de PO y Dev en un mini sprint: convertir la historia en una spec verificable, llevarla a un plan aprobado, implementar con Claude Code y entregar solo lo que pasó tu revisión.',
+    // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
+    resumen: 'Arranca el primer sprint del portal web de Pedidos: una API en ASP.NET Core para que los vendedores consulten pedidos desde el navegador. La historia del backlog es vaga: no dice qué estados existen, qué pasa si las fechas vienen invertidas ni cuántos resultados se devuelven. En 80 minutos haces de PO y Dev: Claude te entrevista con el prompt maestro y genera borradores de `AGENTS.md` y `spec.md`; tú completas la spec con al menos 5 criterios de aceptación verificables, apruebas el plan en plan mode, implementas con tests xUnit (uno por criterio) y revisas el diff antes del commit. Todo el paso a paso está en la guía.',
     pasos: [
       { minutos: 10, texto: 'Ejecutar el **prompt maestro** entregado. Claude te entrevista y genera borradores de `AGENTS.md` y `spec.md` con secciones `TODO`.', conceptos: ['C2', 'C3'] },
       { minutos: 15, texto: 'Completar la spec **tú mismo**: decidir los estados, la validación de fechas, la paginación y los errores. Escribir al menos 5 criterios de aceptación verificables.', conceptos: ['C3'] },
@@ -206,7 +208,7 @@ export default {
   material: [
     { tipo: 'pdf', titulo: 'Plantilla de spec comentada', archivo: 'assets/material/u02/plantilla-spec-comentada.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Prompt maestro del taller', archivo: 'assets/material/u02/prompt-maestro.pdf', disponible: false },
-    { tipo: 'pdf', titulo: 'Guía del taller "Mi primera feature guiada por spec"', archivo: 'assets/material/u02/guia-taller.pdf', disponible: false },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Mi primera feature guiada por spec"', archivo: 'assets/material/u02/guia-taller.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía de la unidad', archivo: 'assets/material/u02/infografia.png', disponible: false },
   ],
 

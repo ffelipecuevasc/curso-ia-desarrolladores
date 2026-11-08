@@ -1,16 +1,17 @@
 /**
  * unit-panel.js · Contenido desplegable de una unidad: 4 pestañas
- * (Resumen, Conceptos, Taller = laboratorio + entregable, Recursos = material + videos).
+ * (Resumen, Conceptos, Taller = panel corto + guía PDF, Recursos = material + videos).
+ * Lo que ya está en la guía del taller, las láminas o el programa no se repite aquí.
  * Todo se genera desde js/data/units/uXX.js: para agregar un concepto,
  * un material o un video, basta con editar ese archivo.
  */
-import { COURSE } from '../data/course.js';
-import { getUnit, unitCode } from '../data/units/index.js';
+import { unitCode } from '../data/units/index.js';
 import { attr, escapeHtml, qsa, rich } from '../utils/dom.js';
 import { icon } from '../utils/icons.js';
-import { codeBlock } from '../utils/code.js';
-import { formatDay, formatRange } from '../utils/dates.js';
-import { getUnitDates } from '../utils/schedule.js';
+import { isPreview } from '../utils/schedule.js';
+
+/** id de la tarjeta de material que es la guía del taller (se descarga desde Taller). */
+export const GUIDE_ID = 'guia';
 
 export const TABS = [
   { key: 'resumen', label: 'Resumen', icon: 'article' },
@@ -26,65 +27,42 @@ const block = (title, content) =>
   content ? `<section class="content-block"><h5 class="content-title">${escapeHtml(title)}</h5>${content}</section>` : '';
 
 /* ---------------------------------------------------------------- Resumen */
-function summaryTab(unit) {
-  const { startsAt, endsAt } = getUnitDates(unit.id);
+const externalLink = ({ titulo, url }) =>
+  `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(titulo)}${icon('external')}<span class="visually-hidden"> (se abre en una pestaña nueva)</span></a>`;
 
+function summaryTab(unit) {
+  // Antes de la clase: texto y enlace. El bloque de código queda en los datos (y en la guía).
   const requirements = (unit.requisitos ?? [])
     .map(
       (req) => `
         <div class="callout">${icon('info')}
-          <div class="flex flex-col gap-3 min-w-0">
+          <div class="flex flex-col gap-2 min-w-0">
             <p><strong>${escapeHtml(req.titulo)}.</strong> ${rich(req.texto)}</p>
-            ${req.codigo ? codeBlock(req.codigo) : ''}
-            ${req.enlace ? `<p><a href="${escapeHtml(req.enlace.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(req.enlace.titulo)}${icon('external')}<span class="visually-hidden"> (se abre en una pestaña nueva)</span></a></p>` : ''}
+            ${req.enlace ? `<p>${externalLink(req.enlace)}</p>` : ''}
           </div>
         </div>`,
     )
     .join('');
 
-  const pending = (unit.pendientes ?? [])
-    .map(
-      (item) => `
-        <div class="callout callout--pending">${icon('warning')}
-          <p><strong>Pendiente · ${escapeHtml(item.titulo)}.</strong> ${rich(item.texto)}</p>
-        </div>`,
-    )
-    .join('');
+  // Avisos internos: solo en la vista previa del instructor.
+  const pending = isPreview
+    ? (unit.pendientes ?? [])
+        .map(
+          (item) => `
+            <div class="callout callout--pending">${icon('warning')}
+              <p><strong>Pendiente · ${escapeHtml(item.titulo)}.</strong> ${rich(item.texto)}</p>
+            </div>`,
+        )
+        .join('')
+    : '';
 
   return `
     <p class="lead-text">${rich(unit.foco)}</p>
-
-    <section class="content-block">
-      <div class="today-card">
-        <div class="today-card__body">
-          <p class="today-card__label">Taller · ${unit.laboratorio.duracion} min</p>
-          <p class="today-card__name">${escapeHtml(unit.laboratorio.nombre)}</p>
-          <p class="today-card__goal">${rich(unit.laboratorio.objetivo)}</p>
-          <p class="today-card__deliverable">${icon('assignment')}<span>Entregable: <strong>${escapeHtml(unit.entregable.nombre)}</strong></span></p>
-        </div>
-        <button type="button" class="btn btn--primary" data-goto-tab="taller">Ir al taller ${icon('arrowForward', { className: 'size-5' })}</button>
-      </div>
-    </section>
-
-    <section class="content-block">
-      <dl class="meta-line m-0">
-        <div><dt>Horario</dt><dd class="tabular">Día ${unit.dia} · ${formatDay(startsAt)} · ${formatRange(startsAt, endsAt)} h</dd></div>
-        <div><dt>3 horas</dt><dd>${COURSE.distribution.map((part) => `${part.minutes}′ ${part.label.toLowerCase()}`).join(' · ')}</dd></div>
-        <div><dt>Licencias</dt><dd>${unit.licencias.map(rich).join(' · ')}</dd></div>
-        <div><dt>Nivel</dt><dd class="tabular">${escapeHtml(unit.nivel)} <span class="text-text-soft">de 100</span></dd></div>
-      </dl>
-    </section>
-
+    <p class="level-line tabular">${icon('flag')}<span>Nivel <strong>${escapeHtml(unit.nivel)}</strong> de 100</span></p>
     ${pending ? `<section class="content-block flex flex-col gap-3">${pending}</section>` : ''}
     ${block('Objetivos', list(unit.objetivos, 'prose-list prose-list--check'))}
     ${block('Herramientas', `<ul class="flex flex-wrap gap-2 list-none m-0 p-0">${unit.herramientas.map((tool) => `<li class="tag">${rich(tool)}</li>`).join('')}</ul>`)}
-    ${requirements ? `<section class="content-block flex flex-col gap-3"><h5 class="content-title">Antes de la clase</h5>${requirements}</section>` : ''}
-    ${block(
-      'Clase · 85 minutos',
-      `<ol class="agenda">${unit.catedra
-        .map((item) => `<li><span>${item.minutos}′</span><span>${rich(item.titulo)}</span></li>`)
-        .join('')}</ol>`,
-    )}`;
+    ${requirements ? `<section class="content-block flex flex-col gap-3"><h5 class="content-title">Antes de la clase</h5>${requirements}</section>` : ''}`;
 }
 
 /* -------------------------------------------------------------- Conceptos */
@@ -117,53 +95,40 @@ function conceptsTab(unit) {
 }
 
 /* ------------------------------------------------------------ Laboratorio */
+/** Botón grande de la guía; deshabilitado (nunca un enlace roto) si no está disponible. */
+function guideButton(unit) {
+  const guide = unit.material?.find((item) => item.id === GUIDE_ID);
+  if (guide?.disponible) {
+    return `<a class="btn btn--primary btn--lg" href="${encodeURI(guide.archivo)}" download>
+      ${icon('download')}<span>Descargar la guía <span class="btn__hint">(PDF)</span></span></a>`;
+  }
+  return `<button type="button" class="btn btn--disabled btn--lg" disabled>${icon('hourglass')}<span>Guía disponible pronto</span></button>`;
+}
+
 function labTab(unit) {
   const lab = unit.laboratorio;
-  const steps = lab.pasos
-    .map(
-      (step) => `
-        <li class="step">
-          <div>
-            <p class="step__text">${rich(step.texto)}</p>
-            <p class="step__meta tabular">
-              <span>${step.minutos} min</span>
-              ${step.quien ? `<span>${escapeHtml(step.quien)}</span>` : ''}
-              ${(step.conceptos ?? []).map((code) => `<span>${escapeHtml(code)}</span>`).join('')}
-            </p>
-          </div>
-        </li>`,
-    )
-    .join('');
-
-  const checkpoints = lab.puntosControl?.length
-    ? `<div class="callout checkpoint">${icon('checkCircle')}<div><p><strong>Puntos de control</strong></p>${list(lab.puntosControl)}</div></div>`
-    : '';
-
+  // Pasos, errores frecuentes y plan B siguen en los datos, pero viven en la guía PDF.
   return `
-    <div class="flex flex-wrap items-center gap-2 mb-4">
-      <h5 class="text-xl font-semibold text-heading m-0 mr-2">${escapeHtml(lab.nombre)}</h5>
-      ${lab.modalidad ? `<span class="tag">${icon('groups', { className: 'size-4' })}${escapeHtml(lab.modalidad)}</span>` : ''}
-      <span class="tag tabular">${icon('schedule', { className: 'size-4' })}${lab.duracion} min</span>
-    </div>
-    ${block('Caso de uso', `<p class="text-text-muted max-w-[68ch]">${rich(lab.caso)}</p>`)}
-    ${block('Problemática', `<p class="text-text-muted max-w-[68ch]">${rich(lab.problematica)}</p>`)}
-    ${block('Objetivo', `<p class="lead-text">${rich(lab.objetivo)}</p>`)}
-    ${block('Roles', list(lab.roles))}
-    ${block('Pasos', `<ol class="steps">${steps}</ol>`)}
-    ${checkpoints ? `<section class="content-block">${checkpoints}</section>` : ''}
-    ${block('Qué se espera (sin darte la respuesta)', list(lab.resultadoEsperado))}
-    ${block('Errores frecuentes', list(lab.erroresFrecuentes))}
-    ${block('Qué investigar si te trabas', list(lab.siTeTrabas))}
-    ${block('Plan B', list(lab.planB))}
-    ${lab.extension ? block('Extensión opcional', `<p class="text-text-muted">${rich(lab.extension)}</p>`) : ''}`;
+    <div class="lab-panel">
+      <h5 class="lab-panel__title">${escapeHtml(lab.nombre)}</h5>
+      <ul class="lab-facts" aria-label="Datos del taller">
+        ${lab.modalidad ? `<li>${icon('groups')}<span>${escapeHtml(lab.modalidad)}</span></li>` : ''}
+        <li class="tabular">${icon('schedule')}<span>${lab.duracion} min</span></li>
+        <li class="lab-facts__deliverable">${icon('assignment')}<span>Entregable: <strong>${escapeHtml(unit.entregable.nombre)}</strong></span></li>
+      </ul>
+      <p class="lab-panel__summary">${rich(lab.resumen || lab.objetivo)}</p>
+      ${guideButton(unit)}
+    </div>`;
 }
 
 /* --------------------------------------------------------------- Material */
 const MATERIAL_ICONS = { pdf: 'pdf', png: 'image', jpg: 'image', webp: 'image', enlace: 'link' };
 
 function materialTab(unit) {
-  if (!unit.material?.length) return '<p class="text-text-muted">Esta unidad todavía no tiene material.</p>';
-  const cards = unit.material
+  // La guía del taller se descarga desde la pestaña Taller.
+  const items = (unit.material ?? []).filter((item) => item.id !== GUIDE_ID);
+  if (!items.length) return '<p class="text-text-muted">Esta unidad todavía no tiene material.</p>';
+  const cards = items
     .map((item) => {
       const type = item.tipo.toUpperCase();
       const iconName = MATERIAL_ICONS[item.tipo] ?? 'file';
@@ -258,36 +223,13 @@ function videosTab(unit) {
   const cards = (unit.videos ?? []).map(videoCard).join('');
   return `
     ${cards ? `<ul class="resource-grid">${cards}</ul>` : '<p class="text-text-muted">Sin videos asociados por ahora.</p>'}
-    <p class="mt-3 text-sm text-text-soft">Los cursos de Anthropic Academy se abren en una pestaña nueva.</p>
     ${block('Para investigar por tu cuenta', list(unit.paraInvestigar))}`;
-}
-
-/* ------------------------------------------------------------- Entregable */
-function deliverableTab(unit) {
-  const next = unit.entregable.alimentaA ? getUnit(unit.entregable.alimentaA) : null;
-  const feeds = next
-    ? `<a class="feeds-link" href="#${next.id}" data-goto-unit="${next.id}">
-         ${icon('arrowForward')}<span>Alimenta a: <strong class="tabular">${unitCode(next)}</strong> · ${escapeHtml(next.titulo)}</span>
-       </a>`
-    : `<p class="feeds-link">${icon('flag')}<span>Cierre del curso: integra los nueve entregables anteriores.</span></p>`;
-
-  return `
-    <div class="deliverable-card">
-      <p class="deliverable-card__label">Entregable · ${unitCode(unit)}</p>
-      <h5 class="deliverable-card__name">${escapeHtml(unit.entregable.nombre)}</h5>
-      <div class="mt-4">
-        <p class="content-title">Criterios clave</p>
-        ${list(unit.entregable.criterios, 'prose-list prose-list--check')}
-      </div>
-      ${feeds}
-    </div>
-    <p class="mt-4 text-sm text-text-soft">Caso integrador: ${escapeHtml(COURSE.integrator)}. Cada entregable alimenta al siguiente.</p>`;
 }
 
 const RENDERERS = {
   resumen: summaryTab,
   conceptos: conceptsTab,
-  taller: (unit) => `${labTab(unit)}<section class="content-block content-block--split"><h5 class="content-title">Entregable</h5>${deliverableTab(unit)}</section>`,
+  taller: labTab,
   recursos: (unit) => `<section class="content-block"><h5 class="content-title">Material descargable</h5>${materialTab(unit)}</section>
     <section class="content-block content-block--split"><h5 class="content-title">Videos y cursos</h5>${videosTab(unit)}</section>`,
 };

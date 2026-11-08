@@ -181,6 +181,8 @@ export default {
       '**B, diseñador:** Skill de PDF.',
       '**C, estratega:** diagnóstico y roadmap.',
     ],
+    // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
+    resumen: 'La BU de Desarrollo tiene 4 equipos con una adopción muy dispar, y la gerencia quiere que los otros tres trabajen como el de Pedidos Web: pide un plan de evolución en PDF y un playbook instalable. En grupos de 3, ubicas a cada equipo en el modelo de madurez a partir de `analytics-ficticio.csv`, creas el plugin `pedidos-playbook` con un servidor MCP de PostgreSQL en solo lectura, creas la Skill `pdf-con-estilo` y redactas el roadmap a 6 y 12 meses. Cada integrante instala el plugin y el grupo genera el PDF. Todo el paso a paso está en la guía.',
     pasos: [
       { minutos: 10, quien: 'Todos', texto: 'Leer `analytics-ficticio.csv` con Claude y ubicar a cada equipo en el modelo de madurez.', conceptos: ['C1'] },
       { minutos: 35, quien: 'A', texto: 'Crear el plugin `pedidos-playbook`: subagente `revisor`, Skills `documentar-modulo` y `planificador-proyectos-web`, hook guardián de la Unidad 8 y plantilla `AGENTS.md`. Agregar en `.mcp.json` un servidor MCP de PostgreSQL **en modo de solo lectura** apuntando a `pedidos-pg`. Publicarlo en un marketplace del grupo.', conceptos: ['C3', 'C4'] },
@@ -212,7 +214,7 @@ export default {
   },
 
   material: [
-    { tipo: 'pdf', titulo: 'Guía del taller "Plan de evolución para una BU"', archivo: 'assets/material/u09/guia-taller.pdf', disponible: false },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Plan de evolución para una BU"', archivo: 'assets/material/u09/guia-taller.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Modelo de madurez de 5 niveles', archivo: 'assets/material/u09/modelo-madurez.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: anatomía de un plugin', archivo: 'assets/material/u09/infografia.png', disponible: false },
   ],

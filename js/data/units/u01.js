@@ -213,6 +213,8 @@ claude --version
     caso: 'Ingresas como desarrollador al equipo que heredó **"Pedidos Legado → Pedidos Web"**, el sistema de pedidos de una distribuidora, hecho en Delphi con DBISAM. La empresa quiere un portal web nuevo y migrar parte del legado a .NET + PostgreSQL.',
     problematica: 'El equipo trabaja sin IA o con vibe coding aislado: cada uno usa la herramienta a su manera y nadie sabe en qué etapas ayuda de verdad. El líder técnico pide un entorno profesional igual para todos y un mapa de dónde la IA aporta y con qué control.',
     objetivo: 'Dejar tu entorno listo y construir, con ayuda de Claude, el mapa de uso de IA del proyecto.',
+    // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
+    resumen: 'Ingresas como desarrollador al equipo que heredó «Pedidos Legado → Pedidos Web», el sistema de pedidos de una distribuidora hecho en Delphi con DBISAM, que la empresa quiere llevar a un portal web en .NET y PostgreSQL. Antes de tocar código, el equipo necesita dos cosas: un entorno profesional igual para todos y un mapa de dónde aporta la IA y con qué control. En 80 minutos dejas tu entorno listo (Claude Code con JetBrains), respondes el cuestionario de madurez, implementas formatearFolio() primero sin IA y después con Claude Code para comparar tiempo, errores y correcciones, y armas docs/mapa-sdlc.md: qué se delega a Claude, qué revisa una persona y qué riesgo hay en cada etapa. Todo el paso a paso está en la guía.',
     pasos: [
       { minutos: 35, texto: 'Crear tu repo `pedidos-web` desde el material del curso (ver «Antes de la clase»). Instalar Claude Code, autenticarte con la cuenta Team y verificar con `claude --version` que sea **2.1.277 o superior**. Compilar y correr `dotnet build` y `dotnet test`: deben fallar 3 tests y es lo esperado (así la descarga de NuGet ocurre ahora y no en el paso 3). Activar la licencia JetBrains, instalar Rider (y WebStorm), instalar el plugin Claude Code [Beta] y abrir `claude` desde la terminal integrada. Confirmar con `/memory` que no se cargó ningún `CLAUDE.md`: Claude Code lee `AGENTS.md` solo cuando no hay ningún `CLAUDE.md` en el proyecto ni en las carpetas superiores. Crear un Project en Claude web con el README del caso.', conceptos: ['C2'] },
       { minutos: 8, texto: 'Responder el cuestionario de madurez (está en la pestaña Recursos) y pedirle a Claude que tabule las respuestas.', conceptos: ['C4'] },
@@ -253,7 +255,7 @@ claude --version
   },
 
   material: [
-    { tipo: 'pdf', titulo: 'Guía del taller "Mi entorno y mi mapa"', archivo: 'assets/material/u01/guia-taller.pdf', disponible: true },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Mi entorno y mi mapa"', archivo: 'assets/material/u01/guia-taller.pdf', disponible: true },
     { tipo: 'pdf', titulo: 'Caso guiado Scrum + SDD', archivo: 'assets/material/u01/caso-scrum-y-sdd.pdf', disponible: true },
     { tipo: 'enlace', titulo: 'Plantilla del mapa SDLC (Markdown)', url: 'https://github.com/ffelipecuevasc/material-curso-ia-desarrolladores/blob/main/unidad-1/taller/pedidos-web/docs/plantilla-mapa-sdlc.md', disponible: true },
     { tipo: 'png', titulo: 'Infografía de la unidad', archivo: 'assets/material/u01/infografia.png', disponible: true },

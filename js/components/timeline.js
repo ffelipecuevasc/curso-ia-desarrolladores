@@ -88,7 +88,10 @@ function timelineRows() {
 
 const legend = () => `
   <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Estados de una unidad">
-    ${Object.keys(STATUS_META).map((status) => `<li>${statusBadge(status)}</li>`).join('')}
+    ${Object.keys(STATUS_META)
+      .filter((status) => status !== STATUS.LOCKED || !TODAS_LAS_UNIDADES_ABIERTAS)
+      .map((status) => `<li>${statusBadge(status)}</li>`)
+      .join('')}
   </ul>`;
 
 export function renderTimeline(element) {
@@ -100,12 +103,10 @@ export function renderTimeline(element) {
           <p class="kicker kicker--rule">Caso integrador · ${escapeHtml(COURSE.integrator)}</p>
           <h2 class="section-title" id="ruta-title">Ruta del curso</h2>
           <p class="section-lead">
-            Cinco días, dos unidades por día. Cada unidad dura 3 horas (85 minutos de clase,
-            15 de receso y 80 de taller)${TODAS_LAS_UNIDADES_ABIERTAS ? '' : ', se abre en su horario'} y su entregable
-            alimenta al siguiente hasta llegar al plan integrado.${
+            ${
               TODAS_LAS_UNIDADES_ABIERTAS
-                ? ' Todas las unidades están abiertas; la que se está dictando se marca en amarillo.'
-                : ''
+                ? 'Diez unidades abiertas, una por bloque: la que se está dictando se marca en amarillo.'
+                : 'Diez unidades, una por bloque: cada una se abre en su horario.'
             }
           </p>
           ${legend()}
@@ -129,7 +130,7 @@ export function renderTimeline(element) {
 
 function headerMarkup(unit, status) {
   const { startsAt, endsAt } = getUnitDates(unit.id);
-  const meta = `Día ${unit.dia} · ${escapeHtml(unit.bloque)} · ${formatRange(startsAt, endsAt)} h · Nivel ${escapeHtml(unit.nivel)}`;
+  const meta = `Día ${unit.dia} · ${escapeHtml(unit.bloque)} · ${formatRange(startsAt, endsAt)} h`;
   const next = unit.entregable.alimentaA ? getUnit(unit.entregable.alimentaA) : null;
   const inlineDeliverable = `
     <span class="deliverable-inline w-full">

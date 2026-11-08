@@ -179,6 +179,8 @@ public void Total_coincide_con_golden_master(Pedido pedido, decimal esperado)
     caso: 'Primer módulo de la modernización de Pedidos Legado. Según el diagnóstico de la Unidad 4, se empieza por `UCalculoTotales.pas`: es crítico, no depende de la interfaz y el portal web lo necesita.',
     problematica: 'El cálculo de totales define cuánto paga cada cliente. Si la versión en C# calcula distinto, la empresa pierde dinero o cobra de más. Además, el código Delphi tiene **defectos conocidos** (por ejemplo, el redondeo en los ,5). Indicación para este taller: **migrar corrigiendo los defectos**.',
     objetivo: 'Convertir `UCalculoTotales.pas` a C# hasta pasar el golden master, corregir los defectos registrándolos, crear el esquema PostgreSQL con su carga y redactar el plan de migración.',
+    // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
+    resumen: 'Primer módulo de la modernización: `UCalculoTotales.pas`, el cálculo que define cuánto paga cada cliente. Si la versión en C# calcula distinto, la empresa pierde dinero o cobra de más, y el código Delphi trae defectos conocidos, como el redondeo en los ,5. En 80 minutos congelas el comportamiento con tests desde el golden master, conviertes el módulo a C# con subagentes y un hook, corriges los defectos registrándolos en commits separados, creas el esquema PostgreSQL en Docker con su carga y redactas el plan de migración. Todo el paso a paso está en la guía.',
     pasos: [
       { minutos: 15, texto: 'Crear `PedidosWeb.Totales.Tests` y escribir tests xUnit parametrizados desde `golden-master.csv`.', conceptos: ['C2'] },
       { minutos: 25, texto: 'Crear los subagentes `analizador`, `conversor` y `verificador`, y activar el hook. Convertir `UCalculoTotales.pas` a C# hasta pasar el golden master. Luego **corregir los defectos encontrados**: ajustar cada caso afectado y registrarlo en `docs/defectos-corregidos.md`, en commits separados.', conceptos: ['C1', 'C3', 'C4'] },
@@ -207,7 +209,7 @@ public void Total_coincide_con_golden_master(Pedido pedido, decimal esperado)
   },
 
   material: [
-    { tipo: 'pdf', titulo: 'Guía del taller "Migrar el cálculo de totales"', archivo: 'assets/material/u05/guia-taller.pdf', disponible: false },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Migrar el cálculo de totales"', archivo: 'assets/material/u05/guia-taller.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Tabla de correspondencia de tipos DBISAM → PostgreSQL → C#', archivo: 'assets/material/u05/tipos-dbisam.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: strangler fig y golden master', archivo: 'assets/material/u05/infografia.png', disponible: false },
   ],

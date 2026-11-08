@@ -1,10 +1,9 @@
 /**
  * navbar.js · Barra de navegación fija.
- * Izquierda: logotipo. Centro (desktop): anclas. Derecha: descarga del
- * programa, tema y menú hamburguesa (móvil).
+ * Izquierda: logotipo. Centro (desktop): anclas. Derecha: tema y menú
+ * hamburguesa (móvil). El botón del programa vive solo en el hero.
  */
 import { COURSE, NAV_LINKS } from '../data/course.js';
-import { programButton, programMenuItem } from './program-button.js';
 import { icon } from '../utils/icons.js';
 import { escapeHtml, qs, qsa } from '../utils/dom.js';
 import { initThemeToggle, themeToggleMarkup } from './theme-toggle.js';
@@ -28,7 +27,6 @@ export function renderNavbar(header) {
       </nav>
 
       <div class="ml-auto lg:ml-0 flex items-center gap-2">
-        ${programButton({ className: 'hidden sm:inline-flex' })}
         ${themeToggleMarkup()}
         <button type="button" class="btn btn--ghost btn--icon lg:hidden" data-menu-toggle
           aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
@@ -41,7 +39,6 @@ export function renderNavbar(header) {
       <nav class="container-page py-2" aria-label="Principal (móvil)">
         <ul class="list-none m-0 p-0">
           ${NAV_LINKS.map((link) => `<li><a href="${link.href}" data-nav-link>${escapeHtml(link.label)}</a></li>`).join('')}
-          ${programMenuItem() ? `<li>${programMenuItem()}</li>` : ''}
         </ul>
       </nav>
     </div>`;

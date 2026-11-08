@@ -12,9 +12,9 @@ Es un sitio **estático**: HTML5, Tailwind CSS v4 **precompilado** (`css/tailwin
 
 Dirección visual **"Orient Night"**, derivada de [felipecuevas.dev](https://felipecuevas.dev) (ver `DESIGN.md`):
 
-- **Navbar** fija con fondo translúcido al hacer scroll, botón de tema y descarga del programa.
-- **Hero** a pantalla completa: el logo de Claude como protagonista, con halo y una respiración suave, y 12 robots de Claude Code flotando al fondo. Un indicador muestra la unidad en curso o la próxima.
-- **Ruta del curso**: línea de tiempo por día con dos unidades (mañana y tarde). A la derecha corre el hilo dorado de los entregables del caso integrador *Pedidos Legado → Pedidos Web*. Cada unidad abierta se despliega con 4 pestañas (Resumen con el taller primero, Conceptos, Taller y Recursos), y cada concepto abre un modal.
+- **Navbar** fija con fondo translúcido al hacer scroll y botón de tema.
+- **Hero** a pantalla completa: el logo de Claude como protagonista, con halo y una respiración suave, y 12 robots de Claude Code flotando al fondo. Muestra solo título, subtítulo, enfoque, la unidad en curso o la próxima, y dos botones. **El botón «Descargar programa» vive solo aquí** (no está en la navbar, el menú móvil ni el footer).
+- **Ruta del curso**: línea de tiempo por día con dos unidades (mañana y tarde). A la derecha corre el hilo dorado de los entregables del caso integrador *Pedidos Legado → Pedidos Web*. Cada unidad se despliega con 4 pestañas (Resumen, Conceptos, Taller y Recursos; ver «Qué muestra cada unidad»), y cada concepto abre un modal.
 - **Instructor**: banda compacta.
 - **Footer** con enlaces de interés.
 
@@ -194,6 +194,41 @@ Claude Code solo debe editar `js/config/units.config.js`. Revisa el diff antes d
    ```
 
 Mientras `disponible` sea `false`, la tarjeta dice «Disponible pronto» y no hay enlace roto. Mientras `PROGRAM_PDF_AVAILABLE` sea `false`, el botón del programa no se muestra.
+
+## Qué muestra cada unidad
+
+Criterio: **cada dato aparece una sola vez, donde se usa.** Lo que ya está en la guía PDF del taller, en las láminas o en el Programa no se repite en el sitio. Los datos completos siguen en `js/data/units/uXX.js` (pasos, errores frecuentes, plan B, agenda de la clase…); simplemente no se muestran.
+
+| Pestaña | Muestra | No muestra (queda en los datos) |
+|---|---|---|
+| **Resumen** | `foco`, línea «Nivel 0 → 10 de 100», `objetivos`, `herramientas` y «Antes de la clase» (`requisitos`: texto y `enlace`) | horario, duración, licencias, agenda (`catedra`), bloque `codigo` de los requisitos. Los avisos `pendientes` solo se ven con `?preview=all` |
+| **Conceptos** | chips de conceptos obligatorios y fundamentales (cada uno abre su modal) | — |
+| **Taller** | nombre, fila de íconos (modalidad, duración y entregable), `laboratorio.resumen` y botón grande «Descargar la guía (PDF)» | caso, problemática, pasos, puntos de control, errores frecuentes, plan B, extensión y criterios del entregable |
+| **Recursos** | material (menos la guía, que está en Taller), videos y cursos, temas para investigar | — |
+
+En el encabezado de cada unidad ya no aparece el nivel. El entregable se muestra una vez por tamaño de pantalla: en el riel lateral en escritorio y bajo el título en móvil.
+
+### Campo `laboratorio.resumen` y guía del taller
+
+- `laboratorio.resumen`: un párrafo en segunda persona, **máximo 1000 caracteres** (`?debug` avisa si falta o si se pasa). Se escribe solo con datos que ya estén en el sitio y termina remitiendo a la guía.
+- La tarjeta de la guía se identifica por **`id: 'guia'`**, no por su título:
+
+  ```js
+  { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Mi entorno y mi mapa"', archivo: 'assets/material/u01/guia-taller.pdf', disponible: true },
+  ```
+
+  Con `disponible: false`, el botón de Taller aparece deshabilitado con «Guía disponible pronto» (nunca un enlace roto).
+
+### Topes de longitud (revisión editorial)
+
+| Campo | Tope |
+|---|---|
+| `descripcionBreve` | 100 caracteres (lo valida `?debug`) |
+| `laboratorio.resumen` | 1000 caracteres (lo valida `?debug`) |
+| `foco` | 220 caracteres |
+| `objetivos` | 5 como máximo, de 110 caracteres cada uno |
+| `herramientas` | 6 como máximo |
+| `requisitos` | 3 como máximo, de 220 caracteres (título + texto) |
 
 ## Cómo agregar conceptos
 

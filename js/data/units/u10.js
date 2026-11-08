@@ -151,6 +151,8 @@ Sensibilidad: ¿y si el ahorro real es la mitad?`,
     caso: 'Termina el piloto de modernización de Pedidos. La gerencia general debe decidir si extiende la forma de trabajar del equipo de Pedidos Web a toda la empresa, y pide **un solo documento** que lo resuma todo.',
     problematica: 'El equipo tiene muchos artefactos (mapa, specs, diagnóstico, código migrado, pipeline, `REVIEW.md`, gobernanza y plan de la BU), pero repartidos y escritos para técnicos. La gerencia necesita saber **cuánto cuesta, cuánto aporta, qué riesgos hay y qué sigue**.',
     objetivo: 'Reunir los datos reales del caso hilo, calcular el ROI con supuestos explícitos y entregar el plan integrado como PDF, con la Skill `pdf-con-estilo` de la Unidad 9.',
+    // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
+    resumen: 'Termina el piloto y la gerencia general debe decidir si extiende la forma de trabajar de Pedidos Web a toda la empresa. Los artefactos del caso hilo están repartidos y escritos para técnicos; la gerencia necesita saber cuánto cuesta, cuánto aporta, qué riesgos hay y qué sigue. En grupos de 3, reúnes los datos reales de las unidades anteriores, calculas el ROI con supuestos explícitos y escenarios, redactas el informe ejecutivo de 1 página y generas el plan integrado en PDF con `pdf-con-estilo`. Cierras con las presentaciones y el cuestionario final. Todo el paso a paso está en la guía.',
     pasos: [
       { minutos: 15, texto: 'Reunir los datos del caso hilo con Claude: tiempos con y sin IA (U1), tests y cobertura (U6), defectos corregidos (U5), hallazgos de revisión (U7) y riesgos validados (U8). Usar el dataset de respaldo si falta algún dato.', conceptos: ['C1'] },
       { minutos: 20, texto: 'Calcular el ROI en `roi/modelo-roi.md` o en una planilla: costos, beneficios y supuestos con su fuente, escenarios conservador y optimista, y una sensibilidad.', conceptos: ['C2'] },
@@ -178,7 +180,7 @@ Sensibilidad: ¿y si el ahorro real es la mitad?`,
   },
 
   material: [
-    { tipo: 'pdf', titulo: 'Guía del taller integrador', archivo: 'assets/material/u10/guia-taller.pdf', disponible: false },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller integrador', archivo: 'assets/material/u10/guia-taller.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Plantilla de informe ejecutivo de 1 página', archivo: 'assets/material/u10/plantilla-informe.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: el recorrido de 0 a 100', archivo: 'assets/material/u10/infografia.png', disponible: false },
   ],

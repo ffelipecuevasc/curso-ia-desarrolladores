@@ -31,13 +31,6 @@
   }
 
   /* Etiqueta monoespaciada tipo `// 30 horas` */
-  .mono-tag {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.875rem;
-    color: var(--accent);
-    letter-spacing: 0.02em;
-  }
-
   /* Botón (DESIGN 3.2: Josefin 600, 13 px, mayúsculas, 0,14 em) */
   .btn {
     display: inline-flex;

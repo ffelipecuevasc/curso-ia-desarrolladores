@@ -1,6 +1,7 @@
 /**
  * hero.js · Portada del sitio.
- * - Textos desde data/course.js (portada del programa oficial).
+ * - Textos desde data/course.js. Solo lo esencial: el resto está en el Programa (PDF).
+ * - Único lugar del sitio con el botón «Descargar programa».
  * - Indicador dinámico "Unidad en curso" / "Próxima unidad" desde units.config.js.
  * - Logo de Claude protagonista con halo y "respiración".
  * - Robots de Claude Code de fondo con flotación y parallax leve (decorativos).
@@ -45,8 +46,7 @@ export function renderHero(section) {
 
     <div class="container-page grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-6">
       <div class="order-2 lg:order-1 flex flex-col items-start gap-5">
-        <p class="kicker kicker--rule">${escapeHtml(COURSE.overline)}</p>
-        <p class="mono-tag">${escapeHtml(COURSE.tag)}</p>
+        <p class="kicker kicker--rule">${escapeHtml(COURSE.organization)}</p>
 
         <div class="flex flex-col gap-3">
           <h1 class="hero__title" id="hero-title">${escapeHtml(COURSE.title)}</h1>
@@ -54,20 +54,6 @@ export function renderHero(section) {
         </div>
 
         <p class="text-text-muted text-lg max-w-[52ch]">${escapeHtml(COURSE.lead)}</p>
-
-        <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Temas clave">
-          ${COURSE.pills
-            .map(
-              (pill, index) =>
-                `<li class="pill">${index === 0 ? claudeLogo({ decorative: true, className: '' }) : ''}${escapeHtml(pill)}</li>`,
-            )
-            .join('')}
-        </ul>
-
-        <p class="flex items-center gap-2 text-text-muted">
-          ${icon('school', { className: 'size-5 shrink-0 text-icon' })}
-          <span>${escapeHtml(COURSE.instructorLine)}</span>
-        </p>
 
         <div data-hero-status aria-live="polite"></div>
 

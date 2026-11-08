@@ -183,6 +183,8 @@ exit 0`,
     caso: 'Antes de llevar a producción el portal de Pedidos, el área de seguridad exige una **auditoría del sistema legado** (sus datos y reglas se van a migrar) y una **política de uso de IA** que se cumpla en la práctica.',
     problematica: 'El diagnóstico de la Unidad 4 mostró riesgos serios que nadie validó uno por uno. Los CSV tienen nombres, RUT y teléfonos de clientes. Cada desarrollador configura Claude Code a su manera: algunos con auto-aceptar, otros con el `.env` dentro del repo. La gerencia teme una filtración.',
     objetivo: 'Auditar el legado con Claude, validar los hallazgos sin aceptarlos a ciegas y convertir la política en configuración que se aplica sola.',
+    // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
+    resumen: 'Antes de llevar el portal a producción, seguridad exige una auditoría del legado y una política de uso de IA que se cumpla en la práctica. Los CSV tienen nombres, RUT y teléfonos de clientes, y cada desarrollador configura Claude Code a su manera. En 80 minutos y en parejas, evalúas 5 escenarios de riesgo, auditas el legado con Claude y validas los hallazgos del otro leyendo el código, traduces 3 reglas a `.claude/settings.json`, un hook y el sandbox, y pruebas que cada una bloquea de verdad. Cierras con `docs/gobernanza-ia.md`. Todo el paso a paso está en la guía.',
     pasos: [
       { minutos: 15, texto: 'Evaluar los 5 escenarios de riesgo entregados: probabilidad, impacto y control propuesto para cada uno.', conceptos: ['C1', 'C3'] },
       { minutos: 25, texto: '**Auditoría cruzada.** A audita con Claude `UFrmPedidos` y `UDMPrincipal`; B audita `UFrmClientes` y `UUtilidades`. Pide hallazgos con archivo:línea, severidad y propuesta de corrección. Luego intercambian: **cada uno valida los hallazgos del otro leyendo el código** y marca los falsos positivos.', conceptos: ['C1', 'C2'] },
@@ -211,7 +213,7 @@ exit 0`,
 
   material: [
     { tipo: 'pdf', titulo: 'Los 5 escenarios de riesgo', archivo: 'assets/material/u08/escenarios-riesgo.pdf', disponible: false },
-    { tipo: 'pdf', titulo: 'Guía del taller "Guía de gobernanza del proyecto"', archivo: 'assets/material/u08/guia-taller.pdf', disponible: false },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Guía de gobernanza del proyecto"', archivo: 'assets/material/u08/guia-taller.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: defensa en profundidad en cuatro capas', archivo: 'assets/material/u08/infografia.png', disponible: false },
   ],
 

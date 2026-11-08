@@ -3,7 +3,6 @@
  * data/instructor.js y data/links.js.
  */
 import { COURSE, GLOSSARY_PDF } from '../data/course.js';
-import { programButton } from './program-button.js';
 import { INSTRUCTOR } from '../data/instructor.js';
 import { FOOTER_LINKS, MATERIAL_REPO } from '../data/links.js';
 import { escapeHtml } from '../utils/dom.js';
@@ -50,7 +49,6 @@ export function renderFooter(footer) {
         <div class="flex flex-col items-start gap-3">
           <h2 class="footer-title" id="footer-material">Material del curso</h2>
           <p class="text-sm text-text-muted max-w-[30ch]">Diez entregables, un solo caso: <strong class="text-heading font-semibold">${escapeHtml(COURSE.integrator)}</strong>.</p>
-          ${programButton({ variant: 'primary', className: 'whitespace-nowrap' })}
           <ul class="footer-links" aria-labelledby="footer-material">
             <li><a href="${GLOSSARY_PDF}" download>Glosario del curso (PDF)${icon('download')}</a></li>
             ${externalLink(MATERIAL_REPO)}

@@ -169,6 +169,8 @@ Cada afirmación debe incluir archivo y línea como evidencia.`,
     caso: 'La distribuidora decidió modernizar **Pedidos Legado**, el sistema de escritorio en Delphi con DBISAM que usa hace 18 años. Antes de aprobar presupuesto, la gerencia pide un diagnóstico técnico: qué hay, qué es riesgoso y por dónde empezar.',
     problematica: 'No hay documentación y el autor original ya no está. Las reglas de negocio (descuentos, impuestos, bloqueos de clientes) están repartidas en formularios, data modules y unidades de utilidades. Nadie sabe Delphi y el repo no compila: solo se puede **leer**.',
     objetivo: 'Hacer un diagnóstico completo **sin modificar ningún archivo**, usando plan mode y un subagente de análisis, y terminar con una recomendación respaldada por una matriz.',
+    // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
+    resumen: 'La distribuidora decidió modernizar Pedidos Legado, su sistema en Delphi con DBISAM de hace 18 años, y la gerencia pide un diagnóstico técnico antes de aprobar presupuesto. No hay documentación, el autor ya no está y el repo no compila: solo se puede leer. En 80 minutos, con plan mode y tu subagente de solo lectura `analista-legado`, haces el inventario, el mapa de dependencias, las reglas de negocio (verificas al menos 5 leyendo el código), los riesgos priorizados y una matriz de decisión que cierra con un resumen ejecutivo de 5 líneas, sin modificar ningún archivo. Todo el paso a paso está en la guía.',
     pasos: [
       { minutos: 10, texto: 'Crear tu subagente `analista-legado` (solo lectura) y abrir Claude Code en **plan mode** sobre `pedidos-legado`. Pedir el inventario: unidades, formularios, tablas, líneas aproximadas y responsabilidad de cada una.', conceptos: ['C1', 'C2'] },
       { minutos: 25, texto: 'Generar `diagnostico/dependencias.md` con un diagrama Mermaid, y `diagnostico/reglas-negocio.md` como tabla con regla, archivo y línea, condición y efecto. **Verifica al menos 5 reglas leyendo el código.**', conceptos: ['C2', 'C3'] },
@@ -194,7 +196,7 @@ Cada afirmación debe incluir archivo y línea como evidencia.`,
   },
 
   material: [
-    { tipo: 'pdf', titulo: 'Guía del taller "Diagnóstico del sistema legado"', archivo: 'assets/material/u04/guia-taller.pdf', disponible: false },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Diagnóstico del sistema legado"', archivo: 'assets/material/u04/guia-taller.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Delphi para desarrolladores web (apunte)', archivo: 'assets/material/u04/delphi-para-web.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: mantener, refactorizar, modernizar o reemplazar', archivo: 'assets/material/u04/infografia.png', disponible: false },
   ],

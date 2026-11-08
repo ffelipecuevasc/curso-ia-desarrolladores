@@ -219,6 +219,8 @@ public void Calcula_propina()
     caso: 'El módulo de totales migrado en la Unidad 5 funciona en la máquina de cada alumno. Ahora el equipo trabajará con pull requests y la gerencia pide que **ningún cambio llegue a `main` sin pasar por pruebas automáticas**.',
     problematica: 'Los tests se ejecutan "cuando alguien se acuerda". El viernes pasado un cambio rompió el cálculo del IVA y nadie lo notó hasta el lunes. Además, cuando un test falla, el equipo pierde tiempo leyendo logs largos.',
     objetivo: 'Dejar el repositorio con tests confiables, un pipeline seguro que se ejecuta en cada push y PR, y Claude disponible en CI para diagnosticar fallas, sin que tome decisiones por el equipo.',
+    // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
+    resumen: 'El módulo de totales migrado funciona en la máquina de cada uno, pero los tests se ejecutan «cuando alguien se acuerda» y un cambio rompió el cálculo del IVA sin que nadie lo notara. La gerencia pide que ningún cambio llegue a `main` sin pruebas automáticas. En 80 minutos y en parejas, pides a Claude tests para los casos que no cubre el golden master y descartas los que no prueban nada, creas un pipeline de GitHub Actions con permisos mínimos, conectas Claude en CI con `@claude` y juegan a inyectar y diagnosticar fallas, con merge solo con el CI en verde. Todo el paso a paso está en la guía.',
     pasos: [
       { minutos: 20, texto: 'Pedir a Claude Code tests para los casos que **no** cubre el golden master (valores límite, entradas inválidas). Revisarlos uno por uno y eliminar los que no prueban nada. Medir la cobertura antes y después.', conceptos: ['C1', 'C2'] },
       { minutos: 15, texto: 'Crear `.github/workflows/ci.yml` (build + test en `push` y `pull_request`) con `permissions` mínimos, `timeout-minutes` y acciones con versión fija.', conceptos: ['C3'] },
@@ -246,7 +248,7 @@ public void Calcula_propina()
   },
 
   material: [
-    { tipo: 'pdf', titulo: 'Guía del taller "Pipeline con tests asistidos"', archivo: 'assets/material/u06/guia-taller.pdf', disponible: false },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Pipeline con tests asistidos"', archivo: 'assets/material/u06/guia-taller.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Checklist de seguridad para workflows', archivo: 'assets/material/u06/checklist-workflows.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: pipeline seguro con Claude en CI', archivo: 'assets/material/u06/infografia.png', disponible: false },
   ],

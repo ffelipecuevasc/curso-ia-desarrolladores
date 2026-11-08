@@ -177,6 +177,8 @@ git commit -am "refactor: extrae cálculo de descuento"
     caso: 'Segundo sprint del **portal web de Pedidos**. Ya existe el endpoint "listar pedidos" de la Unidad 2; ahora los vendedores necesitan ver el **detalle de un pedido**: cliente, líneas, totales y estado.',
     problematica: 'En el repo hay un módulo heredado, `ClientesService`, con un método de 120 líneas, código duplicado y nombres como `proc2()`. Funciona y tiene 6 tests, pero nadie se atreve a tocarlo. Además, ningún módulo está documentado.',
     objetivo: 'Construir la nueva funcionalidad en pasos chicos, dejar el módulo heredado legible sin cambiar su comportamiento y crear una Skill que estandarice cómo documenta el equipo.',
+    // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
+    resumen: 'Segundo sprint del portal web de Pedidos: los vendedores necesitan ver el detalle de un pedido (cliente, líneas, totales y estado). En el repo está además `ClientesService`, un módulo heredado con un método de 120 líneas y nombres como `proc2()` que nadie se atreve a tocar. En 80 minutos implementas el detalle en al menos 3 incrementos con tests en verde, refactorizas `ClientesService` en pasos chicos sin cambiar su comportamiento, creas la Skill `documentar-modulo` para documentar ambos módulos y comparas un prompt vago con uno preciso. Todo el paso a paso está en la guía.',
     pasos: [
       { minutos: 25, texto: 'Escribir el `spec.md` breve de "detalle de pedido" e implementarlo en **al menos 3 incrementos**, con commit y tests en verde en cada uno.', conceptos: ['C1', 'C4'] },
       { minutos: 20, texto: 'Refactorizar `ClientesService`: ejecutar sus 6 tests antes de empezar, cambiar en pasos chicos y ejecutar `dotnet test` después de cada paso. Si falta un test para lo que vas a tocar, escríbelo primero.', conceptos: ['C2'] },
@@ -204,7 +206,7 @@ git commit -am "refactor: extrae cálculo de descuento"
   },
 
   material: [
-    { tipo: 'pdf', titulo: 'Guía del taller "Módulo funcional y documentado"', archivo: 'assets/material/u03/guia-taller.pdf', disponible: false },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Módulo funcional y documentado"', archivo: 'assets/material/u03/guia-taller.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: anatomía de una Skill', archivo: 'assets/material/u03/infografia.png', disponible: false },
   ],
 

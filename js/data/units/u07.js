@@ -200,6 +200,8 @@ dotnet test --filter ListadoPedidos`,
     caso: 'El equipo de Pedidos Web crece: varias parejas trabajan en paralelo sobre el mismo portal y todo cambio entra por pull request. El pipeline de la Unidad 6 ya prueba cada PR.',
     problematica: 'Las revisiones son desparejas: algunos aprueban sin leer y otros dejan 40 comentarios de estilo. Nadie sabe qué es "importante", las descripciones dicen "arreglos varios" y la IA comenta tanto que el equipo no sabe qué tomar en serio.',
     objetivo: 'Definir por escrito cómo revisa el equipo, configurar revisores de IA que sigan esas reglas y practicar una revisión humana cruzada que decida sobre cada hallazgo.',
+    // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
+    resumen: 'Varias parejas trabajan en paralelo sobre el portal y las revisiones son desparejas: algunos aprueban sin leer, otros dejan 40 comentarios de estilo y la IA comenta tanto que nadie sabe qué tomar en serio. En 80 minutos, en parejas cruzadas, escribes `REVIEW.md` con lo que importa y lo que se ignora, creas un subagente revisor de solo lectura y un workflow que revisa cada PR, y revisas el PR de otra pareja: respondes cada hallazgo de la IA (aceptar, discutir o descartar) y agregas al menos uno humano. Todo el paso a paso está en la guía.',
     pasos: [
       { minutos: 10, texto: 'Abrir un PR con el trabajo de la Unidad 6. Pedir a Claude la descripción (qué, por qué, cómo probarlo), ajustarla y publicarla.', conceptos: ['C2'] },
       { minutos: 20, texto: 'Escribir `REVIEW.md`: qué es importante, qué se ignora, límite de comentarios menores y 3 chequeos obligatorios. Crear el subagente `.claude/agents/revisor.md`, de solo lectura, que lea `AGENTS.md` y `REVIEW.md` antes de revisar. Ejecutarlo sobre la rama.', conceptos: ['C3', 'C4'] },
@@ -225,7 +227,7 @@ dotnet test --filter ListadoPedidos`,
   },
 
   material: [
-    { tipo: 'pdf', titulo: 'Guía del taller "Proceso de code review"', archivo: 'assets/material/u07/guia-taller.pdf', disponible: false },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Proceso de code review"', archivo: 'assets/material/u07/guia-taller.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: aceptar, discutir o descartar', archivo: 'assets/material/u07/infografia.png', disponible: false },
   ],
 

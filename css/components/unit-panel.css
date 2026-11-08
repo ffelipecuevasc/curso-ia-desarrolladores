@@ -344,31 +344,6 @@
     background: color-mix(in srgb, var(--accent) 55%, transparent);
   }
 
-  /* Agenda de cátedra */
-  .agenda {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    border-top: 1px solid var(--border);
-  }
-
-  .agenda li {
-    display: grid;
-    grid-template-columns: 3.25rem minmax(0, 1fr);
-    gap: 0.75rem;
-    padding: 0.55rem 0;
-    border-bottom: 1px solid var(--border);
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  .agenda li span:first-child {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.85rem;
-    color: var(--text-soft);
-    padding-top: 0.12rem;
-  }
-
   /* Avisos: pendiente (dorado, hito) y requisito */
   .callout {
     display: grid;
@@ -492,63 +467,6 @@
     color: var(--kicker);
   }
 
-  /* ---- Laboratorio ---------------------------------------------------- */
-  .steps {
-    counter-reset: step;
-    display: grid;
-    gap: 0.75rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .step {
-    display: grid;
-    grid-template-columns: 2.25rem minmax(0, 1fr);
-    gap: 0.85rem;
-    padding: 0.9rem 1rem;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-  }
-
-  .step::before {
-    counter-increment: step;
-    content: counter(step);
-    display: grid;
-    place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 50%;
-    background: var(--surface-raised);
-    font-family: 'Cinzel', Georgia, serif;
-    font-weight: 600;
-    color: var(--heading);
-  }
-
-  .step__text {
-    color: var(--text);
-    line-height: 1.6;
-  }
-
-  .step__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 0.5rem;
-    font-size: 0.8rem;
-    color: var(--text-soft);
-  }
-
-  .step__meta span {
-    padding: 0.15rem 0.5rem 0.08rem;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-  }
-
-  .checkpoint {
-    border-color: color-mix(in srgb, var(--accent) 50%, transparent);
-  }
-
   /* ---- Material y videos --------------------------------------------- */
   .resource-grid {
     display: grid;
@@ -669,142 +587,125 @@
     border: 0;
   }
 
-  /* ---- Entregable ----------------------------------------------------- */
-  .deliverable-card {
-    padding: 1.25rem 1.25rem 1.1rem;
-    border-radius: 12px;
-    border: 1px solid color-mix(in srgb, var(--highlight-fill) 70%, transparent);
-    border-left: 3px solid var(--highlight-fill);
-    background: var(--bg-alt);
-  }
-
-  .deliverable-card__label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--highlight);
-  }
-
-  .deliverable-card__name {
-    margin-top: 0.35rem;
-    font-family: 'Josefin Sans', system-ui, sans-serif;
-    font-weight: 600;
-    font-size: 1.25rem;
-    line-height: 1.3;
-    color: var(--heading);
-  }
-
-  .feeds-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 44px;
-    margin-top: 1rem;
-    padding: 0.5rem 0.95rem 0.4rem;
-    border-radius: 999px;
-    border: 1px solid var(--border-strong);
-    color: var(--heading);
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
-
-  .feeds-link:hover {
-    border-color: var(--accent);
-  }
-
-  .feeds-link svg {
-    width: 1.1rem;
-    height: 1.1rem;
-    color: var(--accent);
-  }
 }
 
 /* ---- Rediseño 11-2026: el taller primero, metadatos en una línea ------- */
 @layer components {
-  .today-card {
+  /* Línea de nivel (Resumen) */
+  .level-line {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0.9rem 0 2.25rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+
+  .level-line svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex: none;
+    color: var(--icon);
+  }
+
+  .level-line strong {
+    font-weight: 600;
+    color: var(--heading);
+  }
+
+  /* ---- Taller: panel corto + guía PDF ---------------------------------- */
+  .lab-panel {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 1.1rem;
-    padding: 1.25rem 1.35rem;
+    padding: 1.25rem 1rem;
     border: 1px solid var(--border-strong);
     border-radius: 14px;
     background: var(--surface-raised);
   }
 
   @media (min-width: 768px) {
-    .today-card {
-      flex-direction: row;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 2rem;
+    .lab-panel {
+      padding: 1.85rem 2rem;
     }
   }
 
-  .today-card__body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    min-width: 0;
-  }
-
-  .today-card__label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--kicker);
-  }
-
-  .today-card__name {
-    font-size: 1.3rem;
+  .lab-panel__title {
+    margin: 0;
+    font-size: 1.4rem;
     font-weight: 600;
     line-height: 1.3;
     color: var(--heading);
     text-wrap: balance;
   }
 
-  .today-card__goal {
-    max-width: 62ch;
+  .lab-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.95rem;
     color: var(--text-muted);
   }
 
-  .today-card__deliverable {
-    display: flex;
+  .lab-facts li {
+    display: inline-flex;
     align-items: flex-start;
-    gap: 0.45rem;
-    margin-top: 0.3rem;
-    font-size: 0.95rem;
-    color: var(--text);
+    gap: 0.4rem;
   }
 
-  .today-card__deliverable svg {
+  .lab-facts svg {
     width: 1.15rem;
     height: 1.15rem;
     flex: none;
-    margin-top: 0.1rem;
-    color: var(--highlight);
+    margin-top: 0.05rem;
+    color: var(--icon);
   }
 
-  .today-card .btn {
-    flex: none;
+  .lab-facts strong {
+    font-weight: 600;
+    color: var(--heading);
   }
 
-  .meta-line {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem 2rem;
-    padding: 0.9rem 0;
-    border-block: 1px solid var(--border);
-    font-size: 0.92rem;
+  .lab-facts__deliverable svg {
+    color: var(--highlight); /* el entregable es dorado (DESIGN.md 1.4) */
   }
 
-  .meta-line dt {
-    font-size: 0.78rem;
-    color: var(--text-soft);
+  .lab-panel__summary {
+    max-width: 68ch;
+    color: var(--text-muted);
+    line-height: 1.7;
   }
 
-  .meta-line dd {
-    margin: 0.1rem 0 0;
-    color: var(--text);
+  /* Botón grande de la guía: el destino principal de la pestaña.
+     .btn.btn--lg: utilities.css carga después en la misma capa. */
+  .btn.btn--lg {
+    min-height: 56px;
+    margin-top: 0.4rem;
+    padding: 1rem 1.6rem 0.9rem;
+    font-size: 0.875rem;
+  }
+
+  .btn.btn--lg svg {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .btn__hint {
+    opacity: 0.8;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 639px) {
+    .btn.btn--lg {
+      align-self: stretch;
+      padding-inline: 0.9rem;
+      line-height: 1.3;
+      letter-spacing: 0.1em;
+    }
   }
 
   .content-block--split {

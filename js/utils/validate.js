@@ -3,11 +3,14 @@
  * Se ejecuta con ?debug en la URL. Avisa en consola si:
  * - una descripción breve supera 100 caracteres;
  * - falta el calendario de una unidad o hay slugs de concepto repetidos;
- * - un concepto no tiene fuente, o un "alimentaA" apunta a una unidad inexistente.
+ * - un concepto no tiene fuente, o un "alimentaA" apunta a una unidad inexistente;
+ * - falta laboratorio.resumen o supera 1000 caracteres;
+ * - la guía del taller (material con id 'guia') no existe o es un enlace.
  */
 import { UNITS_SCHEDULE } from '../config/units.config.js';
 
 export const MAX_SHORT_DESCRIPTION = 100;
+export const MAX_LAB_SUMMARY = 1000;
 
 export function validateData(units) {
   const problems = [];
@@ -18,6 +21,15 @@ export function validateData(units) {
     if (length > MAX_SHORT_DESCRIPTION) {
       problems.push(`${unit.id}: descripcionBreve tiene ${length} caracteres (máximo ${MAX_SHORT_DESCRIPTION}).`);
     }
+    const summary = [...(unit.laboratorio?.resumen ?? '')].length;
+    if (!summary) problems.push(`${unit.id}: falta laboratorio.resumen.`);
+    if (summary > MAX_LAB_SUMMARY) {
+      problems.push(`${unit.id}: laboratorio.resumen tiene ${summary} caracteres (máximo ${MAX_LAB_SUMMARY}).`);
+    }
+    const guide = unit.material?.find((item) => item.id === 'guia');
+    if (!guide) problems.push(`${unit.id}: no hay material con id 'guia' (botón de la pestaña Taller).`);
+    else if (!guide.archivo) problems.push(`${unit.id}: la guía (id 'guia') no tiene archivo.`);
+
     if (!UNITS_SCHEDULE[unit.id]) problems.push(`${unit.id}: no tiene calendario en units.config.js.`);
     if (unit.entregable?.alimentaA && !ids.has(unit.entregable.alimentaA)) {
       problems.push(`${unit.id}: entregable.alimentaA apunta a «${unit.entregable.alimentaA}», que no existe.`);
