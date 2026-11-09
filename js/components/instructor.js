@@ -5,7 +5,14 @@
  */
 import { INSTRUCTOR } from '../data/instructor.js';
 import { escapeHtml } from '../utils/dom.js';
-import { claudeLogo, icon } from '../utils/icons.js';
+import { claudeLogo, icon, linkedinLogo } from '../utils/icons.js';
+
+/** Ícono de cada enlace según su `kind` (tamaños ópticos en instructor.css). */
+const LINK_ICONS = {
+  web: () => icon('captivePortal', { className: 'instructor__icon instructor__icon--web' }),
+  linkedin: () => linkedinLogo({ className: 'instructor__icon instructor__icon--linkedin' }),
+};
+const linkIcon = (kind) => (LINK_ICONS[kind] ?? (() => icon('link')))();
 
 const portraitMarkup = () => {
   const initials = `<span class="portrait__initials" aria-hidden="true">${escapeHtml(INSTRUCTOR.initials)}</span>`;
@@ -78,7 +85,7 @@ export function renderInstructor(section) {
               .map(
                 (link) => `
                   <a class="btn btn--ghost normal-case tracking-normal text-sm" href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">
-                    ${icon(link.kind === 'web' ? 'language' : 'link')}${escapeHtml(link.label)}
+                    ${linkIcon(link.kind)}${escapeHtml(link.label)}
                     <span class="visually-hidden">(se abre en una pestaña nueva)</span>
                   </a>`,
               )

@@ -40,7 +40,7 @@
 | `gold-deep` | `#7A5C00` |
 | `white` | `#FFFFFF` |
 
-No se usan otros colores de interfaz. Excepciones cerradas: el coral de las marcas de Claude (2.5) y `black` con transparencia, solo dentro de sombras.
+No se usan otros colores de interfaz. Excepciones cerradas: el coral de las marcas de Claude y el azul del logo de LinkedIn (2.5) y `black` con transparencia, solo dentro de sombras.
 
 ### 2.2 Tokens semánticos
 
@@ -88,14 +88,15 @@ No se usan otros colores de interfaz. Excepciones cerradas: el coral de las marc
 
 Todo par nuevo de este sitio (por ejemplo `surface-raised`, `code-bg` o estados de unidad) se comprueba con herramienta al implementar. Umbrales: 4,5:1 texto normal, 3:1 texto grande y elementos no textuales.
 
-### 2.5 Colores de marca de Claude (excepción cerrada)
+### 2.5 Colores de marca (excepción cerrada)
 
 | Token | Valor | Uso permitido |
 |---|---|---|
 | `claude` | `#D97757` | Logo de Claude, robots de Claude Code, íconos de marca de Claude |
+| `linkedin` | `#0a66c2` | Logo oficial de LinkedIn, solo en el enlace del instructor |
 
-- No se usa en botones, enlaces, textos, bordes ni estados de la interfaz.
-- Los SVG de Claude y Claude Code conservan su color de marca en ambos temas.
+- No se usan en botones, enlaces, textos, bordes ni estados de la interfaz (única excepción: el logo de LinkedIn dentro del enlace del instructor).
+- Los SVG de Claude, Claude Code y LinkedIn conservan su color de marca en ambos temas.
 - Los robots de Claude Code del fondo del hero van con opacidad entre 0,06 y 0,2; nunca compiten con el logo de Claude ni con el texto.
 
 ### 2.6 Estados de unidad
@@ -184,7 +185,7 @@ Todo lo siguiente es propio de este sitio y puede diseñarse distinto a felipecu
 
 - Íconos de contorno de Material Symbols Light (colección `material-symbols-light` de Iconify), variantes `-outline`, en SVG en línea con `currentColor` y `viewBox="0 0 24 24"`. Licencia Apache 2.0: conservar el aviso en el README.
 - Decorativos con `aria-hidden="true"`; si son el único contenido de un control, el control lleva nombre accesible.
-- Las marcas (Claude, Claude Code, GitHub, Anthropic Academy) conservan sus SVG propios.
+- Las marcas (Claude, Claude Code, LinkedIn, GitHub, Anthropic Academy) conservan sus SVG propios.
 
 ## 5. Tema claro y oscuro
 

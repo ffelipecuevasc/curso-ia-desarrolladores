@@ -229,6 +229,18 @@
     gap: 0.75rem;
   }
 
+  /* Equilibrio óptico: globo de trazo fino más grande, círculo sólido más chico */
+  .instructor__links .instructor__icon--web {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .instructor__links .instructor__icon--linkedin {
+    width: 1.1rem;
+    height: 1.1rem;
+    overflow: visible; /* evita que el redondeo a píxeles recorte el borde del círculo */
+  }
+
   @media (max-width: 479px) {
     .metric {
       padding-right: 0.5rem;
