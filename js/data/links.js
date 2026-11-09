@@ -85,7 +85,7 @@ export const STANDARDS = {
 /** Otras fuentes citadas en la bibliografía del curso (fuentes/bibliografia-curso.md). */
 export const BIBLIO = {
   osmani: { titulo: 'Osmani · Beyond Vibe Coding (O’Reilly, 2025)', url: 'https://www.oreilly.com/library/view/beyond-vibe-coding/9798341634749' },
-  martinelli: { titulo: 'Martinelli · Spec-Driven Development (Apress, 2026)', url: 'https://link.springer.com/book/9798868828508' },
+  martinelli: { titulo: 'Martinelli · Spec-Driven Development (Apress, 2026)', url: 'https://link.springer.com/book/10.1007/979-8-8688-2851-5' },
   planificador: { titulo: 'planificador-proyectos-web (Skill del instructor, MIT)', url: 'https://github.com/ffelipecuevasc/planificador-proyectos-web' },
   agentsMdSupport: { titulo: 'Classmethod · Claude Code v2.1.277–278: soporte de AGENTS.md', url: 'https://dev.classmethod.jp/en/articles/20260919-cc-updates-v2-1-278/' },
   dockerPostgres: { titulo: 'Docker Hub · imagen oficial postgres', url: 'https://hub.docker.com/_/postgres' },

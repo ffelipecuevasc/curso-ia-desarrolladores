@@ -5,12 +5,43 @@
  * - falta el calendario de una unidad o hay slugs de concepto repetidos;
  * - un concepto no tiene fuente, o un "alimentaA" apunta a una unidad inexistente;
  * - falta laboratorio.resumen o supera 1000 caracteres;
- * - la guía del taller (material con id 'guia') no existe o es un enlace.
+ * - la guía del taller (material con id 'guia') no existe o es un enlace;
+ * - un material con disponible: true apunta a un archivo local que no responde.
  */
 import { UNITS_SCHEDULE } from '../config/units.config.js';
 
 export const MAX_SHORT_DESCRIPTION = 100;
 export const MAX_LAB_SUMMARY = 1000;
+
+/**
+ * Avisa en consola si un material con `disponible: true` apunta a un archivo local
+ * que no responde (los enlaces externos no se comprueban: el navegador lo impediría por CORS).
+ */
+export async function validateMaterialFiles(units) {
+  const files = units.flatMap((unit) =>
+    (unit.material ?? [])
+      .filter((item) => item.disponible && item.archivo)
+      .map((item) => ({ unit: unit.id, titulo: item.titulo, archivo: item.archivo })),
+  );
+  const missing = [];
+  await Promise.all(
+    files.map(async ({ unit, titulo, archivo }) => {
+      try {
+        const response = await fetch(encodeURI(archivo), { method: 'HEAD', cache: 'no-store' });
+        if (!response.ok) missing.push(`${unit}: «${titulo}» está disponible pero ${archivo} responde ${response.status}.`);
+      } catch {
+        missing.push(`${unit}: «${titulo}» está disponible pero ${archivo} no responde.`);
+      }
+    }),
+  );
+  if (missing.length) {
+    console.warn(`[validateMaterialFiles] ${missing.length} archivo(s) de material no responden:`);
+    missing.forEach((problem) => console.warn(` · ${problem}`));
+  } else {
+    console.info(`[validateMaterialFiles] OK: ${files.length} archivo(s) de material disponibles responden.`);
+  }
+  return missing;
+}
 
 export function validateData(units) {
   const problems = [];

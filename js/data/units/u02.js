@@ -1,7 +1,11 @@
 /**
  * Unidad 2 · Fuente: fuentes/unidades/unidad-02.md
  */
-import { ACADEMY_CATALOG, BIBLIO, DOCS, STANDARDS, academyVideo } from '../links.js';
+import { ACADEMY_COURSES, BIBLIO, DOCS, MATERIAL_REPO, STANDARDS, academyVideo } from '../links.js';
+
+/** Carpeta de la Unidad 2 en el repositorio de material (rama main). */
+const U2_BLOB = `${MATERIAL_REPO.url}/blob/main/unidad-2`;
+const U2_TREE = `${MATERIAL_REPO.url}/tree/main/unidad-2`;
 
 export default {
   id: 'u02',
@@ -23,7 +27,23 @@ export default {
   ],
   licencias: ['Claude Team Standard'],
   herramientas: ['ASP.NET Core (.NET 10)', 'Rider', 'xUnit', 'Claude Code'],
-  requisitos: [],
+  requisitos: [
+    {
+      titulo: 'Tu pedidos-web actualizado con la base de la Unidad 2',
+      texto: 'Sigue el camino A del README: copia solo lo nuevo de la U2 sobre tu repo de la U1 y haz commit. Lo necesitas en el paso 1.',
+      enlace: { titulo: 'README de pedidos-web (camino A)', url: `${U2_TREE}/taller/pedidos-web` },
+    },
+    {
+      titulo: 'SDK de .NET 10 y Claude Code 2.1.277 o superior',
+      texto: 'Verifica con `dotnet --version` (debe empezar con 10) y con `claude --version`.',
+      enlace: { titulo: 'Descargar el SDK de .NET 10 (sitio oficial)', url: 'https://dotnet.microsoft.com/en-us/download/dotnet/10.0' },
+    },
+    {
+      titulo: 'Lee agents.md (3 min)',
+      texto: 'En el paso 1 escribes tu propio `AGENTS.md`: conviene saber qué lleva.',
+      enlace: STANDARDS.agentsMd,
+    },
+  ],
   pendientes: [],
   catedra: [
     { titulo: 'Apertura: conceptos fundamentales y material oficial', minutos: 5 },
@@ -39,11 +59,11 @@ export default {
       {
         slug: 'plan-mode',
         titulo: 'Plan mode',
-        resumen: 'Modo de solo lectura: Claude investiga y propone un plan, pero no edita hasta que apruebes.',
+        resumen: 'Claude explora y propone un plan, pero no edita tus archivos hasta que lo apruebes.',
         explicacion: [
-          'En plan mode, Claude lee archivos y propone un plan, pero no hace ediciones hasta que tú lo apruebas. Es el lugar ideal para cuestionar el enfoque antes de que se toque una línea.',
-          'Se activa al iniciar con `claude --permission-mode plan` o, dentro de una sesión, presionando `Shift+Tab` hasta que la barra de estado muestre plan mode activo.',
-          'En el taller abres Claude Code en plan mode, pides el plan, lo cuestionas, lo apruebas y lo guardas como `plan.md`. Si Claude implementa algo que no estaba en el plan ni en la spec, es un hallazgo de revisión.',
+          'En plan mode, Claude explora y propone un plan, pero no edita tus archivos hasta que lo apruebes. Es el lugar ideal para cuestionar el enfoque antes de que se toque una línea.',
+          'Se activa al iniciar con `claude --permission-mode plan` o, dentro de una sesión, con `Shift+Tab`, que recorre auto → manual → accept edits → plan. Cuando la barra de estado muestre «⏸ plan mode on», estás en plan mode.',
+          'En el taller abres Claude Code en plan mode, pides el plan, lo cuestionas, lo apruebas y lo guardas como `specs/HU-01-listar-pedidos/plan.md`. Si Claude implementa algo que no estaba en el plan ni en la spec, es un hallazgo de revisión.',
         ],
         ejemplo: {
           tipo: 'codigo',
@@ -52,8 +72,10 @@ export default {
           contenido: `claude --permission-mode plan
 
 # Luego, dentro de la sesión:
-# "Lee spec.md y propone un plan para implementar el listado de pedidos.
-#  No edites nada todavía."`,
+# "Lee @specs/HU-01-listar-pedidos/spec.md y el AGENTS.md.
+#  Propón un plan para implementarla: enfoque, archivos afectados,
+#  riesgos y pasos. Incluye un test xUnit por cada criterio de aceptación.
+#  No escribas código todavía."`,
         },
         nota: '**Implementación de Claude Code:** plan mode es un modo de permiso propio de Claude Code; no forma parte de un estándar abierto.',
         fuente: DOCS.permissionModes,
@@ -70,20 +92,18 @@ export default {
         ejemplo: {
           tipo: 'codigo',
           lenguaje: 'markdown',
-          titulo: 'spec.md de TiendaMini (extracto, ejemplo de la demo)',
-          contenido: `## Criterios de aceptación: carrito con descuentos
-- CA1: Un carrito vacío tiene total 0.
-- CA2: El cupón DESC10 descuenta el 10 % del subtotal, una sola vez.
-- CA3: Un cupón vencido se rechaza con el mensaje "Cupón vencido".
-- CA4: El total nunca es negativo.
+          titulo: 'spec.md de TiendaMini (extracto de la demo)',
+          contenido: `**CA-08 — Cupón en primera compra, bajo el umbral**
+- **Dado** un cliente con 0 pedidos pagados y un carrito con subtotal $33.480
+- **Cuando** aplica el cupón \`BIENVENIDA10\`
+- **Entonces** \`descuento\` 3348, \`despacho\` 3990 y \`total\` 34122.
 
-## Ejemplos
-| Subtotal | Cupón  | Total |
-|---------:|--------|------:|
-|   10.000 | DESC10 | 9.000 |
-|        0 | DESC10 |     0 |`,
+**CA-13 — Cupón inexistente**
+- **Dado** cualquier cliente con un carrito con subtotal $33.480
+- **Cuando** aplica el cupón \`DESCUENTO50\`
+- **Entonces** la respuesta es 422 con \`codigo\` \`CUPON_INVALIDO\`. El carrito no cambia.`,
         },
-        nota: '',
+        nota: 'TiendaMini es otro proyecto (int y HTTP 422). En tu pedidos-web esas decisiones las tomas tú en tu AGENTS.md y tu spec.',
         fuente: BIBLIO.martinelli,
       },
       {
@@ -114,7 +134,7 @@ export default {
         resumen: 'De la ingeniería de prompts a la ingeniería de contexto.',
         explicacion: [
           'El ciclo del agente es reunir contexto → actuar → verificar. Sus herramientas básicas son leer, editar y ejecutar.',
-          'Los modos de permiso definen cuánta autonomía tiene: aprobación manual, auto-aceptar ediciones y plan mode (solo lectura). Elegir el modo es parte del trabajo del desarrollador.',
+          'Los modos de permiso definen cuánta autonomía tiene: manual (te pregunta antes de actuar), accept edits (acepta las ediciones de archivos), plan mode (propone sin editar) y auto mode (un clasificador revisa las acciones en tu lugar). Desde la versión 2.1.283 la sesión parte en auto mode. Elegir el modo es parte del trabajo del desarrollador.',
           'En la demo "Plan mode en vivo", sobre la app ficticia TodoMini, Claude propone un plan para agregar "fecha de vencimiento"; el curso lo critica, se corrige y recién entonces se ejecuta.',
         ],
         ejemplo: null,
@@ -126,8 +146,8 @@ export default {
         titulo: 'Contexto: lo que el agente sabe, tú lo decides',
         resumen: '`AGENTS.md` es la memoria del proyecto: comandos, estilo y reglas que no puede adivinar.',
         explicacion: [
-          'El agente solo sabe lo que está en su contexto. `AGENTS.md` le entrega, en cada sesión, los comandos, el estilo y las reglas del proyecto.',
-          'Recordatorio de la Unidad 1: Claude Code (≥ 2.1.277) lee `AGENTS.md` solo si no existe un `CLAUDE.md`. Ojo con `/init`: podría generar un `CLAUDE.md` y desactivar tu `AGENTS.md`.',
+          'El agente solo sabe lo que está en su contexto. `AGENTS.md` le entrega, en cada sesión, los comandos, el estilo y las reglas del proyecto. Tu `AGENTS.md` viene vacío: lo escribes tú en el paso 1.',
+          'Recordatorio de la Unidad 1: Claude Code (≥ 2.1.277) lee `AGENTS.md` solo si no existe un `CLAUDE.md`. No ejecutes `/init` en tu `pedidos-web`: crea un `CLAUDE.md` y Claude Code deja de leer tu `AGENTS.md`.',
         ],
         ejemplo: null,
         nota: '**Estándar abierto:** `AGENTS.md`. **Implementación de Claude:** `CLAUDE.md` y los comandos de contexto de Claude Code.',
@@ -143,7 +163,7 @@ export default {
         ],
         ejemplo: null,
         nota: '',
-        fuente: { titulo: 'AI-native SDLC playbook (Anthropic Academy)', url: ACADEMY_CATALOG },
+        fuente: { titulo: 'AI-native SDLC playbook (Anthropic Academy)', url: ACADEMY_COURSES.aiNativeSdlc.url },
       },
       {
         slug: 'tu-firmas',
@@ -177,12 +197,12 @@ export default {
     problematica: 'La historia del backlog, "Como vendedor, quiero listar pedidos filtrando por cliente, estado y rango de fechas", es vaga: no dice qué estados existen, qué pasa si las fechas vienen invertidas ni cuántos resultados se devuelven.',
     objetivo: 'Hacer de PO y Dev en un mini sprint: convertir la historia en una spec verificable, llevarla a un plan aprobado, implementar con Claude Code y entregar solo lo que pasó tu revisión.',
     // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
-    resumen: 'Arranca el primer sprint del portal web de Pedidos: una API en ASP.NET Core para que los vendedores consulten pedidos desde el navegador. La historia del backlog es vaga: no dice qué estados existen, qué pasa si las fechas vienen invertidas ni cuántos resultados se devuelven. En 80 minutos haces de PO y Dev: Claude te entrevista con el prompt maestro y genera borradores de `AGENTS.md` y `spec.md`; tú completas la spec con al menos 5 criterios de aceptación verificables, apruebas el plan en plan mode, implementas con tests xUnit (uno por criterio) y revisas el diff antes del commit. Todo el paso a paso está en la guía.',
+    resumen: 'Arranca el primer sprint del portal web de Pedidos: una API en ASP.NET Core para que los vendedores consulten pedidos desde el navegador. La historia del backlog es vaga: no dice qué estados existen, qué pasa si las fechas vienen invertidas ni cuántos resultados se devuelven. En 80 minutos haces de PO y Dev: con el prompt maestro Claude te entrevista y genera tu `AGENTS.md` y un borrador de `spec.md`; tú completas la spec con al menos 5 criterios de aceptación verificables, apruebas el plan en plan mode, implementas en accept edits con tests xUnit sobre la lógica de Core (uno por criterio) y revisas el diff antes del commit. Todo el paso a paso está en la guía.',
     pasos: [
-      { minutos: 10, texto: 'Ejecutar el **prompt maestro** entregado. Claude te entrevista y genera borradores de `AGENTS.md` y `spec.md` con secciones `TODO`.', conceptos: ['C2', 'C3'] },
+      { minutos: 10, texto: 'Ejecutar el **prompt maestro**. Claude te entrevista y genera tu `AGENTS.md` (viene vacío) y un borrador de `spec.md`, con secciones `TODO`.', conceptos: ['C2', 'C3'] },
       { minutos: 15, texto: 'Completar la spec **tú mismo**: decidir los estados, la validación de fechas, la paginación y los errores. Escribir al menos 5 criterios de aceptación verificables.', conceptos: ['C3'] },
-      { minutos: 15, texto: 'Abrir Claude Code en **plan mode**, pedir el plan, cuestionarlo y aprobarlo. Guardarlo como `plan.md`.', conceptos: ['C1', 'C3'] },
-      { minutos: 25, texto: 'Implementar y generar tests xUnit, uno por criterio. Ejecutar `dotnet test`.', conceptos: ['C1'] },
+      { minutos: 15, texto: 'Abrir Claude Code en **plan mode**, pedir el plan, cuestionarlo y aprobarlo. Guardarlo como `specs/HU-01-listar-pedidos/plan.md`.', conceptos: ['C1', 'C3'] },
+      { minutos: 25, texto: 'En **accept edits**, implementar y generar tests xUnit sobre la lógica de Core, uno por criterio. Ejecutar `dotnet test`.', conceptos: ['C1'] },
       { minutos: 10, texto: 'Revisar el diff con la checklist de C4, corregir y hacer commit.', conceptos: ['C4'] },
       { minutos: 5, texto: 'Cierre: tres alumnos muestran un criterio de su spec y el test que lo prueba.', conceptos: [] },
     ],
@@ -199,16 +219,17 @@ export default {
     ],
     erroresFrecuentes: [], // TODO: el archivo fuente no trae una lista de errores frecuentes
     planB: [
-      'Rama `u2-respaldo` con el `spec.md` ya escrito, para quien se atrase en el paso 2.',
+      'Carpeta `unidad-2/taller/u2-respaldo` del repo de material (no es una rama), con el `spec.md` ya escrito, para quien se atrase en el paso 2.',
       'Si falla la red, el instructor proyecta la sesión y los alumnos revisan el diff entregado.',
     ],
-    extension: 'Agregar un criterio nuevo a la spec y verificar que Claude lo implemente con su test.',
+    extension: 'Agregar un criterio nuevo a la spec y verificar que Claude lo implemente con su test o con tests HTTP del endpoint.',
   },
 
   material: [
-    { tipo: 'pdf', titulo: 'Plantilla de spec comentada', archivo: 'assets/material/u02/plantilla-spec-comentada.pdf', disponible: false },
-    { tipo: 'pdf', titulo: 'Prompt maestro del taller', archivo: 'assets/material/u02/prompt-maestro.pdf', disponible: false },
-    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Mi primera feature guiada por spec"', archivo: 'assets/material/u02/guia-taller.pdf', disponible: false },
+    { tipo: 'enlace', titulo: 'Plantilla de spec comentada', descripcion: 'Cada sección trae una guía con ejemplo bueno y malo.', url: `${U2_BLOB}/demos/tiendamini/plantillas/spec-plantilla-comentada.md`, disponible: true },
+    { tipo: 'enlace', titulo: 'Prompt maestro del taller', descripcion: 'Lo pegas en Claude Code en el paso 1.', url: `${U2_BLOB}/taller/prompt-maestro.md`, disponible: true },
+    { tipo: 'enlace', titulo: 'Demo TiendaMini: spec con 14 criterios y trazabilidad', descripcion: 'De la spec al plan, las tareas y los tests.', url: `${U2_TREE}/demos/tiendamini`, disponible: true },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Mi primera feature guiada por spec"', archivo: 'assets/material/u02/guia-taller.pdf', disponible: true },
     { tipo: 'png', titulo: 'Infografía de la unidad', archivo: 'assets/material/u02/infografia.png', disponible: false },
   ],
 

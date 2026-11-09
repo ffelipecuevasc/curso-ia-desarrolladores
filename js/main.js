@@ -24,7 +24,7 @@ import { formatDay, formatTime, getNow, isSimulatedNow } from './utils/dates.js'
 import { getCourseState, isPreview } from './utils/schedule.js';
 import { icon } from './utils/icons.js';
 import { initReveal } from './utils/reveal.js';
-import { validateData } from './utils/validate.js';
+import { validateData, validateMaterialFiles } from './utils/validate.js';
 
 const unitIds = UNITS.map((unit) => unit.id);
 const params = new URLSearchParams(window.location.search);
@@ -97,4 +97,7 @@ if (isPreview || isSimulatedNow) {
 }
 
 // Validación de datos en desarrollo: agrega ?debug a la URL.
-if (params.has('debug')) validateData(UNITS);
+if (params.has('debug')) {
+  validateData(UNITS);
+  validateMaterialFiles(UNITS);
+}
