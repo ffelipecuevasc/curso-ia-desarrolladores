@@ -28,11 +28,13 @@ El modo oscuro es el predeterminado. El modo claro tiene la misma terminación.
 /
 ├── index.html                 Página única (HTML semántico + tokens de Tailwind)
 ├── DESIGN.md                  Sistema de diseño (color y tipografía vinculantes)
+├── AGENTS.md                  Instrucciones para agentes de IA (apunta a .claude/README.md)
 ├── README.md
+├── .claude/                   README.md (referencia interna para el agente) y settings.json
 ├── .gitignore
 ├── .nojekyll                  GitHub Pages sirve los archivos tal cual
 ├── assets/
-│   ├── docs/                  PDF del programa (ver "Pendientes")
+│   ├── docs/                  PDF del programa y glosario del curso
 │   ├── fonts/                 Cinzel, Josefin Sans y JetBrains Mono (WOFF, subconjunto latino, OFL)
 │   ├── img/                   favicon.svg y foto del instructor (opcional)
 │   ├── icons/                 SVG de Claude, Claude Code y Material Symbols Light
@@ -193,7 +195,21 @@ Claude Code solo debe editar `js/config/units.config.js`. Revisa el diff antes d
    { titulo: 'SDK de .NET 10 instalado antes de la clase', texto: 'Verifica con `dotnet --version`.', enlace: { titulo: 'Descargar el SDK de .NET 10 (sitio oficial)', url: 'https://dotnet.microsoft.com/en-us/download/dotnet/10.0' } },
    ```
 
+6. **Material del taller:** una tarjeta con `destino: 'taller'` se muestra en la pestaña **Taller** (sección «Material del taller»), no en Recursos. Sirve para lo que el alumno usa durante el taller: el prompt maestro, una plantilla, un repositorio base. Sin el campo, la tarjeta va a **Recursos**:
+
+   ```js
+   { tipo: 'enlace', titulo: 'Prompt maestro del taller', descripcion: 'Lo pegas en Claude Code en el paso 1.', url: `${U2_BLOB}/taller/prompt-maestro.md`, destino: 'taller', disponible: true },
+   ```
+
 Mientras `disponible` sea `false`, la tarjeta dice «Disponible pronto» y no hay enlace roto. Mientras `PROGRAM_PDF_AVAILABLE` sea `false`, el botón del programa no se muestra.
+
+### Material que vive en el repositorio de material
+
+El código, las specs y los prompts de demos y talleres viven en el repositorio [material-curso-ia-desarrolladores](https://github.com/ffelipecuevasc/material-curso-ia-desarrolladores) (`MATERIAL_REPO` en `js/data/links.js`). El sitio solo los enlaza con tarjetas `tipo: 'enlace'`:
+
+- Las URLs apuntan a la rama `main`, así que los alumnos siempre ven la versión vigente. Si mueves o renombras una carpeta en ese repositorio, actualiza el enlace del sitio.
+- En la U2, `u02.js` arma las URLs con dos constantes: `U2_BLOB` (archivos, `…/blob/main/unidad-2`) y `U2_TREE` (carpetas, `…/tree/main/unidad-2`). Allí, `unidad-2/demos/` tiene lo que muestra el instructor (TodoMini y TiendaMini) y `unidad-2/taller/` lo que usa el alumno (el proyecto `pedidos-web`, el prompt maestro y la carpeta `u2-respaldo`).
+- No marques `disponible: true` hasta que el archivo exista en ese repositorio.
 
 ## Qué muestra cada unidad
 
@@ -203,8 +219,8 @@ Criterio: **cada dato aparece una sola vez, donde se usa.** Lo que ya está en l
 |---|---|---|
 | **Resumen** | `foco`, línea «Nivel 0 → 10 de 100», `objetivos`, `herramientas` y «Antes de la clase» (`requisitos`: texto y `enlace`) | horario, duración, licencias, agenda (`catedra`), bloque `codigo` de los requisitos. Los avisos `pendientes` solo se ven con `?preview=all` |
 | **Conceptos** | chips de conceptos obligatorios y fundamentales (cada uno abre su modal) | — |
-| **Taller** | nombre, fila de íconos (modalidad, duración y entregable), `laboratorio.resumen` y botón grande «Descargar la guía (PDF)» | caso, problemática, pasos, puntos de control, errores frecuentes, plan B, extensión y criterios del entregable |
-| **Recursos** | material (menos la guía, que está en Taller), videos y cursos, temas para investigar | — |
+| **Taller** | nombre, fila de íconos (modalidad, duración y entregable), `laboratorio.resumen`, botón grande «Descargar la guía (PDF)» y «Material del taller» (tarjetas con `destino: 'taller'`) | caso, problemática, pasos, puntos de control, errores frecuentes, plan B, extensión y criterios del entregable |
+| **Recursos** | material (menos la guía y las tarjetas con `destino: 'taller'`, que están en Taller), videos y cursos, temas para investigar | — |
 
 En el encabezado de cada unidad ya no aparece el nivel. El entregable se muestra una vez por tamaño de pantalla: en el riel lateral en escritorio y bajo el título en móvil.
 
@@ -319,19 +335,19 @@ Notas:
 Copia y adapta:
 
 - «Abre la unidad 4 ahora y deja las demás según sus fechas.»
-- «Subí `assets/material/u02/guia-taller.pdf`: márcalo como disponible en `u02.js`.»
+- «Subí `assets/material/u03/guia-taller.pdf`: márcalo como disponible en `u03.js`.»
 - «Agrega a la U05 un concepto obligatorio sobre feature flags, con ejemplo y fuente oficial de code.claude.com. No inventes URLs.»
 - «Verifica las URLs de los cursos de Anthropic Academy en `js/data/links.js` y reemplaza las que puedas confirmar; deja el TODO en las demás.»
 - «Ejecuta el sitio con `?debug` y corrige cualquier descripción breve de más de 100 caracteres.»
 - «Revisa que no haya colores fuera de `DESIGN.md` §2 en `css/` ni en clases de Tailwind.»
-- «El PDF del programa ya está en `assets/docs/`: activa `PROGRAM_PDF_AVAILABLE` en `course.js`.»
+- «En la U04, mueve la tarjeta del repositorio demo a la pestaña Taller con `destino: 'taller'`.»
 
 ---
 
 ## Pendientes (TODO)
 
 - **Webinar «Modernizing Legacy Code with Claude Code»** (U04 y U05): sin URL en la bibliografía.
-- **Material de las unidades U02–U10** (incluidas sus infografías): las tarjetas están en «Disponible pronto».
+- **Material de las unidades U03–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa y la U02 solo espera su infografía.
 - **Errores frecuentes** de los laboratorios U02–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía).
 - **Foto del instructor:** opcional (`photoAvailable`).
 

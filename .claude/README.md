@@ -1,8 +1,7 @@
 # Referencia interna · Sitio «Desarrollando con Inteligencia»
 
 > **Para el agente de IA.** Lee este archivo completo antes de cualquier tarea en el sitio.
-> No se versiona (`.claude/` está en `.gitignore`): es la documentación técnica interna.
-> El `README.md` de la raíz es la presentación pública del proyecto y **no** debe llevar contenido técnico.
+> Es la documentación técnica interna del sitio. El `README.md` de la raíz es la guía pública (cómo se ve, cómo correrlo y cómo mantenerlo); si cambias algo que ahí se describe, actualiza ambos archivos para que digan lo mismo.
 
 ---
 
@@ -70,7 +69,7 @@ Sitio de estudio del programa **«Desarrollando con Inteligencia — IA para Des
 
 Reemplaza los PDF y PPT del curso. Aquí los alumnos entienden el programa, estudian cada unidad (conceptos, laboratorio, material, videos y entregable), descargan material y llegan a los recursos oficiales. Por pedido del cliente, todas las unidades están abiertas; el calendario marca la unidad en curso.
 
-Es un sitio **estático**: HTML5, Tailwind CSS v4 por CDN, CSS modular y JavaScript ES6+ con módulos nativos. No usa frameworks, bundler ni build step. Se publica tal cual en GitHub Pages.
+Es un sitio **estático**: HTML5, Tailwind CSS v4 **precompilado** (`css/tailwind.css`), CSS modular, fuentes autoalojadas y JavaScript ES6+ con módulos nativos. No depende de ningún CDN, y no usa frameworks, bundler ni npm en runtime. Solo hay que recompilar Tailwind si cambian las clases (§9.1). Se publica tal cual en GitHub Pages.
 
 ---
 
@@ -80,7 +79,6 @@ Dirección visual **"Orient Night"**, derivada de [felipecuevas.dev](https://fel
 
 - **Navbar** fija con fondo translúcido al hacer scroll y botón de tema.
 - **Hero** a pantalla completa: el logo de Claude como protagonista, con halo y una respiración suave, y 12 robots de Claude Code flotando al fondo. Muestra solo título, subtítulo, enfoque, la unidad en curso o la próxima, y dos botones. **El botón «Descargar programa» vive solo aquí** (no está en la navbar, el menú móvil ni el footer).
-- **Unidades**: grilla de 10 tarjetas con estado (bloqueada, hoy · en curso, abierta o completada).
 - **Ruta del curso**: línea de tiempo por día con dos unidades (mañana y tarde). A la derecha corre el hilo dorado de los entregables del caso integrador *Pedidos Legado → Pedidos Web*. Cada unidad se despliega con 4 pestañas (Resumen, Conceptos, Taller y Recursos; ver «Qué muestra cada unidad»), y cada concepto abre un modal.
 - **Instructor**: banda compacta.
 - **Footer** con enlaces de interés.
@@ -93,22 +91,26 @@ El modo oscuro es el predeterminado. El modo claro tiene la misma terminación.
 
 ```
 /
-├── index.html                 Página única (HTML semántico + tokens de Tailwind)
+├── index.html                 Página única (HTML semántico + clases de Tailwind)
 ├── DESIGN.md                  Sistema de diseño (color y tipografía vinculantes)
 ├── AGENTS.md                  Instrucciones para agentes (apunta a este archivo)
 ├── README.md                  Presentación pública del proyecto (sin contenido técnico)
 ├── .gitignore
 ├── .nojekyll                  GitHub Pages sirve los archivos tal cual
-├── .claude/                   NO versionado
+├── .claude/
 │   ├── README.md              Este archivo
 │   └── settings.json          Permisos del agente
 ├── assets/
 │   ├── docs/                  PDF del Programa y glosario del curso
+│   ├── fonts/                 Cinzel, Josefin Sans y JetBrains Mono (WOFF, subconjunto latino, OFL)
 │   ├── img/                   favicon.svg y foto del instructor (opcional)
 │   ├── icons/                 SVG de Claude, Claude Code y Material Symbols Light
 │   └── material/u01 … u10/    PDF y PNG de cada unidad
 ├── css/
 │   ├── tokens.css             Variables de color por modo (DESIGN.md §2) y orden de capas
+│   ├── fonts.css              @font-face de las fuentes autoalojadas
+│   ├── tailwind.input.css     Fuente de Tailwind (tokens @theme). NO se carga en el navegador
+│   ├── tailwind.css           Tailwind compilado (sí se carga). Se regenera con el CLI (§9.1)
 │   ├── base.css               Tipografía, foco visible, movimiento reducido
 │   ├── utilities.css          Botones, rótulos, contenido sin JS e impresión
 │   └── components/            navbar, hero, cards, timeline, unit-panel, code, modal, instructor, footer
@@ -121,7 +123,7 @@ El modo oscuro es el predeterminado. El modo claro tiene la misma terminación.
 │   │   ├── instructor.js
 │   │   ├── links.js           Enlaces del footer, fuentes y cursos de la Academy
 │   │   └── units/             u01.js … u10.js (contenido de cada unidad) + index.js
-│   ├── components/            navbar, hero, overview, timeline, unit-panel, concept-modal, …
+│   ├── components/            navbar, hero, timeline, unit-index, unit-panel, concept-modal, …
 │   └── utils/                 dates, schedule, dom, storage, icons, code, reveal, validate
 └── fuentes/
     ├── unidades/              unidad-01.md … unidad-10.md (fuente de verdad del contenido)
@@ -244,16 +246,22 @@ Después del cambio, el agente propone el mensaje de commit (§0.2). El desarrol
    { titulo: 'SDK de .NET 10 instalado antes de la clase', texto: 'Verifica con `dotnet --version`.', enlace: { titulo: 'Descargar el SDK de .NET 10 (sitio oficial)', url: 'https://dotnet.microsoft.com/en-us/download/dotnet/10.0' } },
    ```
 
-6. **Dónde se ve cada ítem de `material`** (campo opcional `destino`):
-   - Sin `destino`: pestaña **Recursos** («Material descargable»).
-   - `destino: 'taller'`: pestaña **Taller**, en la sección «Material del taller» bajo el botón de la guía (y ya no en Recursos). Úsalo para lo que se usa durante el taller (prompt maestro, plantillas). El orden del arreglo manda.
-   - `id: 'guia'`: solo el botón grande de Taller, nunca una tarjeta.
+6. **Material del taller.** Una tarjeta con `destino: 'taller'` se muestra en la pestaña **Taller** (sección «Material del taller»), debajo del botón de la guía. Sin ese campo, la tarjeta va a **Recursos**. Usar `destino: 'taller'` solo para lo que el alumno emplea durante el taller (prompt maestro, plantilla, proyecto base); las demos de clase, las infografías y las lecturas van a Recursos:
 
    ```js
-   { tipo: 'enlace', titulo: 'Prompt maestro del taller', url: 'https://…', disponible: true, destino: 'taller' },
+   { tipo: 'enlace', titulo: 'Prompt maestro del taller', descripcion: 'Lo pegas en Claude Code en el paso 1.', url: `${U2_BLOB}/taller/prompt-maestro.md`, destino: 'taller', disponible: true },
    ```
 
 Mientras `disponible` sea `false`, la tarjeta dice «Disponible pronto» y no hay enlace roto. **Nunca** marcar `disponible: true` si el archivo no existe en la ruta.
+
+### 6.0 Material que vive en el repositorio de material
+
+El código, las specs y los prompts de demos y talleres viven en [material-curso-ia-desarrolladores](https://github.com/ffelipecuevasc/material-curso-ia-desarrolladores) (`MATERIAL_REPO` en `js/data/links.js`). El sitio solo los enlaza con tarjetas `tipo: 'enlace'`.
+
+- Las URLs apuntan a la rama `main`. Si una carpeta se mueve o se renombra en ese repositorio, hay que actualizar el enlace aquí.
+- En la U2, `u02.js` arma las URLs con `U2_BLOB` (archivos, `…/blob/main/unidad-2`) y `U2_TREE` (carpetas, `…/tree/main/unidad-2`).
+- Estructura de la U2 en ese repositorio: `unidad-2/demos/` (TodoMini y TiendaMini, que muestra el instructor) y `unidad-2/taller/` (`pedidos-web`, `prompt-maestro.md` y `u2-respaldo`, que usa el alumno).
+- Antes de marcar `disponible: true`, confirmar que el archivo o la carpeta existen en `main`.
 
 ## 6.1 Qué muestra cada unidad
 
@@ -263,8 +271,8 @@ Criterio: **cada dato aparece una sola vez, donde se usa.** Lo que ya está en l
 |---|---|---|
 | **Resumen** | `foco`, línea «Nivel 0 → 10 de 100», `objetivos`, `herramientas` y «Antes de la clase» (`requisitos`: texto y `enlace`) | horario, duración, licencias, agenda (`catedra`), bloque `codigo` de los requisitos. Los avisos `pendientes` solo se ven con `?preview=all` |
 | **Conceptos** | chips de conceptos obligatorios y fundamentales (cada uno abre su modal) | — |
-| **Taller** | nombre, fila de íconos (modalidad, duración y entregable), `laboratorio.resumen`, botón grande «Descargar la guía (PDF)» y «Material del taller» (ítems con `destino: 'taller'`) | caso, problemática, pasos, puntos de control, errores frecuentes, plan B, extensión y criterios del entregable |
-| **Recursos** | material (menos la guía y lo que tenga `destino: 'taller'`, que están en Taller), videos y cursos, temas para investigar | — |
+| **Taller** | nombre, fila de íconos (modalidad, duración y entregable), `laboratorio.resumen`, botón grande «Descargar la guía (PDF)» y «Material del taller» (tarjetas con `destino: 'taller'`) | caso, problemática, pasos, puntos de control, errores frecuentes, plan B, extensión y criterios del entregable |
+| **Recursos** | material (menos la guía y las tarjetas con `destino: 'taller'`, que están en Taller), videos y cursos, temas para investigar | — |
 
 En el encabezado de cada unidad ya no aparece el nivel. El entregable se muestra una vez por tamaño de pantalla: en el riel lateral en escritorio y bajo el título en móvil.
 
@@ -325,11 +333,21 @@ Los cursos de la Academy viven en `js/data/links.js` (`ACADEMY_COURSES`). Al ver
 
 ## 9. Cómo cambiar colores o tipografía
 
-- **Colores:** `css/tokens.css`. Los tokens semánticos (`--bg`, `--surface`, `--accent`…) tienen un valor en `:root` (claro) y otro en `.dark` (oscuro). Tailwind los usa a través de `@theme inline` en `index.html` (`bg-surface`, `text-accent`, etc.). Los colores por defecto de Tailwind están desactivados, así que solo existen los de `DESIGN.md`.
-- **Tipografía:** el `<link>` de Google Fonts en `index.html` y las variables `--font-display`, `--font-sans` y `--font-mono` del bloque `@theme inline`.
+- **Colores:** `css/tokens.css`. Los tokens semánticos (`--bg`, `--surface`, `--accent`…) tienen un valor en `:root` (claro) y otro en `.dark` (oscuro). Tailwind los usa a través de `@theme inline` en `css/tailwind.input.css` (`bg-surface`, `text-accent`, etc.). Los colores por defecto de Tailwind están desactivados, así que solo existen los de `DESIGN.md`.
+- **Tipografía:** `css/fonts.css` y `assets/fonts/` (autoalojadas, sin Google Fonts), más las variables `--font-display`, `--font-sans` y `--font-mono` de `css/tailwind.input.css`.
 - `DESIGN.md` manda en color y tipografía. Todo color nuevo se comprueba con un verificador de contraste (meta: WCAG 2.2 AA).
 
-> El build de Tailwind para navegador solo procesa el bloque `<style type="text/tailwindcss">` de `index.html`. Los archivos `.css` son CSS estándar (sin `@apply`) y van en capas (`@layer site-base` y `@layer components`) para que las utilidades de Tailwind siempre ganen.
+> Los archivos `.css` del sitio son CSS estándar (sin `@apply`) y van en capas (`@layer site-base` y `@layer components`) para que las utilidades de Tailwind siempre ganen.
+
+### 9.1 Compilar Tailwind
+
+Si se agregan o cambian **clases de Tailwind** en `index.html` o en `js/`, o se edita `css/tailwind.input.css`, hay que regenerar `css/tailwind.css` y hacer commit de ambos archivos:
+
+```bash
+npx @tailwindcss/cli -i css/tailwind.input.css -o css/tailwind.css --minify
+```
+
+Si solo se editan datos (`js/data/…`, `units.config.js`) o los `.css` de componentes, **no** hace falta compilar. Si se olvida compilar, la clase nueva simplemente no tendrá estilo. El agente avisa al desarrollador cuando su cambio lo requiere.
 
 ## 10. Cómo cambiar la foto del instructor
 
@@ -367,19 +385,19 @@ Notas para el agente:
 ## 13. Pedidos de mantenimiento frecuentes
 
 - «Abre la unidad 4 ahora y deja las demás según sus fechas.»
-- «Subí `assets/material/u02/guia-taller.pdf`: márcalo como disponible en `u02.js`.»
+- «Subí `assets/material/u03/guia-taller.pdf`: márcalo como disponible en `u03.js`.»
 - «Agrega a la U05 un concepto obligatorio sobre feature flags, con ejemplo y fuente oficial de code.claude.com. No inventes URLs.»
 - «Verifica las URLs de los cursos de Anthropic Academy en `js/data/links.js` y reemplaza las que puedas confirmar; deja el TODO en las demás.»
 - «Ejecuta el sitio con `?debug` y corrige cualquier descripción breve de más de 100 caracteres.»
 - «Revisa que no haya colores fuera de `DESIGN.md` §2 en `css/` ni en clases de Tailwind.»
-- «El PDF del programa ya está en `assets/docs/`: activa `PROGRAM_PDF_AVAILABLE` en `course.js`.»
+- «En la U04, mueve la tarjeta del repositorio demo a la pestaña Taller con `destino: 'taller'`.»
 
 ---
 
 ## 14. Pendientes (TODO)
 
 - **Webinar «Modernizing Legacy Code with Claude Code»** (U04 y U05): sin URL en la bibliografía.
-- **Material de las unidades U02–U10** (incluidas sus infografías): las tarjetas están en «Disponible pronto».
+- **Material de las unidades U03–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa y la U02 solo espera su infografía.
 - **Errores frecuentes** de los laboratorios U02–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía).
 - **Foto del instructor:** opcional (`photoAvailable`).
 
@@ -390,4 +408,4 @@ Notas para el agente:
 - Contenido académico: Felipe Cuevas, a partir de `fuentes/unidades/`.
 - Íconos: [Material Symbols Light](https://icon-sets.iconify.design/material-symbols-light/) de Google vía Iconify, licencia **Apache 2.0**. Los SVG están en `assets/icons/` y en línea en `js/utils/icons-data.js`, sin dependencia en runtime.
 - Claude y Claude Code son marcas de Anthropic; sus logos se usan solo como marca, con su color oficial.
-- Tipografías: Cinzel, Josefin Sans y JetBrains Mono (SIL Open Font License 1.1) vía Google Fonts.
+- Tipografías: Cinzel, Josefin Sans y JetBrains Mono (SIL Open Font License 1.1), autoalojadas en `assets/fonts/`.
