@@ -232,6 +232,11 @@
     margin-top: 2.5rem;
   }
 
+  /* Material del taller: va debajo del panel con el botón de la guía */
+  .lab-panel + .content-block {
+    margin-top: 2rem;
+  }
+
   .content-title {
     margin-bottom: 0.65rem;
     font-weight: 600;

@@ -244,6 +244,15 @@ Después del cambio, el agente propone el mensaje de commit (§0.2). El desarrol
    { titulo: 'SDK de .NET 10 instalado antes de la clase', texto: 'Verifica con `dotnet --version`.', enlace: { titulo: 'Descargar el SDK de .NET 10 (sitio oficial)', url: 'https://dotnet.microsoft.com/en-us/download/dotnet/10.0' } },
    ```
 
+6. **Dónde se ve cada ítem de `material`** (campo opcional `destino`):
+   - Sin `destino`: pestaña **Recursos** («Material descargable»).
+   - `destino: 'taller'`: pestaña **Taller**, en la sección «Material del taller» bajo el botón de la guía (y ya no en Recursos). Úsalo para lo que se usa durante el taller (prompt maestro, plantillas). El orden del arreglo manda.
+   - `id: 'guia'`: solo el botón grande de Taller, nunca una tarjeta.
+
+   ```js
+   { tipo: 'enlace', titulo: 'Prompt maestro del taller', url: 'https://…', disponible: true, destino: 'taller' },
+   ```
+
 Mientras `disponible` sea `false`, la tarjeta dice «Disponible pronto» y no hay enlace roto. **Nunca** marcar `disponible: true` si el archivo no existe en la ruta.
 
 ## 6.1 Qué muestra cada unidad
@@ -254,8 +263,8 @@ Criterio: **cada dato aparece una sola vez, donde se usa.** Lo que ya está en l
 |---|---|---|
 | **Resumen** | `foco`, línea «Nivel 0 → 10 de 100», `objetivos`, `herramientas` y «Antes de la clase» (`requisitos`: texto y `enlace`) | horario, duración, licencias, agenda (`catedra`), bloque `codigo` de los requisitos. Los avisos `pendientes` solo se ven con `?preview=all` |
 | **Conceptos** | chips de conceptos obligatorios y fundamentales (cada uno abre su modal) | — |
-| **Taller** | nombre, fila de íconos (modalidad, duración y entregable), `laboratorio.resumen` y botón grande «Descargar la guía (PDF)» | caso, problemática, pasos, puntos de control, errores frecuentes, plan B, extensión y criterios del entregable |
-| **Recursos** | material (menos la guía, que está en Taller), videos y cursos, temas para investigar | — |
+| **Taller** | nombre, fila de íconos (modalidad, duración y entregable), `laboratorio.resumen`, botón grande «Descargar la guía (PDF)» y «Material del taller» (ítems con `destino: 'taller'`) | caso, problemática, pasos, puntos de control, errores frecuentes, plan B, extensión y criterios del entregable |
+| **Recursos** | material (menos la guía y lo que tenga `destino: 'taller'`, que están en Taller), videos y cursos, temas para investigar | — |
 
 En el encabezado de cada unidad ya no aparece el nivel. El entregable se muestra una vez por tamaño de pantalla: en el riel lateral en escritorio y bajo el título en móvil.
 

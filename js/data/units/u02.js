@@ -226,8 +226,9 @@ export default {
   },
 
   material: [
-    { tipo: 'enlace', titulo: 'Plantilla de spec comentada', descripcion: 'Cada sección trae una guía con ejemplo bueno y malo.', url: `${U2_BLOB}/demos/tiendamini/plantillas/spec-plantilla-comentada.md`, disponible: true },
-    { tipo: 'enlace', titulo: 'Prompt maestro del taller', descripcion: 'Lo pegas en Claude Code en el paso 1.', url: `${U2_BLOB}/taller/prompt-maestro.md`, disponible: true },
+    // destino: 'taller' → se ve en la pestaña Taller, no en Recursos.
+    { tipo: 'enlace', titulo: 'Prompt maestro del taller', descripcion: 'Lo pegas en Claude Code en el paso 1.', url: `${U2_BLOB}/taller/prompt-maestro.md`, disponible: true, destino: 'taller' },
+    { tipo: 'enlace', titulo: 'Plantilla de spec comentada', descripcion: 'Cada sección trae una guía con ejemplo bueno y malo.', url: `${U2_BLOB}/demos/tiendamini/plantillas/spec-plantilla-comentada.md`, disponible: true, destino: 'taller' },
     { tipo: 'enlace', titulo: 'Demo TiendaMini: spec con 14 criterios y trazabilidad', descripcion: 'De la spec al plan, las tareas y los tests.', url: `${U2_TREE}/demos/tiendamini`, disponible: true },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Mi primera feature guiada por spec"', archivo: 'assets/material/u02/guia-taller.pdf', disponible: true },
     { tipo: 'png', titulo: 'Infografía de la unidad', archivo: 'assets/material/u02/infografia.png', disponible: false },

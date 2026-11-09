@@ -13,6 +13,9 @@ import { isPreview } from '../utils/schedule.js';
 /** id de la tarjeta de material que es la guía del taller (se descarga desde Taller). */
 export const GUIDE_ID = 'guia';
 
+/** Valor de `destino` (campo opcional de un material) que lo lleva a la pestaña Taller. */
+export const WORKSHOP_DEST = 'taller';
+
 export const TABS = [
   { key: 'resumen', label: 'Resumen', icon: 'article' },
   { key: 'conceptos', label: 'Conceptos', icon: 'lightbulb' },
@@ -108,6 +111,10 @@ function guideButton(unit) {
 function labTab(unit) {
   const lab = unit.laboratorio;
   // Pasos, errores frecuentes y plan B siguen en los datos, pero viven en la guía PDF.
+  const workshopItems = (unit.material ?? []).filter((item) => item.id !== GUIDE_ID && isWorkshopMaterial(item));
+  const workshopMaterial = workshopItems.length
+    ? `<section class="content-block"><h5 class="content-title">Material del taller</h5><ul class="resource-grid">${workshopItems.map(materialCard).join('')}</ul></section>`
+    : '';
   return `
     <div class="lab-panel">
       <h5 class="lab-panel__title">${escapeHtml(lab.nombre)}</h5>
@@ -118,22 +125,18 @@ function labTab(unit) {
       </ul>
       <p class="lab-panel__summary">${rich(lab.resumen || lab.objetivo)}</p>
       ${guideButton(unit)}
-    </div>`;
+    </div>${workshopMaterial}`;
 }
 
 /* --------------------------------------------------------------- Material */
 const MATERIAL_ICONS = { pdf: 'pdf', png: 'image', jpg: 'image', webp: 'image', enlace: 'link' };
 
-function materialTab(unit) {
-  // La guía del taller se descarga desde la pestaña Taller.
-  const items = (unit.material ?? []).filter((item) => item.id !== GUIDE_ID);
-  if (!items.length) return '<p class="text-text-muted">Esta unidad todavía no tiene material.</p>';
-  const cards = items
-    .map((item) => {
-      const type = item.tipo.toUpperCase();
-      const iconName = MATERIAL_ICONS[item.tipo] ?? 'file';
-      if (!item.disponible) {
-        return `
+/** Tarjeta de un material (no disponible, enlace externo o archivo descargable). */
+function materialCard(item) {
+  const type = item.tipo.toUpperCase();
+  const iconName = MATERIAL_ICONS[item.tipo] ?? 'file';
+  if (!item.disponible) {
+    return `
           <li>
             <div class="resource-card resource-card--soon">
               <span class="resource-card__icon">${icon(iconName)}</span>
@@ -143,9 +146,9 @@ function materialTab(unit) {
               </div>
             </div>
           </li>`;
-      }
-      if (item.tipo === 'enlace') {
-        return `
+  }
+  if (item.tipo === 'enlace') {
+    return `
         <li>
           <a class="resource-card" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">
             <span class="resource-card__icon">${icon(iconName)}</span>
@@ -156,8 +159,8 @@ function materialTab(unit) {
             </span>
           </a>
         </li>`;
-      }
-      return `
+  }
+  return `
         <li>
           <a class="resource-card" href="${encodeURI(item.archivo)}" download>
             <span class="resource-card__icon">${icon(iconName)}</span>
@@ -167,9 +170,16 @@ function materialTab(unit) {
             </span>
           </a>
         </li>`;
-    })
-    .join('');
-  return `<ul class="resource-grid">${cards}</ul>`;
+}
+
+/** Material con `destino: 'taller'`: se muestra en la pestaña Taller, no en Recursos. */
+const isWorkshopMaterial = (item) => item.destino === WORKSHOP_DEST;
+
+function materialTab(unit) {
+  // La guía y el material con destino 'taller' se ven en la pestaña Taller.
+  const items = (unit.material ?? []).filter((item) => item.id !== GUIDE_ID && !isWorkshopMaterial(item));
+  if (!items.length) return '<p class="text-text-muted">Esta unidad todavía no tiene material.</p>';
+  return `<ul class="resource-grid">${items.map(materialCard).join('')}</ul>`;
 }
 
 /* ----------------------------------------------------------------- Videos */
