@@ -96,6 +96,8 @@ export const BIBLIO = {
   claudeTag: { titulo: 'Claude Help Center · What is Claude Tag?', url: 'https://support.claude.com/en/articles/15594475-what-is-claude-tag' },
   certEligibility: { titulo: 'Who can take a Claude certification exam', url: 'https://anthropic-partners.skilljar.com/page/certification-eligibility' },
   codeMigrationBlog: { titulo: 'Claude Blog · AI code migration', url: 'https://claude.com/blog/ai-code-migration' },
+  // Fuente [20]. Verificada el 10-nov-2026: on demand, pide registrarse con un formulario.
+  modernizingLegacyWebinar: { titulo: 'Webinar · Modernizing legacy code with Claude Code', url: 'https://claude.com/resources/webinars/modernizing-legacy-code-with-claude-code' },
   dora: { titulo: 'DORA · métricas de entrega de software', url: 'https://dora.dev/' },
   aiNativeSdlcEs: { titulo: 'Manual de estrategias de SDLC nativo de IA', url: 'https://claude.com/es/resources/articles/the-ai-native-sdlc-playbook' },
 };
