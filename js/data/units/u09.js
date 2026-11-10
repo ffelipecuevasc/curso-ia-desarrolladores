@@ -214,6 +214,7 @@ export default {
   },
 
   material: [
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 9', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u09/presentacion-clase.pdf', disponible: false },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Plan de evolución para una BU"', archivo: 'assets/material/u09/guia-taller.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Modelo de madurez de 5 niveles', archivo: 'assets/material/u09/modelo-madurez.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: anatomía de un plugin', archivo: 'assets/material/u09/infografia.png', disponible: false },

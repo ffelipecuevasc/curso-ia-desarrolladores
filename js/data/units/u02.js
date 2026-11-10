@@ -226,6 +226,7 @@ export default {
   },
 
   material: [
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 2', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u02/presentacion-clase.pdf', peso: '1,4 MB', disponible: true },
     // destino: 'taller' → se ve en la pestaña Taller, no en Recursos.
     { tipo: 'enlace', titulo: 'Prompt maestro del taller', descripcion: 'Lo pegas en Claude Code en el paso 1.', url: `${U2_BLOB}/taller/prompt-maestro.md`, disponible: true, destino: 'taller' },
     { tipo: 'enlace', titulo: 'Plantilla de spec comentada', descripcion: 'Cada sección trae una guía con ejemplo bueno y malo.', url: `${U2_BLOB}/demos/tiendamini/plantillas/spec-plantilla-comentada.md`, disponible: true, destino: 'taller' },

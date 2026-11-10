@@ -227,6 +227,7 @@ dotnet test --filter ListadoPedidos`,
   },
 
   material: [
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 7', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u07/presentacion-clase.pdf', disponible: false },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Proceso de code review"', archivo: 'assets/material/u07/guia-taller.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: aceptar, discutir o descartar', archivo: 'assets/material/u07/infografia.png', disponible: false },
   ],

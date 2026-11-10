@@ -209,6 +209,7 @@ public void Total_coincide_con_golden_master(Pedido pedido, decimal esperado)
   },
 
   material: [
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 5', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u05/presentacion-clase.pdf', disponible: false },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Migrar el cálculo de totales"', archivo: 'assets/material/u05/guia-taller.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Tabla de correspondencia de tipos DBISAM → PostgreSQL → C#', archivo: 'assets/material/u05/tipos-dbisam.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: strangler fig y golden master', archivo: 'assets/material/u05/infografia.png', disponible: false },

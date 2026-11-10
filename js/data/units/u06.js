@@ -248,6 +248,7 @@ public void Calcula_propina()
   },
 
   material: [
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 6', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u06/presentacion-clase.pdf', disponible: false },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Pipeline con tests asistidos"', archivo: 'assets/material/u06/guia-taller.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Checklist de seguridad para workflows', archivo: 'assets/material/u06/checklist-workflows.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: pipeline seguro con Claude en CI', archivo: 'assets/material/u06/infografia.png', disponible: false },

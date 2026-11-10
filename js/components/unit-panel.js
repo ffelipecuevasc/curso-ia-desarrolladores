@@ -7,11 +7,20 @@
  */
 import { unitCode } from '../data/units/index.js';
 import { attr, escapeHtml, qsa, rich } from '../utils/dom.js';
-import { icon } from '../utils/icons.js';
+import { icon, iconImage } from '../utils/icons.js';
 import { isPreview } from '../utils/schedule.js';
 
 /** id de la tarjeta de material que es la guía del taller (se descarga desde Taller). */
 export const GUIDE_ID = 'guia';
+
+/** Valor de `variante` (campo opcional de un material) que lo muestra como tarjeta destacada. */
+export const PRESENTATION_VARIANT = 'presentacion';
+
+/** Rótulos de interfaz de la tarjeta destacada. El título, la descripción y el peso salen de los datos. */
+const PRESENTATION_LABELS = {
+  kind: 'Presentación de clases',
+  unavailable: 'Disponible después de la clase',
+};
 
 /** Valor de `destino` (campo opcional de un material) que lo lleva a la pestaña Taller. */
 export const WORKSHOP_DEST = 'taller';
@@ -131,8 +140,37 @@ function labTab(unit) {
 /* --------------------------------------------------------------- Material */
 const MATERIAL_ICONS = { pdf: 'pdf', png: 'image', jpg: 'image', webp: 'image', enlace: 'link' };
 
+/**
+ * Tarjeta destacada de la presentación de clases (variante 'presentacion'): ocupa todo el ancho
+ * de la grilla. Sin archivo disponible queda atenuada y sin enlace (nunca un enlace roto).
+ * El ícono de PDF conserva su color oficial (excepción de color; ver ICON_FILES en icons.js).
+ */
+function presentationCard(item) {
+  const available = Boolean(item.disponible && item.archivo);
+  const pills = [
+    `<span class="material-pill">${escapeHtml(PRESENTATION_LABELS.kind)}</span>`,
+    available && item.peso ? `<span class="material-pill material-pill--file tabular">PDF · ${escapeHtml(item.peso)}</span>` : '',
+  ].join('');
+  const action = available
+    ? `<a class="btn btn--primary presentation-card__action" href="${encodeURI(item.archivo)}" download>${icon('download')}<span>Descargar<span class="visually-hidden"> ${escapeHtml(item.titulo)} (PDF)</span></span></a>`
+    : `<p class="presentation-card__soon">${icon('hourglass')}<span>${escapeHtml(PRESENTATION_LABELS.unavailable)}</span></p>`;
+  return `
+        <li class="resource-grid__feature">
+          <article class="resource-card resource-card--presentacion${available ? '' : ' resource-card--soon'}">
+            ${iconImage('pdf-presentacion', { className: 'presentation-card__icon' })}
+            <div class="presentation-card__body">
+              <p class="resource-card__title presentation-card__title">${escapeHtml(item.titulo)}</p>
+              ${item.descripcion ? `<p class="presentation-card__text">${rich(item.descripcion)}</p>` : ''}
+              <p class="presentation-card__pills">${pills}</p>
+            </div>
+            ${action}
+          </article>
+        </li>`;
+}
+
 /** Tarjeta de un material (no disponible, enlace externo o archivo descargable). */
 function materialCard(item) {
+  if (item.variante === PRESENTATION_VARIANT) return presentationCard(item);
   const type = item.tipo.toUpperCase();
   const iconName = MATERIAL_ICONS[item.tipo] ?? 'file';
   if (!item.disponible) {
@@ -179,6 +217,9 @@ function materialTab(unit) {
   // La guía y el material con destino 'taller' se ven en la pestaña Taller.
   const items = (unit.material ?? []).filter((item) => item.id !== GUIDE_ID && !isWorkshopMaterial(item));
   if (!items.length) return '<p class="text-text-muted">Esta unidad todavía no tiene material.</p>';
+  // La presentación de clases va siempre primero, aunque en los datos esté en otro lugar.
+  const isFeatured = (item) => item.variante === PRESENTATION_VARIANT;
+  items.sort((a, b) => Number(isFeatured(b)) - Number(isFeatured(a)));
   return `<ul class="resource-grid">${items.map(materialCard).join('')}</ul>`;
 }
 

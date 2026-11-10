@@ -255,6 +255,7 @@ claude --version
   },
 
   material: [
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 1', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u01/presentacion-clase.pdf', peso: '3,7 MB', disponible: true },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Mi entorno y mi mapa"', archivo: 'assets/material/u01/guia-taller.pdf', disponible: true },
     { tipo: 'pdf', titulo: 'Caso guiado Scrum + SDD', archivo: 'assets/material/u01/caso-scrum-y-sdd.pdf', disponible: true },
     { tipo: 'enlace', titulo: 'Plantilla del mapa SDLC (Markdown)', url: 'https://github.com/ffelipecuevasc/material-curso-ia-desarrolladores/blob/main/unidad-1/taller/pedidos-web/docs/plantilla-mapa-sdlc.md', disponible: true },

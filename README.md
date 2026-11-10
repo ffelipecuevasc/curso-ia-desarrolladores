@@ -201,6 +201,14 @@ Claude Code solo debe editar `js/config/units.config.js`. Revisa el diff antes d
    { tipo: 'enlace', titulo: 'Prompt maestro del taller', descripcion: 'Lo pegas en Claude Code en el paso 1.', url: `${U2_BLOB}/taller/prompt-maestro.md`, destino: 'taller', disponible: true },
    ```
 
+7. **Presentación de clases:** cada unidad tiene una tarjeta destacada (primera de Recursos, a todo el ancho) con `variante: 'presentacion'`. Para publicar una nueva, copia el PDF como `assets/material/uXX/presentacion-clase.pdf` y en `js/data/units/uXX.js` cambia `disponible` a `true` y agrega su `peso` (formato `'4,2 MB'`, en MB decimales):
+
+   ```js
+   { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 5', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u05/presentacion-clase.pdf', peso: '4,2 MB', disponible: true },
+   ```
+
+   Mientras `disponible` sea `false`, la tarjeta queda atenuada y dice «Disponible después de la clase».
+
 Mientras `disponible` sea `false`, la tarjeta dice «Disponible pronto» y no hay enlace roto. Mientras `PROGRAM_PDF_AVAILABLE` sea `false`, el botón del programa no se muestra.
 
 ### Material que vive en el repositorio de material

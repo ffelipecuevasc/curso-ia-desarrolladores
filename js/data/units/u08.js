@@ -212,6 +212,7 @@ exit 0`,
   },
 
   material: [
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 8', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u08/presentacion-clase.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Los 5 escenarios de riesgo', archivo: 'assets/material/u08/escenarios-riesgo.pdf', disponible: false },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Guía de gobernanza del proyecto"', archivo: 'assets/material/u08/guia-taller.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: defensa en profundidad en cuatro capas', archivo: 'assets/material/u08/infografia.png', disponible: false },

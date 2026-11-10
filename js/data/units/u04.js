@@ -243,6 +243,7 @@ Reglas:
   },
 
   material: [
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 4', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u04/presentacion-clase.pdf', peso: '8,0 MB', disponible: true },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Diagnóstico de Pedidos Legado"', archivo: 'assets/material/u04/guia-taller.pdf', disponible: true },
     // destino: 'taller' → se ve en la pestaña Taller, no en Recursos.
     { tipo: 'enlace', titulo: 'Proyecto del taller: pedidos-web (base de la U4)', descripcion: 'El README explica qué traer a tu repo (camino A): `legado/`, `docs/diagnostico/` y la plantilla del subagente.', url: `${U4_TREE}/taller/pedidos-web`, disponible: true, destino: 'taller' },

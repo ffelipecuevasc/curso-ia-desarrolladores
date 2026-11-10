@@ -180,6 +180,7 @@ Sensibilidad: ¿y si el ahorro real es la mitad?`,
   },
 
   material: [
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 10', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u10/presentacion-clase.pdf', disponible: false },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller integrador', archivo: 'assets/material/u10/guia-taller.pdf', disponible: false },
     { tipo: 'pdf', titulo: 'Plantilla de informe ejecutivo de 1 página', archivo: 'assets/material/u10/plantilla-informe.pdf', disponible: false },
     { tipo: 'png', titulo: 'Infografía: el recorrido de 0 a 100', archivo: 'assets/material/u10/infografia.png', disponible: false },

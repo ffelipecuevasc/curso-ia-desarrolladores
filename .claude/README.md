@@ -252,6 +252,8 @@ Después del cambio, el agente propone el mensaje de commit (§0.2). El desarrol
    { tipo: 'enlace', titulo: 'Prompt maestro del taller', descripcion: 'Lo pegas en Claude Code en el paso 1.', url: `${U2_BLOB}/taller/prompt-maestro.md`, destino: 'taller', disponible: true },
    ```
 
+7. **Presentación de clases.** Una tarjeta con `variante: 'presentacion'` (único valor admitido; lo valida `?debug`) se muestra destacada: primera de **Recursos** y a todo el ancho, con ícono de PDF, píldoras «Presentación de clases» y «PDF · X MB» (clave opcional `peso: '4,2 MB'`, en MB decimales, medido del archivo real) y botón «Descargar». Con `disponible: false` queda atenuada, sin enlace y dice «Disponible después de la clase». Está en las 10 unidades (`id: 'presentacion'`, `archivo: 'assets/material/uNN/presentacion-clase.pdf'`); para publicar una nueva basta copiar el PDF, poner `disponible: true` y el `peso`. El ícono (`assets/icons/pdf-presentacion.svg`, registrado en `ICON_FILES` de `js/utils/icons.js` y cargado como `<img>`) conserva su rojo oficial: es una excepción de color autorizada por el desarrollador (pendiente de sumarla a DESIGN.md 2.5). Estilos en `css/components/unit-panel.css` (`.resource-card--presentacion`).
+
 Mientras `disponible` sea `false`, la tarjeta dice «Disponible pronto» y no hay enlace roto. **Nunca** marcar `disponible: true` si el archivo no existe en la ruta.
 
 ### 6.0 Material que vive en el repositorio de material

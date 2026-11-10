@@ -229,6 +229,7 @@ git commit -am "refactor: renombra variables de ResumenTexto"
   },
 
   material: [
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 3', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u03/presentacion-clase.pdf', peso: '8,1 MB', disponible: true },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Módulo funcional y documentado"', archivo: 'assets/material/u03/guia-taller.pdf', disponible: true },
     // destino: 'taller' → se ve en la pestaña Taller, no en Recursos.
     { tipo: 'enlace', titulo: 'Proyecto del taller: pedidos-web (base de la U3)', descripcion: 'El README explica qué traer a tu repo (camino A).', url: `${U3_TREE}/taller/pedidos-web`, disponible: true, destino: 'taller' },

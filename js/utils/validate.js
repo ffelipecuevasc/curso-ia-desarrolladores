@@ -6,12 +6,16 @@
  * - un concepto no tiene fuente, o un "alimentaA" apunta a una unidad inexistente;
  * - falta laboratorio.resumen o supera 1000 caracteres;
  * - la guía del taller (material con id 'guia') no existe o es un enlace;
- * - un material con disponible: true apunta a un archivo local que no responde.
+ * - un material con disponible: true apunta a un archivo local que no responde;
+ * - un material tiene una `variante` desconocida, o la presentación no es PDF, no tiene archivo
+ *   o su `peso` no tiene el formato '4,2 MB'.
  */
 import { UNITS_SCHEDULE } from '../config/units.config.js';
 
 export const MAX_SHORT_DESCRIPTION = 100;
 export const MAX_LAB_SUMMARY = 1000;
+/** Valores admitidos de `variante` en un material. */
+export const MATERIAL_VARIANTS = ['presentacion'];
 
 /**
  * Avisa en consola si un material con `disponible: true` apunta a un archivo local
@@ -60,6 +64,19 @@ export function validateData(units) {
     const guide = unit.material?.find((item) => item.id === 'guia');
     if (!guide) problems.push(`${unit.id}: no hay material con id 'guia' (botón de la pestaña Taller).`);
     else if (!guide.archivo) problems.push(`${unit.id}: la guía (id 'guia') no tiene archivo.`);
+
+    (unit.material ?? []).forEach((item) => {
+      if (item.variante !== undefined && !MATERIAL_VARIANTS.includes(item.variante)) {
+        problems.push(`${unit.id}: «${item.titulo}» tiene variante «${item.variante}» (admitidas: ${MATERIAL_VARIANTS.join(', ')}).`);
+      }
+      if (item.variante === 'presentacion') {
+        if (item.tipo !== 'pdf') problems.push(`${unit.id}: la presentación «${item.titulo}» debe ser tipo 'pdf'.`);
+        if (!item.archivo) problems.push(`${unit.id}: la presentación «${item.titulo}» no tiene archivo.`);
+        if (item.peso && !/^\d+(,\d)? MB$/.test(item.peso)) {
+          problems.push(`${unit.id}: peso «${item.peso}» no tiene el formato '4,2 MB'.`);
+        }
+      }
+    });
 
     if (!UNITS_SCHEDULE[unit.id]) problems.push(`${unit.id}: no tiene calendario en units.config.js.`);
     if (unit.entregable?.alimentaA && !ids.has(unit.entregable.alimentaA)) {
