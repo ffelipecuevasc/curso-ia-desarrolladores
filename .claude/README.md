@@ -397,7 +397,7 @@ Notas para el agente:
 ## 14. Pendientes (TODO)
 
 - **Webinar «Modernizing Legacy Code with Claude Code»** (U04 y U05): sin URL en la bibliografía.
-- **Material de las unidades U03–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa y la U02 solo espera su infografía.
+- **Material de las unidades U04–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa, la U02 solo espera su infografía y la U03 está completa (no lleva infografía).
 - **Errores frecuentes** de los laboratorios U02–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía).
 - **Foto del instructor:** opcional (`photoAvailable`).
 
