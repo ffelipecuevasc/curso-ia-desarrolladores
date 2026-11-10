@@ -885,3 +885,99 @@
     }
   }
 }
+
+/* ---- Apuntes de lenguajes: bloque propio al final de Recursos ------------- */
+@layer components {
+  /* Tras la grilla del resto del material, el bloque abre una sección nueva */
+  .resource-grid + .lang-block {
+    margin-top: 2.5rem;
+  }
+
+  .lang-block__title {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--heading);
+  }
+
+  /*
+   * Celular: una columna; dos desde sm (regla de .resource-grid). Tres solo si el bloque cabe: el panel
+   * de la ruta es angosto (unos 650 px en un escritorio de 1280), así que se decide por el ancho del
+   * bloque y no por el de la ventana.
+   */
+  .lang-block {
+    container-type: inline-size;
+  }
+
+  @container (min-width: 52rem) {
+    .resource-grid--lenguaje {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* Reutiliza .resource-card (altura, borde, hover y foco); solo cambia el recuadro del logo, de 48 px */
+  .resource-card--lenguaje {
+    grid-template-columns: 3rem minmax(0, 1fr);
+    container-type: inline-size;
+  }
+
+  /* «PDF · X MB» y «Descargar» van en dos líneas si no caben juntos (sin un «·» colgando al final) */
+  a.resource-card--lenguaje .resource-card__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .lang-card__sep {
+    display: none;
+  }
+
+  @container (min-width: 16rem) {
+    a.resource-card--lenguaje .resource-card__meta {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .lang-card__sep {
+      display: inline;
+    }
+  }
+
+  /*
+   * Recuadro del logo. Los logos oficiales conservan su color y están pensados para fondo claro:
+   * fondo `white` (DESIGN.md 2.1) en ambos temas, con borde para que no se pierda sobre `surface` en claro.
+   */
+  .lang-card__icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    background: var(--white);
+  }
+
+  .lang-card__icon img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /*
+   * El logo de PHP es blanco puro: solo su recuadro usa el morado oficial de la marca (#777BB4)
+   * como fondo. Excepción de color autorizada (pendiente de sumarla a DESIGN.md 2.5); no se usa en otro lugar.
+   */
+  .lang-card__icon--php {
+    border-color: transparent;
+    background: #777bb4;
+  }
+
+  /* No disponible: atenuada, sin enlace */
+  .resource-card--lenguaje.resource-card--soon .lang-card__icon {
+    opacity: 0.55;
+    filter: grayscale(0.6);
+  }
+}

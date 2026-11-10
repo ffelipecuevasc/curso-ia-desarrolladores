@@ -1,52 +1,56 @@
 /**
- * Unidad 5 · Fuente: fuentes/unidades/unidad-05.md
+ * Unidad 5 · Fuente: fuentes/unidades/unidad-05.md (versión 2, 10-nov-2026)
  */
-import { BIBLIO, DOCS, academyVideo } from '../links.js';
+import { BIBLIO, DOCS, MATERIAL_REPO, academyVideo } from '../links.js';
+
+/** Carpeta de la Unidad 5 en el repositorio de material (rama main). */
+const U5_BLOB = `${MATERIAL_REPO.url}/blob/main/unidad-5`;
+const U5_TREE = `${MATERIAL_REPO.url}/tree/main/unidad-5`;
+
+/** Descripción común de los apuntes de lenguajes (todos traen las mismas secciones). */
+const LENGUAJE_DESCRIPCION = 'Ficha técnica, historia, usos, cuándo elegirlo y cómo pedirle código a la IA.';
 
 export default {
   id: 'u05',
   numero: 5,
   titulo: 'Modernización de sistemas legados y migración entre tecnologías',
   tituloCorto: 'Modernización y migración',
-  descripcionBreve: 'Migrar Delphi a C# paso a paso: golden master, tipos correctos y un hook que prueba cada cambio.',
+  descripcionBreve: 'Migrar Delphi a C# sin cambiar un peso: golden master, tipos y un hook que prueba cada cambio.',
   dia: 3,
   bloque: 'mañana',
   nivel: '40 → 55',
 
-  foco: 'Migrar el cálculo de totales de Delphi a C# sin perder dinero: congelar el comportamiento, traducir con criterio, corregir defectos registrándolos y verificar cada cambio automáticamente.',
+  foco: 'Llevar el cálculo de totales de Delphi a C# sin que nadie pague distinto: congelar el comportamiento, traducir con criterio, verificar con un hook y corregir un defecto registrándolo.',
   // Objetivos derivados de los conceptos C1–C4 del archivo fuente.
   objetivos: [
-    'Planificar una migración incremental (strangler fig) en lugar de un big bang.',
-    'Congelar el comportamiento actual con tests de caracterización (golden master).',
-    'Traducir conceptos y tipos entre tecnologías sin copiar línea a línea.',
-    'Verificar cada cambio con un hook `PostToolUse` y subagentes por rol.',
+    'Migrar módulo a módulo (strangler fig) en lugar de todo de una vez (big bang).',
+    'Congelar el comportamiento actual con un golden master antes de escribir C#.',
+    'Traducir tipos y reglas al estilo de .NET en lugar de copiar línea a línea.',
+    'Verificar cada edición con un hook `PostToolUse` y un subagente de solo lectura.',
   ],
-  licencias: ['Claude Team Standard'],
-  herramientas: ['Rider', '.NET', 'xUnit', 'Docker (PostgreSQL 16 Alpine)', 'Claude Code (hooks y subagentes)'],
+  licencias: ['Claude Team Standard (incluye Claude Code)', 'JetBrains Rider'],
+  herramientas: ['Claude Code (hooks y subagentes)', 'Rider', '.NET 10 + xUnit', 'Tu `pedidos-web` con `legado/` y `migracion/`'],
   requisitos: [
     {
-      titulo: 'Docker funcionando antes de la clase',
-      texto: 'Verifica con `docker --version`. Durante la clase se levanta PostgreSQL con un solo comando. La contraseña es solo para el curso; nunca se usa así en producción.',
-      codigo: {
-        lenguaje: 'bash',
-        contenido: `docker run -d --name pedidos-pg --restart unless-stopped -p 5432:5432 -e POSTGRES_USER=pedidos -e POSTGRES_PASSWORD=pedidos123 -e POSTGRES_DB=pedidos_web -e POSTGRES_INITDB_ARGS="--encoding=UTF8" -e TZ=America/Santiago -e PGTZ=America/Santiago -v pedidos-pgdata:/var/lib/postgresql/data postgres:16-alpine
-
-# Verificar
-docker exec -it pedidos-pg psql -U pedidos -d pedidos_web -c "select version();"
-
-# Si el puerto 5432 está ocupado, usa -p 5433:5432`,
-      },
+      titulo: 'Tu pedidos-web con lo nuevo de la Unidad 5',
+      texto: 'En el receso, Claude Code trae solo `migracion/` y `docs/migracion/`. Se suma; no reemplaza nada tuyo.',
+      enlace: { titulo: 'README de pedidos-web (camino A)', url: `${U5_TREE}/taller/pedidos-web` },
+    },
+    {
+      titulo: 'Claude Code, Rider y .NET listos',
+      texto: 'Verifica con `claude --version` y `dotnet --version`. Docker no se exige: PostgreSQL es una extensión opcional.',
     },
   ],
   pendientes: [],
   catedra: [
     { titulo: 'Apertura: conceptos fundamentales y material oficial', minutos: 5 },
-    { titulo: 'Lenguajes: elegir bien para no migrar después (Delphi, Java, Python, JS/TS, C#)', minutos: 15 },
-    { titulo: 'C1 · Paso a paso: big bang frente a strangler fig', minutos: 10 },
-    { titulo: 'C2 · Congela el comportamiento: golden master en 10 minutos', minutos: 15 },
-    { titulo: 'C3 · Traducir no es copiar: "Traduce el tipo"', minutos: 15 },
-    { titulo: 'C4 · Verificación automática: el hook que no perdona', minutos: 15 },
-    { titulo: 'Cierre y temas para investigar', minutos: 10 },
+    { titulo: 'Lenguajes: elegir bien para no migrar después (Delphi, Java, Python, JS/TS, C#)', minutos: 10 },
+    { titulo: 'C1 · Paso a paso: big bang frente a strangler fig', minutos: 8 },
+    { titulo: 'C2 · Congela el comportamiento y demo «Congelar la tarifa»', minutos: 15 },
+    { titulo: 'C3 · Traducir no es copiar y demo «Traducir no es copiar»', minutos: 19 },
+    { titulo: 'C4 · Verificación automática y demo «El hook que no perdona»', minutos: 13 },
+    { titulo: 'Discusión: ¿migrar con defectos o corregirlos?', minutos: 5 },
+    { titulo: 'Cierre: repaso con cuatro preguntas y temas para investigar', minutos: 10 },
   ],
 
   conceptos: {
@@ -71,42 +75,51 @@ docker exec -it pedidos-pg psql -U pedidos -d pedidos_web -c "select version();"
         fuente: DOCS.hooks,
       },
       {
-        slug: 'subagentes-por-rol',
-        titulo: 'Subagentes por rol',
-        resumen: '`analizador` (lee), `conversor` (edita C#) y `verificador` (ejecuta y compara).',
+        slug: 'subagente-solo-lectura',
+        titulo: 'Subagente de solo lectura',
+        resumen: 'Reutilizas `analista-legado` (`Read`, `Grep`, `Glob`): explica el Delphi antes de traducir.',
         explicacion: [
-          'Separar la migración en roles reduce errores: el `analizador` solo lee el Delphi, el `conversor` solo edita el C# y el `verificador` ejecuta los tests y compara con el golden master.',
-          'Cada rol tiene solo las herramientas que necesita, definidas en su archivo de `.claude/agents/`.',
+          'El subagente `analista-legado` de la Unidad 4 se reutiliza tal cual en `.claude/agents/`. Su campo `tools` es una lista blanca: solo `Read`, `Grep` y `Glob`.',
+          'Quien lee no edita: explica `UCalculoTotales.pas` sin riesgo de modificar nada, antes de que Claude escriba el C#.',
+          'Trabaja en su propio contexto y devuelve un resumen. Si es tu primer subagente en la carpeta, reinicia Claude Code para que lo reconozca.',
         ],
         ejemplo: {
           tipo: 'codigo',
-          lenguaje: 'text',
-          titulo: 'Roles de la migración',
-          contenido: `.claude/agents/
-├── analizador.md    # tools: Read, Grep, Glob
-├── conversor.md     # tools: Read, Edit, Write
-└── verificador.md   # tools: Read, Bash`,
+          lenguaje: 'markdown',
+          titulo: '.claude/agents/analista-legado.md (encabezado)',
+          contenido: `---
+name: analista-legado
+description: Analiza código legado Delphi/DBISAM de solo lectura.
+tools: Read, Grep, Glob
+---`,
         },
-        nota: '**Implementación de Claude Code:** subagentes en `.claude/agents/`.',
+        nota: '**Implementación de Claude Code:** los subagentes y su formato en `.claude/agents/` son propios de Claude Code.',
         fuente: DOCS.subAgents,
       },
       {
-        slug: 'postgres-docker',
-        titulo: 'PostgreSQL en Docker con tipos correctos',
-        resumen: 'Esquema `db/001_pedidos.sql`, carga de los CSV del legado y validación por conteos y sumas.',
+        slug: 'golden-master-csv',
+        titulo: 'El golden master en CSV',
+        resumen: 'El CSV es el contrato: 60 casos que el C# debe igualar y que no se editan para que un test pase.',
         explicacion: [
-          'La base del portal es PostgreSQL 16 en un contenedor (`pedidos-pg`). El esquema se versiona en `db/001_pedidos.sql` con las tablas `pedidos` y `pedido_lineas`.',
-          'Los tipos importan: los montos van en `numeric` y `decimal`, nunca en `float`. La carga de los CSV se valida con conteos y con la suma de totales, que debe cuadrar con el legado salvo por los defectos que corregiste.',
+          '`migracion/golden-master.csv` tiene 60 casos, uno por pedido, con lo que calcula hoy `UCalculoTotales.pas`. Un solo `[Theory]` los recorre todos y compara descuento, flete, IVA y total.',
+          'Usa punto decimal, así que se lee con `CultureInfo.InvariantCulture`; con la cultura de Chile, `0.19` falla o se lee mal.',
+          '**No se edita para que un test pase.** Solo cambia en la etapa 3, cuando corriges un defecto, y cada caso que cambia queda registrado. Si un test pasa «demasiado rápido», revisa si cambió el CSV.',
         ],
         ejemplo: {
           tipo: 'codigo',
-          lenguaje: 'sql',
-          titulo: 'Validación después de la carga',
-          contenido: `select count(*) from pedidos;
-select sum(total) from pedidos;  -- debe cuadrar con el legado`,
+          lenguaje: 'csharp',
+          titulo: 'Forma del test (ilustrativa; las columnas reales están en migracion/README.md)',
+          contenido: `[Theory]
+[MemberData(nameof(CasosGoldenMaster))]
+public void Total_coincide_con_el_legado(Pedido pedido, decimal totalEsperado)
+{
+    Assert.Equal(totalEsperado, CalculoTotales.Calcular(pedido).Total);
+}
+
+// Al leer el CSV: decimal.Parse(campo, CultureInfo.InvariantCulture)`,
         },
         nota: '',
-        fuente: BIBLIO.dockerPostgres,
+        fuente: BIBLIO.modernizingLegacyWebinar,
       },
     ],
     fundamentales: [
@@ -128,8 +141,8 @@ select sum(total) from pedidos;  -- debe cuadrar con el legado`,
         resumen: 'Primero el golden master, después el código.',
         explicacion: [
           'Los tests de caracterización registran lo que el sistema **hace hoy**, aunque esté mal, antes de tocarlo. Ese registro es el golden master.',
-          'En la demo, la función ficticia `precioEntrada()` (cine: adulto, niño, tercera edad, miércoles 2x1) genera 20 casos que se congelan en un CSV, y la versión en C# se migra hasta que los 20 pasen.',
-          'En el taller se migra corrigiendo defectos: cada caso cuyo valor esperado cambia se registra en `docs/defectos-corregidos.md`, en commits separados.',
+          'En la demo, la función `TarifaBase` de `UTarifas.pas` (arriendo-web) genera 20 casos que se congelan en un CSV. Sin implementación todavía, los 20 quedan en rojo: la red está lista antes de escribir C#.',
+          'En el taller, el golden master tiene 60 casos. Primero migras igual al legado, defectos incluidos; después corriges solo R05, en un commit aparte y registrado en `docs/migracion/defectos-corregidos.md`.',
         ],
         ejemplo: {
           tipo: 'codigo',
@@ -150,10 +163,17 @@ public void Total_coincide_con_golden_master(Pedido pedido, decimal esperado)
         titulo: 'Traducir no es copiar',
         resumen: 'Cada tecnología tiene su forma.',
         explicacion: [
-          'Correspondencias: una *unit* pasa a ser una clase o namespace; un formulario, un endpoint o una vista; un evento `OnClick`, un handler; una `TDBISAMQuery`, un repositorio con parámetros.',
-          'Con los tipos pasa lo mismo: `CURRENCY` → `numeric(12,0)` en PostgreSQL y `decimal` en C#, nunca `float`. Las fechas `dd/mm/yy` y los `AUTOINC` también tienen riesgos de conversión.',
+          'Correspondencias: una *unit* pasa a ser una clase o namespace; un formulario, un endpoint o una vista; un evento `OnClick`, un handler; una `TDBISAMQuery` con SQL concatenado, un repositorio con parámetros; una variable global, configuración inyectada.',
+          'Con los tipos pasa lo mismo. Los reales del legado son `MONEY`, `BOOLEAN`, `DATE`, `CHAR(1)` (estado), `INTEGER` con folio `MAX+1` y `Double` en el `.pas`. Cada uno tiene su equivalente en C# y su riesgo de conversión; el dinero nunca va en `float` ni en `double`.',
+          '`Round()` de Delphi lleva los ,5 al número par (redondeo bancario), que en C# es `MidpointRounding.ToEven`. Si la IA usa `AwayFromZero`, el cálculo cambia en silencio: solo los tests saben si tradujo bien.',
         ],
-        ejemplo: null,
+        ejemplo: {
+          tipo: 'codigo',
+          lenguaje: 'csharp',
+          titulo: 'Los ,5 en Delphi y en C#',
+          contenido: `Math.Round(2.5m, MidpointRounding.ToEven);        // 2  (como Round() de Delphi)
+Math.Round(2.5m, MidpointRounding.AwayFromZero);  // 3  (el redondeo «de siempre»)`,
+        },
         nota: '',
         fuente: DOCS.commonWorkflows,
       },
@@ -163,7 +183,7 @@ public void Total_coincide_con_golden_master(Pedido pedido, decimal esperado)
         resumen: 'El hook prueba cada cambio.',
         explicacion: [
           'Una regla que depende de la memoria de alguien no es una regla. Con un hook, cada edición dispara los tests y Claude recibe el error si algo se rompe.',
-          'Combinado con subagentes por rol, la migración se vuelve un ciclo: convertir → probar → comparar con el golden master → corregir.',
+          'Con un subagente de solo lectura que explica el legado, la migración se vuelve un ciclo: entender → convertir → probar → comparar con el golden master → corregir. Igual se revisa el diff: el hook no reemplaza el criterio.',
         ],
         ejemplo: null,
         nota: '',
@@ -176,68 +196,91 @@ public void Total_coincide_con_golden_master(Pedido pedido, decimal esperado)
     nombre: 'Migrar el cálculo de totales',
     modalidad: 'Individual',
     duracion: 80,
-    caso: 'Primer módulo de la modernización de Pedidos Legado. Según el diagnóstico de la Unidad 4, se empieza por `UCalculoTotales.pas`: es crítico, no depende de la interfaz y el portal web lo necesita.',
-    problematica: 'El cálculo de totales define cuánto paga cada cliente. Si la versión en C# calcula distinto, la empresa pierde dinero o cobra de más. Además, el código Delphi tiene **defectos conocidos** (por ejemplo, el redondeo en los ,5). Indicación para este taller: **migrar corrigiendo los defectos**.',
-    objetivo: 'Convertir `UCalculoTotales.pas` a C# hasta pasar el golden master, corregir los defectos registrándolos, crear el esquema PostgreSQL con su carga y redactar el plan de migración.',
+    caso: 'Primer módulo de la modernización de Pedidos Legado. Según el diagnóstico de la Unidad 4, se empieza por `legado/src/UCalculoTotales.pas`: es crítico para el negocio, no depende de la interfaz y el portal web lo necesita.',
+    problematica: 'El cálculo de totales define cuánto paga cada cliente. Si la versión en C# calcula distinto, la empresa pierde dinero o cobra de más. Además, el código Delphi tiene **defectos conocidos**, como el redondeo de los ,5 (R05).',
+    objetivo: 'Llevar `UCalculoTotales.pas` a C# hasta pasar 60 de 60 casos del golden master, corregir R05 en un commit aparte, registrar los defectos y completar el plan de migración.',
     // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
-    resumen: 'Primer módulo de la modernización: `UCalculoTotales.pas`, el cálculo que define cuánto paga cada cliente. Si la versión en C# calcula distinto, la empresa pierde dinero o cobra de más, y el código Delphi trae defectos conocidos, como el redondeo en los ,5. En 80 minutos congelas el comportamiento con tests desde el golden master, conviertes el módulo a C# con subagentes y un hook, corriges los defectos registrándolos en commits separados, creas el esquema PostgreSQL en Docker con su carga y redactas el plan de migración. Todo el paso a paso está en la guía.',
+    resumen: 'Primer módulo de la modernización de Pedidos Legado: llevar `UCalculoTotales.pas` a C# sin que ningún cliente pague un peso distinto, salvo el defecto que corriges y registras. En el receso traes a tu pedidos-web solo lo nuevo de la U5: el golden master (`migracion/golden-master.csv`, 60 casos) y dos plantillas. Trabajas en 3 etapas. Congelar: Claude escribe tests que leen el CSV y quedan 60 en rojo. Migrar: activas un hook que corre los tests después de cada edición y, con tu subagente `analista-legado`, conviertes el cálculo a C# igual al legado, defectos incluidos, hasta 60 de 60 en verde. Corregir y planificar: corriges solo el redondeo R05 en un commit aparte, registras ese defecto y un hallazgo que decide el negocio, y completas el plan de migración. Todo el C# va en carpetas `Totales/` dentro de Core: no se toca `PedidosWeb.sln`. El paso a paso está en la guía.',
     pasos: [
-      { minutos: 15, texto: 'Crear `PedidosWeb.Totales.Tests` y escribir tests xUnit parametrizados desde `golden-master.csv`.', conceptos: ['C2'] },
-      { minutos: 25, texto: 'Crear los subagentes `analizador`, `conversor` y `verificador`, y activar el hook. Convertir `UCalculoTotales.pas` a C# hasta pasar el golden master. Luego **corregir los defectos encontrados**: ajustar cada caso afectado y registrarlo en `docs/defectos-corregidos.md`, en commits separados.', conceptos: ['C1', 'C3', 'C4'] },
-      { minutos: 20, texto: 'Con PostgreSQL en Docker, generar `db/001_pedidos.sql` (tablas `pedidos` y `pedido_lineas` con tipos correctos) y un script que cargue los CSV del legado. Validar con conteos y con la suma de totales.', conceptos: ['C3'] },
-      { minutos: 15, texto: 'Redactar `docs/plan-migracion.md`: etapas, convivencia del sistema viejo y el nuevo, riesgos y criterio de corte.', conceptos: ['C1'] },
+      { minutos: 10, texto: 'Preparación: confirma que llegó lo nuevo de la U5, que los tests dan lo mismo que en la U4 y haz el commit de base.', conceptos: [] },
+      { minutos: 20, texto: 'Congelar: pídele a Claude Code un `[Theory]` en `tests/PedidosWeb.Core.Tests/Totales/` que lea `migracion/golden-master.csv` y compare descuento, flete, IVA y total, y solo la firma de `CalculoTotales.Calcular` en `src/PedidosWeb.Core/Totales/`, que lance `NotImplementedException`. Sin tocar `PedidosWeb.sln`.', conceptos: ['C2'] },
+      { minutos: 25, texto: 'Migrar: activa el hook `PostToolUse` (JSON en el README del taller) y reinicia Claude Code. Con `analista-legado`, entiende `UCalculoTotales.pas` y conviértelo a C# igual al legado, defectos incluidos, con montos en `decimal`. Commit «igual al legado».', conceptos: ['C1', 'C3', 'C4'] },
+      { minutos: 20, texto: 'Corregir y planificar: corrige R05 en un commit aparte y actualiza los casos que cambian en el CSV. Registra R05 y el hallazgo de los umbrales en `defectos-corregidos.md` y completa `plan-migracion.md`.', conceptos: ['C1', 'C2'] },
       { minutos: 5, texto: 'Cierre: dos alumnos muestran un defecto corregido y su justificación.', conceptos: [] },
     ],
-    puntosControl: ['Todos los casos del golden master cargados y en rojo, porque todavía no hay implementación (paso 1).'],
+    puntosControl: [
+      'Los tests dan lo mismo que al cerrar la U4 y `PedidosWeb.sln` no cambió (preparación).',
+      '60 tests en rojo, cargados desde el CSV, todos por `NotImplementedException` (etapa 1).',
+      '60 de 60 en verde; la columna `total` del CSV suma 58.202.135 (etapa 2).',
+      '13 casos actualizados, la suma pasa a 58.202.144 y los dos documentos están completos (etapa 3).',
+    ],
     resultadoEsperado: [
-      'Hay defectos que el golden master no muestra a simple vista. Tu diagnóstico de la Unidad 4 te dice dónde buscar.',
+      'Lo que el legado muestra en pantalla y lo que graba no siempre coincide en los umbrales: encuéntralo, no lo corrijas, regístralo.',
       'Un test que cambia su valor esperado sin quedar registrado en `defectos-corregidos.md` es una regresión escondida.',
-      'La suma de totales en PostgreSQL debe cuadrar con la del legado, salvo por los defectos que corregiste.',
+      'Si un test pasa «demasiado rápido», revisa si cambió el CSV.',
     ],
     siTeTrabas: [
-      'La configuración de hooks y los códigos de salida.',
-      'Cómo crear subagentes con herramientas restringidas.',
+      'La configuración de hooks y los códigos de salida (*Hooks*).',
+      'Cómo usar un subagente con herramientas restringidas (*Subagents* y el curso *Introduction to subagents*).',
       'Los tests parametrizados en xUnit (`[Theory]`, `[MemberData]`).',
-      'La carga de CSV con `COPY` en PostgreSQL.',
+      '`MidpointRounding` en .NET.',
     ],
-    erroresFrecuentes: [], // TODO: el archivo fuente no trae una lista de errores frecuentes
+    erroresFrecuentes: [
+      'El hook no corre → cierra y vuelve a abrir Claude Code y revisa con `/hooks`.',
+      'Los tests pasan rapidísimo → ¿cambió el CSV? Revierte: el CSV es el contrato.',
+      'Claude no puede editar `legado/` → es lo correcto: es solo lectura (regla deny de la U4).',
+      'No encuentra el CSV al correr los tests → el proyecto de tests debe copiarlo a su carpeta de salida (README del taller).',
+      'Error al leer `0.19` → usa `CultureInfo.InvariantCulture`.',
+      'Copiaste la carpeta completa y perdiste tu README o tu `AGENTS.md` → recupera con Git y usa el camino A.',
+    ],
     planB: [
-      'Rama `u5-respaldo` con el proyecto de tests y el lector de CSV ya listos.',
-      'Si Docker falla, revisar el script SQL sin ejecutarlo y validar la lógica con los tests de C#.',
+      'Carpeta `unidad-5/taller/u5-respaldo` del repo de material (no es una rama), con el lector del golden master y un `CalculoTotales` vacío, para saltar a la etapa 2.',
+      'Sin Claude Code: sigue la migración que proyecta el instructor y trabaja con los tests.',
     ],
-    extension: 'Pedirle al subagente `verificador` un informe de diferencias entre el legado y C# caso por caso.',
+    extension: 'Llevar `PEDIDOS.csv` y `PEDIDO_LINEAS.csv` a PostgreSQL 16 en Docker con un esquema propio (`numeric` para los montos) y validar la carga con conteos y sumas (opcional).',
   },
 
   material: [
-    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 5', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u05/presentacion-clase.pdf', disponible: false },
-    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Migrar el cálculo de totales"', archivo: 'assets/material/u05/guia-taller.pdf', disponible: false },
-    { tipo: 'pdf', titulo: 'Tabla de correspondencia de tipos DBISAM → PostgreSQL → C#', archivo: 'assets/material/u05/tipos-dbisam.pdf', disponible: false },
-    { tipo: 'png', titulo: 'Infografía: strangler fig y golden master', archivo: 'assets/material/u05/infografia.png', disponible: false },
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 5', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u05/presentacion-clase.pdf', peso: '7,1 MB', disponible: true },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Migrar el cálculo de totales"', archivo: 'assets/material/u05/guia-taller.pdf', disponible: true },
+    // destino: 'taller' → se ve en la pestaña Taller, no en Recursos.
+    { tipo: 'enlace', titulo: 'Proyecto del taller: pedidos-web (base de la U5)', descripcion: 'El README explica qué traer a tu repo (camino A): `migracion/` y `docs/migracion/`.', url: `${U5_TREE}/taller/pedidos-web`, disponible: true, destino: 'taller' },
+    { tipo: 'enlace', titulo: 'Respaldo del taller (plan B)', descripcion: 'El lector del golden master y un `CalculoTotales` vacío, para saltar a la etapa 2 si te trabas.', url: `${U5_TREE}/taller/u5-respaldo`, disponible: true, destino: 'taller' },
+    { tipo: 'enlace', titulo: 'Demos de la unidad: arriendo-web', descripcion: 'El legado de arriendo-legado más una solución .NET, para las tres demos.', url: `${U5_TREE}/demos`, disponible: true },
+    { tipo: 'pdf', titulo: 'Tabla de correspondencia de tipos DBISAM → C#', archivo: 'assets/material/u05/tipos-dbisam.pdf', peso: '0,3 MB', disponible: true },
+    // Apuntes de lenguajes: variante 'lenguaje' → bloque propio al final de Recursos, con el logo de cada lenguaje.
+    { tipo: 'pdf', variante: 'lenguaje', icono: 'lang-delphi', titulo: 'Lenguaje Object Pascal (Delphi)', descripcion: LENGUAJE_DESCRIPCION, archivo: 'assets/material/u05/lenguaje-object-pascal-delphi.pdf', peso: '0,7 MB', disponible: true },
+    { tipo: 'pdf', variante: 'lenguaje', icono: 'lang-csharp', titulo: 'Lenguaje C# y .NET', descripcion: LENGUAJE_DESCRIPCION, archivo: 'assets/material/u05/lenguaje-csharp.pdf', peso: '0,8 MB', disponible: true },
+    { tipo: 'pdf', variante: 'lenguaje', icono: 'lang-java', titulo: 'Lenguaje Java', descripcion: LENGUAJE_DESCRIPCION, archivo: 'assets/material/u05/lenguaje-java.pdf', peso: '0,7 MB', disponible: true },
+    { tipo: 'pdf', variante: 'lenguaje', icono: 'lang-python', titulo: 'Lenguaje Python', descripcion: LENGUAJE_DESCRIPCION, archivo: 'assets/material/u05/lenguaje-python.pdf', peso: '0,7 MB', disponible: true },
+    { tipo: 'pdf', variante: 'lenguaje', icono: 'lang-javascript', titulo: 'Lenguaje JavaScript', descripcion: LENGUAJE_DESCRIPCION, archivo: 'assets/material/u05/lenguaje-javascript.pdf', peso: '0,7 MB', disponible: true },
+    { tipo: 'pdf', variante: 'lenguaje', icono: 'lang-php', titulo: 'Lenguaje PHP', descripcion: LENGUAJE_DESCRIPCION, archivo: 'assets/material/u05/lenguaje-php.pdf', peso: '0,7 MB', disponible: true },
   ],
 
   videos: [
     academyVideo('claudeCodeInAction', 'Hooks y verificación.'),
     academyVideo('subagents'),
-    // TODO: URL del webinar "Modernizing Legacy Code with Claude Code" (fuente [20] sin URL en la bibliografía)
-    { titulo: 'Webinar "Modernizing Legacy Code with Claude Code" (demos COBOL → Java y Java 8 → 17)', url: '', origen: 'Anthropic', duracion: '', nota: 'Enlace pendiente.' },
+    { titulo: 'Webinar "Modernizing Legacy Code with Claude Code"', url: BIBLIO.modernizingLegacyWebinar.url, origen: 'Anthropic', duracion: '', nota: 'On demand; pide registrarse con un formulario.' },
   ],
 
   paraInvestigar: [
-    'Plugin `code-modernization` y el webinar de modernización.',
+    'Plugin `code-modernization` y el webinar de modernización, con las demos COBOL → Java y Java 8 → 17.',
     'Migración de formularios Delphi a una UI web (Blazor o un frontend JavaScript).',
-    'Feature flags, plan de reversa (rollback) y ventanas de corte.',
+    'Feature flags, plan de reversa (*rollback*) y ventanas de corte.',
     'Migración y validación de datos a gran escala.',
     'Artículo oficial sobre modernización de COBOL.',
     'Ecosistema .NET: ASP.NET Core, Entity Framework Core y Npgsql.',
+    'PostgreSQL en Docker: extensión opcional del taller.',
   ],
 
   entregable: {
     nombre: 'Plan de modernización de aplicación legada',
     criterios: [
-      'Módulo de totales en C# con sus tests en verde contra el golden master.',
-      '`docs/defectos-corregidos.md`: qué cambió, por qué y qué caso cambia su valor esperado, en commits separados.',
-      'Esquema PostgreSQL (`db/001_pedidos.sql`) y script de carga validados con conteos y sumas.',
-      '`docs/plan-migracion.md` con etapas, convivencia, riesgos y criterio de corte.',
+      'Totales en C# con los 60 casos del golden master en verde.',
+      'R05 corregido en su propio commit.',
+      '`docs/migracion/defectos-corregidos.md` con R05 y el hallazgo ≥ / >.',
+      '`docs/migracion/plan-migracion.md` con etapas, convivencia, riesgos y criterio de corte.',
+      'Nada cambió en `legado/` ni en `PedidosWeb.sln`.',
     ],
     alimentaA: 'u06',
   },

@@ -254,6 +254,14 @@ Después del cambio, el agente propone el mensaje de commit (§0.2). El desarrol
 
 7. **Presentación de clases.** Una tarjeta con `variante: 'presentacion'` (único valor admitido; lo valida `?debug`) se muestra destacada: primera de **Recursos** y a todo el ancho, con ícono de PDF, píldoras «Presentación de clases» y «PDF · X MB» (clave opcional `peso: '4,2 MB'`, en MB decimales, medido del archivo real) y botón «Descargar». Con `disponible: false` queda atenuada, sin enlace y dice «Disponible después de la clase». Está en las 10 unidades (`id: 'presentacion'`, `archivo: 'assets/material/uNN/presentacion-clase.pdf'`); para publicar una nueva basta copiar el PDF, poner `disponible: true` y el `peso`. El ícono (`assets/icons/pdf-presentacion.svg`, registrado en `ICON_FILES` de `js/utils/icons.js` y cargado como `<img>`) conserva su rojo oficial: es una excepción de color autorizada por el desarrollador (pendiente de sumarla a DESIGN.md 2.5). Estilos en `css/components/unit-panel.css` (`.resource-card--presentacion`).
 
+8. **Apuntes de lenguajes.** Las tarjetas con `variante: 'lenguaje'` (hoy solo en la U5) se muestran juntas, **después del resto del material** de Recursos, en un bloque «Apuntes de lenguajes de programación» (rótulo de interfaz en `LANGUAGE_LABELS`, `js/components/unit-panel.js`). Cada una reutiliza `.resource-card` y lleva el logo oficial del lenguaje en un recuadro de 48 × 48 px, en vez del ícono genérico: a la derecha, título, `descripcion` y «PDF · X MB · Descargar». Claves: `tipo: 'pdf'`, `icono` (nombre registrado en `ICON_FILES`: `lang-csharp`, `lang-java`, `lang-javascript`, `lang-php`, `lang-python` o `lang-delphi`), `titulo`, `descripcion`, `archivo`, `peso` y `disponible`. Sin archivo, la tarjeta queda atenuada, sin enlace, con «Disponible pronto». `?debug` avisa si falta `archivo` o `icono`, si el `icono` no está en `ICON_FILES`, si el tipo no es `pdf` o si el `peso` no tiene el formato `'4,2 MB'`.
+
+   ```js
+   { tipo: 'pdf', variante: 'lenguaje', icono: 'lang-java', titulo: 'Lenguaje Java', descripcion: '…', archivo: 'assets/material/u05/lenguaje-java.pdf', peso: '0,7 MB', disponible: true },
+   ```
+
+   Los 6 logos (`assets/icons/lang-*.svg`) son los oficiales de cada lenguaje: se guardan tal cual y **no se recolorean**. Van como `<img>` (el de Python usa ids de gradiente que chocarían en línea) y son otra excepción de color, igual que el ícono de PDF (pendiente de sumarla a DESIGN.md 2.5). El logo de PHP es blanco puro, así que su recuadro (`.lang-card__icon--php`) usa el morado oficial `#777BB4` de fondo; los demás van sobre `white`. Estilos en `css/components/unit-panel.css` (`.resource-card--lenguaje`, `.lang-card__icon`).
+
 Mientras `disponible` sea `false`, la tarjeta dice «Disponible pronto» y no hay enlace roto. **Nunca** marcar `disponible: true` si el archivo no existe en la ruta.
 
 ### 6.0 Material que vive en el repositorio de material
@@ -398,9 +406,9 @@ Notas para el agente:
 
 ## 14. Pendientes (TODO)
 
-- **Webinar «Modernizing Legacy Code with Claude Code»:** URL verificada el 10-nov-2026 en `BIBLIO.modernizingLegacyWebinar` (`js/data/links.js`) y usada en la U04. Falta llevarla a la U05.
-- **Material de las unidades U05–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa, la U02 solo espera su infografía, y la U03 y la U04 están completas (no llevan infografía).
-- **Errores frecuentes** de los laboratorios U02 y U05–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía). La U03 y la U04 ya los tienen.
+- **Webinar «Modernizing Legacy Code with Claude Code»:** URL verificada el 10-nov-2026 en `BIBLIO.modernizingLegacyWebinar` (`js/data/links.js`) y usada en la U04 y la U05.
+- **Material de las unidades U06–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa, la U02 solo espera su infografía, y la U03, la U04 y la U05 están completas (no llevan infografía).
+- **Errores frecuentes** de los laboratorios U02 y U06–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía). De la U03 a la U05 ya los tienen.
 - **Foto del instructor:** opcional (`photoAvailable`).
 
 ---

@@ -29,9 +29,20 @@ export function icon(name, { className = 'size-5', label = '' } = {}) {
  * Excepción de color autorizada por el desarrollador (pendiente de sumarla a DESIGN.md 2.5, junto a las
  * marcas): el ícono oficial de PDF conserva su rojo en ambos temas y NO se recolorea. Para sumar otro, guarda el SVG tal cual
  * en assets/icons/ y regístralo aquí con el tamaño (px) que se reserva para evitar saltos de layout.
+ *
+ * Logos oficiales de lenguajes (apuntes de la Unidad 5): misma excepción de color, también pendiente de
+ * sumar a DESIGN.md 2.5. Son marcas de terceros: se guardan tal cual y NO se recolorean. Van como <img> y no
+ * en línea porque 'lang-python' usa ids de gradiente (a, b) que chocarían con otros SVG de la página.
+ * Tamaño proporcional al viewBox, con el lado mayor en 32 px (PHP, horizontal, en 40 × 20).
  */
 export const ICON_FILES = {
   'pdf-presentacion': { src: 'assets/icons/pdf-presentacion.svg', width: 39, height: 48 },
+  'lang-csharp': { src: 'assets/icons/lang-csharp.svg', width: 28, height: 32 },
+  'lang-java': { src: 'assets/icons/lang-java.svg', width: 24, height: 32 },
+  'lang-javascript': { src: 'assets/icons/lang-javascript.svg', width: 32, height: 32 },
+  'lang-php': { src: 'assets/icons/lang-php.svg', width: 40, height: 20 },
+  'lang-python': { src: 'assets/icons/lang-python.svg', width: 32, height: 32 },
+  'lang-delphi': { src: 'assets/icons/lang-delphi.svg', width: 32, height: 32 },
 };
 
 /** <img> decorativo de un ícono de ICON_FILES: el texto vecino ya describe el contenido. */

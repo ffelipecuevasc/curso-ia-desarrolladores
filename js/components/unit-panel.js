@@ -22,6 +22,18 @@ const PRESENTATION_LABELS = {
   unavailable: 'Disponible después de la clase',
 };
 
+/** Valor de `variante` de los apuntes de lenguajes: van juntos, en un bloque propio al final de Recursos. */
+export const LANGUAGE_VARIANT = 'lenguaje';
+
+/** Rótulos de interfaz del bloque de apuntes de lenguajes. Título, descripción y peso salen de los datos. */
+const LANGUAGE_LABELS = {
+  heading: 'Apuntes de lenguajes de programación',
+  unavailable: 'Disponible pronto',
+};
+
+/** Logos que necesitan un fondo propio en su recuadro (el de PHP es blanco puro y no se vería). */
+const LANGUAGE_ICON_MODIFIERS = { 'lang-php': 'lang-card__icon--php' };
+
 /** Valor de `destino` (campo opcional de un material) que lo lleva a la pestaña Taller. */
 export const WORKSHOP_DEST = 'taller';
 
@@ -168,6 +180,43 @@ function presentationCard(item) {
         </li>`;
 }
 
+/**
+ * Tarjeta de un apunte de lenguaje (variante 'lenguaje'): reutiliza .resource-card, con el logo oficial
+ * en un recuadro de 48 × 48 px en vez del ícono genérico. Sin archivo queda atenuada y sin enlace.
+ * Los logos conservan su color oficial (excepción de color; ver ICON_FILES en icons.js).
+ */
+function languageCard(item) {
+  const available = Boolean(item.disponible && item.archivo);
+  const modifier = LANGUAGE_ICON_MODIFIERS[item.icono];
+  const logo = `<span class="lang-card__icon${modifier ? ` ${modifier}` : ''}">${iconImage(item.icono)}</span>`;
+  const description = item.descripcion ? `<span class="block mt-1 text-sm text-text-muted">${rich(item.descripcion)}</span>` : '';
+  if (!available) {
+    return `
+          <li>
+            <div class="resource-card resource-card--lenguaje resource-card--soon">
+              ${logo}
+              <span>
+                <span class="resource-card__title block">${escapeHtml(item.titulo)}</span>
+                ${description}
+                <span class="resource-card__meta">${icon('hourglass')}<span>PDF · ${escapeHtml(LANGUAGE_LABELS.unavailable)}</span></span>
+              </span>
+            </div>
+          </li>`;
+  }
+  const fileInfo = item.peso ? `PDF · ${escapeHtml(item.peso)}` : 'PDF';
+  return `
+        <li>
+          <a class="resource-card resource-card--lenguaje" href="${encodeURI(item.archivo)}" download>
+            ${logo}
+            <span>
+              <span class="resource-card__title block">${escapeHtml(item.titulo)}</span>
+              ${description}
+              <span class="resource-card__meta tabular"><span>${fileInfo}</span><span class="lang-card__sep" aria-hidden="true">·</span><span class="resource-card__action inline-flex items-center gap-1">${icon('download')}Descargar</span></span>
+            </span>
+          </a>
+        </li>`;
+}
+
 /** Tarjeta de un material (no disponible, enlace externo o archivo descargable). */
 function materialCard(item) {
   if (item.variante === PRESENTATION_VARIANT) return presentationCard(item);
@@ -215,12 +264,22 @@ const isWorkshopMaterial = (item) => item.destino === WORKSHOP_DEST;
 
 function materialTab(unit) {
   // La guía y el material con destino 'taller' se ven en la pestaña Taller.
-  const items = (unit.material ?? []).filter((item) => item.id !== GUIDE_ID && !isWorkshopMaterial(item));
-  if (!items.length) return '<p class="text-text-muted">Esta unidad todavía no tiene material.</p>';
+  const shown = (unit.material ?? []).filter((item) => item.id !== GUIDE_ID && !isWorkshopMaterial(item));
+  // Los apuntes de lenguajes van juntos, después del resto del material.
+  const languages = shown.filter((item) => item.variante === LANGUAGE_VARIANT);
+  const items = shown.filter((item) => item.variante !== LANGUAGE_VARIANT);
+  if (!items.length && !languages.length) return '<p class="text-text-muted">Esta unidad todavía no tiene material.</p>';
   // La presentación de clases va siempre primero, aunque en los datos esté en otro lugar.
   const isFeatured = (item) => item.variante === PRESENTATION_VARIANT;
   items.sort((a, b) => Number(isFeatured(b)) - Number(isFeatured(a)));
-  return `<ul class="resource-grid">${items.map(materialCard).join('')}</ul>`;
+  const grid = items.length ? `<ul class="resource-grid">${items.map(materialCard).join('')}</ul>` : '';
+  const languageBlock = languages.length
+    ? `<section class="lang-block" aria-labelledby="${unit.id}-lenguajes-title">
+        <h6 class="lang-block__title" id="${unit.id}-lenguajes-title">${escapeHtml(LANGUAGE_LABELS.heading)}</h6>
+        <ul class="resource-grid resource-grid--lenguaje">${languages.map(languageCard).join('')}</ul>
+      </section>`
+    : '';
+  return `${grid}${languageBlock}`;
 }
 
 /* ----------------------------------------------------------------- Videos */
