@@ -37,7 +37,7 @@ El modo oscuro es el predeterminado. El modo claro tiene la misma terminación.
 │   ├── docs/                  PDF del programa y glosario del curso
 │   ├── fonts/                 Cinzel, Josefin Sans y JetBrains Mono (WOFF, subconjunto latino, OFL)
 │   ├── img/                   favicon.svg y foto del instructor (opcional)
-│   ├── icons/                 SVG de Claude, Claude Code y Material Symbols Light
+│   ├── icons/                 SVG de Claude, Claude Code, Material Symbols Light y logos de lenguajes
 │   └── material/u01 … u10/    PDF y PNG de cada unidad
 ├── css/
 │   ├── tokens.css             Variables de color por modo (DESIGN.md §2) y orden de capas
@@ -209,6 +209,14 @@ Claude Code solo debe editar `js/config/units.config.js`. Revisa el diff antes d
 
    Mientras `disponible` sea `false`, la tarjeta queda atenuada y dice «Disponible después de la clase».
 
+8. **Apuntes de lenguajes** (hoy solo en la U5): las tarjetas con `variante: 'lenguaje'` se muestran juntas, después del resto del material de Recursos, en un bloque «Apuntes de lenguajes de programación». Cada una lleva el logo oficial del lenguaje en vez del ícono genérico, y dice «PDF · X MB · Descargar». Copia el PDF a `assets/material/uXX/`, y en `js/data/units/uXX.js` agrega la tarjeta con su `icono` (`lang-csharp`, `lang-java`, `lang-javascript`, `lang-php`, `lang-python` o `lang-delphi`, registrados en `js/utils/icons.js`) y su `peso` (formato `'4,2 MB'`):
+
+   ```js
+   { tipo: 'pdf', variante: 'lenguaje', icono: 'lang-java', titulo: 'Lenguaje Java', descripcion: 'Ficha técnica, historia, usos, cuándo elegirlo y cómo pedirle código a la IA.', archivo: 'assets/material/u05/lenguaje-java.pdf', peso: '0,7 MB', disponible: true },
+   ```
+
+   Sin archivo disponible, la tarjeta queda atenuada y dice «Disponible pronto». Los logos son los oficiales de cada lenguaje: se guardan tal cual en `assets/icons/lang-*.svg` y no se recolorean. `?debug` avisa si falta el archivo o el ícono, o si el peso no tiene el formato correcto.
+
 Mientras `disponible` sea `false`, la tarjeta dice «Disponible pronto» y no hay enlace roto. Mientras `PROGRAM_PDF_AVAILABLE` sea `false`, el botón del programa no se muestra.
 
 ### Material que vive en el repositorio de material
@@ -354,9 +362,8 @@ Copia y adapta:
 
 ## Pendientes (TODO)
 
-- **Webinar «Modernizing Legacy Code with Claude Code»** (U04 y U05): sin URL en la bibliografía.
-- **Material de las unidades U03–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa y la U02 solo espera su infografía.
-- **Errores frecuentes** de los laboratorios U02–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía).
+- **Material de las unidades U06–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa, la U02 solo espera su infografía, y la U03, la U04 y la U05 están completas.
+- **Errores frecuentes** de los laboratorios U02 y U06–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía).
 - **Foto del instructor:** opcional (`photoAvailable`).
 
 ---
@@ -367,4 +374,5 @@ Copia y adapta:
 - Tipografías autoalojadas en `assets/fonts/` (subconjunto latino, con su licencia OFL junto a cada archivo).
 - Íconos: [Material Symbols Light](https://icon-sets.iconify.design/material-symbols-light/) de Google vía Iconify, licencia **Apache 2.0**. Los SVG están en `assets/icons/` y en línea en `js/utils/icons-data.js`, sin dependencia en runtime.
 - Claude y Claude Code son marcas de Anthropic; sus logos se usan solo como marca, con su color oficial.
+- Los logos de Delphi, C#, Java, Python, JavaScript y PHP (`assets/icons/lang-*.svg`) son marcas de sus respectivos titulares; se usan solo para identificar cada apunte de lenguaje, con su color oficial.
 - Tipografías: Cinzel, Josefin Sans y JetBrains Mono (SIL Open Font License 1.1), autoalojadas.

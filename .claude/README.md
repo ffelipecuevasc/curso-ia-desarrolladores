@@ -418,4 +418,5 @@ Notas para el agente:
 - Contenido académico: Felipe Cuevas, a partir de `fuentes/unidades/`.
 - Íconos: [Material Symbols Light](https://icon-sets.iconify.design/material-symbols-light/) de Google vía Iconify, licencia **Apache 2.0**. Los SVG están en `assets/icons/` y en línea en `js/utils/icons-data.js`, sin dependencia en runtime.
 - Claude y Claude Code son marcas de Anthropic; sus logos se usan solo como marca, con su color oficial.
+- Los logos de Delphi, C#, Java, Python, JavaScript y PHP (`assets/icons/lang-*.svg`) son marcas de sus respectivos titulares; se usan solo para identificar cada apunte de lenguaje, con su color oficial.
 - Tipografías: Cinzel, Josefin Sans y JetBrains Mono (SIL Open Font License 1.1), autoalojadas en `assets/fonts/`.
