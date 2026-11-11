@@ -1,16 +1,8 @@
 # Unidad 6 — IA aplicada a la calidad, las pruebas y la integración y entrega continuas (CI/CD)
 
-**Día 3 · bloque tarde** · Nivel 55 → 70 · Bloque A 85' · Receso 15' · Bloque B 80' · Licencia: Claude Team Standard + **credencial para GitHub Actions (pendiente)** · Stack: .NET + xUnit + GitHub Actions
+**Día 3 · bloque tarde** · Nivel 55 → 70 · Bloque A 85' · Receso 15' · Bloque B 80' · Licencia: Claude Pro (incluye Claude Code) + JetBrains Rider · GitHub gratis con repo público · Stack: Rider + .NET 10 + xUnit + GitHub Actions + `claude-code-action`
 
-> ⚠️ **PENDIENTE — Credencial de Claude para GitHub Actions (también se usa en la Unidad 7).**
-> La GitHub Action de Claude necesita una credencial guardada como secreto en cada repositorio. Hay dos caminos [22]:
->
-> | Opción | Qué es | Quién la entrega | Implicancia |
-> |---|---|---|---|
-> | **A. API key** (`ANTHROPIC_API_KEY`) | Clave de la Claude Console, con facturación por uso | El Owner del cliente | Requiere presupuesto y un **límite de gasto**. Los créditos de API del plan Team no cubren estas ejecuciones [25]. |
-> | **B. Token de suscripción** (`CLAUDE_CODE_OAUTH_TOKEN`) | Cada alumno lo genera con `claude setup-token` desde su asiento Team | El propio alumno | Sin costo extra, pero consume la cuota de su asiento y queda ligado a su cuenta. |
->
-> **Estado:** solicitud enviada al Owner del cliente a través de la encargada del curso. Si no hay respuesta antes del día 3, se usa la **opción B**.
+> Versión 2 (10-nov-2026): demos sobre un solo proyecto (arriendo-web, continúa las demos de la U5), credencial única con el token de Claude Pro, cobertura solo en demo y taller individual en 3 etapas.
 
 ## Bloque A — Cátedra (85')
 
@@ -19,40 +11,46 @@
 |---|---|---|---|
 | C1 | **Tests con criterio** | Si no puede fallar, no prueba nada. | *Common workflows*: "Work with tests" [17] |
 | C2 | **Cobertura ≠ calidad** | Se mide, no se persigue. | *Best practices*: criterios de verificación [11] |
-| C3 | **Pipeline seguro** | Cada push se prueba solo, sin exponer secretos. | Docs *GitHub Actions* (en español) [22] |
-| C4 | **Claude en CI** | Diagnostica y propone; tú decides. | Docs *GitHub Actions* [22] · *Claude Code in action*: headless y GitHub Action [10] · AI-native SDLC: feedback loop y CI [24] |
+| C3 | **Pipeline seguro** | Cada push se prueba solo, sin exponer secretos. | Docs *GitHub Actions* [22] |
+| C4 | **Claude en CI** | Claude diagnostica; tú corriges y haces merge. | Docs *GitHub Actions* [22] · *Claude Code in action*: headless y GitHub Action [10] · AI-native SDLC: feedback loop y CI [24] |
 
 En la certificación *Claude Certified Developer – Foundations*, esta unidad cubre parcialmente el módulo de evals y capas de test [32].
 
+Hoy hay dos proyectos y una sola historia. Las demos del instructor ocurren en **arriendo-web** (el estado final de las demos de la U5: `TarifaBase` migrada a C#, 20 de 20 casos en verde y el hook activo; carpeta `unidad-6/demos/arriendo-web` del repo de material) y responden una pregunta: *ArriendoWeb ya calcula bien. ¿Cómo sabemos que no se rompe cuando nadie mira?* La historia avanza en cuatro pasos: **Mentiroso → Cobertura → Workflow → @claude**. En el taller, cada alumno repite el método en su `pedidos-web`.
+
+**Licencia única: Claude Pro.** La GitHub Action usa el token de suscripción de cada persona (`CLAUDE_CODE_OAUTH_TOKEN`, generado con `claude setup-token`), guardado como secreto del repositorio. Funciona con los planes Pro, Max, Team y Enterprise, y cada ejecución gasta la cuota de quien generó el token [22]. Los repos son públicos: en ellos, los runners estándar de GitHub Actions son gratis (GitHub Docs, *How use of GitHub Actions is measured*, 10-nov-2026).
+
 ### A2. Desarrollo (70')
 
-**C1 · Tests con criterio (15').** La pirámide de tests: qué conviene delegar a la IA (unitarios repetitivos, casos borde) y qué no (decidir qué comportamiento importa). Para corregir un bug, el orden es: reproducir, escribir el test que falla y después corregir [17].
-- *Demo "El test mentiroso":* en una calculadora de propinas ficticia (**PropinaApp**), Claude genera 8 tests. El curso encuentra el que siempre pasa, por ejemplo uno que compara el resultado consigo mismo.
+**C1 · Tests con criterio (15').** La pirámide de tests: a la IA se le delegan los unitarios repetitivos y los casos borde; tú decides qué comportamiento importa. Para corregir un bug, el orden es reproducir, escribir el test que falla, corregir y dejar el test [17].
+- *Demo 1 "El test mentiroso" (6'):* Claude Code propone tests de borde para `TarifaBase` que el golden master no cubre. El instructor saca diciembre de la temporada alta **a mano en Rider**: el golden master solo lo detecta en un caso (B01) y el test que sigue en verde es el mentiroso. Si no puede fallar, no prueba nada. Para saberlo, rómpelo tú, a mano.
 
-**C2 · Cobertura ≠ calidad (10').** Medir con `dotnet test --collect:"XPlat Code Coverage"` y leer el reporte. La cobertura indica qué código **no** se probó, pero no garantiza que lo probado esté bien.
-- *Demo "Cobertura 100%, bug incluido":* una función con el 100% de cobertura que igual falla en el caso límite de 0 personas.
+**C2 · Cobertura ≠ calidad (10').** `dotnet test --collect:"XPlat Code Coverage"` (paquete `coverlet.collector`) genera `coverage.cobertura.xml`: dice qué líneas y ramas **nunca se ejecutaron**, pero no si lo ejecutado está bien. Un test sin `Assert` útil también cubre. Claude puede leerte el reporte. Es un mapa, no una meta.
+- *Demo 2 "Cobertura 100 %, verificación 0" (5'):* solo con el test mentiroso, Claude suma `coverlet.collector`, corre los tests con cobertura y lee el XML: `TarifaBase` queda cubierta y nada quedó verificado. La cobertura se ve solo en esta demo; el taller no la mide.
 
 **C3 · Pipeline seguro (20').**
-- **GitHub Actions básico:** `workflow` → `jobs` → `steps`, disparadores (`push`, `pull_request`) y runners.
-- **Seguridad mínima obligatoria:**
-  - Los secretos van en *Settings → Secrets*, nunca en el código ni en el YAML.
-  - Declarar `permissions:` con lo mínimo necesario (`contents: read` por defecto).
-  - Usar versiones fijas de las acciones (`@v1`, `@v6`).
-  - No imprimir secretos en los logs.
-  - Saber que los PR desde *forks* no reciben secretos.
-  - Poner `timeout-minutes` para que un job no corra sin fin [22].
-- *Demo "Mi primer workflow":* un `ci.yml` con build y test ejecutándose en vivo, y luego el mismo archivo con un secreto mal puesto para ver por qué es un error.
+- **Anatomía:** `on` (qué lo dispara: `push`, `pull_request`) → `jobs` → `steps`, en un runner: una máquina limpia de GitHub.
+- **Seguridad mínima, 6 reglas** [22]:
+  - Secretos en *Settings › Secrets and variables › Actions*, nunca en el código ni en el YAML.
+  - `permissions:` con lo mínimo, partiendo por `contents: read`.
+  - Acciones con versión fija (`actions/checkout@v6`, `actions/setup-dotnet@v5`); lo más estricto es el SHA completo.
+  - Nunca imprimir un secreto en los logs.
+  - Los PR desde forks no reciben secretos.
+  - `timeout-minutes` para que ningún job corra sin fin.
+- *Demo 3 "Mi primer workflow" (7'):* Claude Code escribe `.github/workflows/ci.yml` (build y test en cada push a `main` y en cada PR, `contents: read`, `timeout-minutes: 10`, versiones fijas, `dotnet-version: 10.0.x`). Push al repo público `arriendo-web` y verde en la pestaña Actions.
+- *Ejercicio "Encuentra el error" (3'):* un `claude.yml` con el token pegado y un `echo` del secreto. Si un token se sube, se genera uno nuevo: git no olvida.
 
 **C4 · Claude en CI (25').**
-- **`claude-code-action`:** en *modo interactivo* responde a `@claude` en issues y PR. En *modo automatización* ejecuta un `prompt` ante cada evento [22].
-- **Modo headless `claude -p`:** Claude Code dentro de un script o pipeline propio [10].
-- **Autenticación:** API key frente a token de suscripción (ver el recuadro PENDIENTE).
-- **Control de costos:** `--max-turns` en `claude_args`, `timeout-minutes` y `concurrency` para limitar ejecuciones en paralelo [22].
-- Regla del curso: **Claude propone el arreglo en un PR o un comentario. Una persona lo revisa y hace merge.**
-- *Demo:* un test falla en CI, se comenta `@claude ¿por qué falla este job?` y Claude responde con el diagnóstico y una propuesta.
+- **`claude-code-action@v1`:** sin `prompt` funciona en *modo interactivo* y responde a `@claude` en issues y PR (es el del taller). Con `prompt` funciona en *modo automatización* ante un evento [22]. Solo responde a quien tiene permiso de escritura en el repositorio [22].
+- **Plan B local, `claude -p`:** Claude Code sin interfaz, por ejemplo `dotnet test 2>&1 | claude -p "Explica en 3 líneas por qué falla"` [10].
+- **Tu credencial, en 3 pasos:** `claude setup-token` → secreto `CLAUDE_CODE_OAUTH_TOKEN` → `claude.yml` lo usa con `${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}`. Gasta tu cuota y nunca va en un archivo.
+- **Tres frenos:** `--max-turns 5` en `claude_args`, `timeout-minutes: 10` y `concurrency` (una ejecución a la vez por issue o PR) [22].
+- **Regla del curso:** CI en rojo → `@claude` → diagnóstico → tú corriges → CI en verde → merge. Las capas son el workflow (permisos), las herramientas (`--max-turns`, `--disallowedTools "Edit,Write"`) y las personas (merge solo en verde).
+- *Demo 4 "@claude, ¿por qué falla?" (8'):* en una rama, el instructor vuelve el redondeo de `TarifaBase` a `MidpointRounding.AwayFromZero` (el defecto A08 de la U5) y abre un PR. Solo A08 queda en rojo. Comenta «@claude ¿por qué falla este job? Solo diagnostica, no hagas commits.», lee el diagnóstico, corrige a mano y hace merge con el CI en verde.
+- **Mismo patrón, otros agentes:** Copilot coding agent, `openai/codex-action` y `run-gemini-cli` también corren en CI con los secretos y permisos que tú defines; cambian la credencial y la forma de activarlos (revisado el 2-nov-2026).
 
 ### A3. Cierre (10')
-- **Repaso:** Tests con criterio · Cobertura ≠ calidad · Pipeline seguro · Claude en CI.
+- **Antes del receso: 4 preguntas.** Tests con criterio (¿Cómo sabes que un test no es mentiroso?) · Cobertura ≠ calidad (Si la cobertura dice 100 %, ¿ya está todo probado?) · Pipeline seguro (¿Dónde va el token de Claude y con qué permiso parte el ci.yml?) · Claude en CI (Si @claude propone un arreglo, ¿quién hace el merge?).
 - **Temas secundarios para investigar por su cuenta:**
   - Tests end-to-end del portal web con Playwright.
   - Mutation testing (Stryker.NET): ¿mis tests detectan cambios en el código?
@@ -60,35 +58,41 @@ En la certificación *Claude Certified Developer – Foundations*, esta unidad c
   - Evals continuas en CI, uno de los *plays* del AI-native SDLC [24].
   - Tareas programadas (*routines*) y Agent SDK [10].
   - Autenticación sin secretos de larga duración (workload identity federation) [22].
+  - Checklist de seguridad para workflows (apunte de la unidad).
 
-## Bloque B — Taller "Pipeline con tests asistidos" (80', en parejas)
+## Bloque B — Taller "Que ningún cambio llegue a main sin pruebas" (80', individual)
 
-**Caso de uso.** El módulo de totales migrado en la Unidad 5 ya funciona en la máquina de cada alumno. Ahora el equipo va a trabajar con pull requests, y la gerencia pide que **ningún cambio llegue a `main` sin pasar por pruebas automáticas**.
+**Misión.** Que ningún cambio llegue a `main` sin pruebas automáticas, con Claude ayudando a leer la falla y tú decidiendo.
 
-**Problemática.** Hoy los tests se ejecutan "cuando alguien se acuerda". El viernes pasado alguien subió un cambio que rompía el cálculo del IVA y nadie lo notó hasta el lunes. Además, cuando un test falla, el equipo pierde tiempo leyendo logs largos para entender por qué.
+**Caso.** El módulo de totales de la Unidad 5 funciona en la máquina de cada alumno, pero los tests se ejecutan «cuando alguien se acuerda». Un viernes, un cambio rompió el cálculo del IVA y nadie lo notó hasta el lunes, con un log de cientos de líneas.
 
-**Solución a implementar.** Cada pareja deja su repositorio con tests confiables, un pipeline seguro que se ejecuta en cada push y PR, y Claude disponible en CI para diagnosticar fallas, sin que tome decisiones por el equipo.
+**Preparación (en el receso).** Traer a tu repo solo lo nuevo de la U6 con el camino A del README de `unidad-6/taller/pedidos-web`, pidiéndoselo a Claude Code con este texto: «Trae a pedidos-web solo lo nuevo de la Unidad 6 desde el repo de material (docs/calidad/). No toques nada más y explícame cada paso.» Se suma `docs/calidad/registro-u6.md`; no reemplaza `README.md`, `AGENTS.md`, `PedidosWeb.sln`, `src/`, `tests/`, `legado/`, `migracion/`, `specs/` ni `.claude/`. Los workflows los creas tú en la etapa 2. Si algo de la U5 quedó pendiente, el taller funciona igual: el CI corre lo que haya.
 
-| Paso | Min | Qué haces | Concepto |
+| Etapa | Min | Qué haces | Concepto |
 |---|---|---|---|
-| 1 | 20 | Pedir a Claude Code tests para los casos que **no** cubre el golden master, como valores límite y entradas inválidas. Revisar uno por uno y eliminar los que no prueban nada. Medir la cobertura antes y después. | C1, C2 |
-| 2 | 15 | Crear `.github/workflows/ci.yml` (build + test en `push` y `pull_request`) con `permissions` mínimos, `timeout-minutes` y acciones con versión fija. **Punto de control:** el job pasa en verde en GitHub. | C3 |
-| 3 | 20 | Instalar la Claude GitHub App, guardar la credencial como secreto y crear `.github/workflows/claude.yml` (modo interactivo con `@claude`) con `--max-turns 5`. | C3, C4 |
-| 4 | 20 | **Juego de parejas:** uno inyecta una falla en una rama y abre un PR. El otro usa `@claude` para diagnosticar, evalúa la propuesta, la corrige y hace merge solo con el CI en verde. Después intercambian roles. | C1, C4 |
-| 5 | 5 | Cierre: dos parejas muestran el comentario de Claude y si aceptaron o no su propuesta. | — |
+| Preparación | 5 | Traer `docs/calidad/registro-u6.md`. Dejar `dotnet test` sin rojos: lo pendiente de la U5 se marca con `Skip` y un motivo, nunca se borra. Commit. | — |
+| 1 · Tests que sí prueban | 20 | Pedirle a Claude Code 5 tests de borde que el golden master no cubra, para el módulo que tengas funcionando. Romper el código **a mano en Rider**, ver qué test falla, borrar los que no fallan y deshacer el cambio. Commit. | C1 |
+| 2 · Pipeline seguro | 25 | Claude Code escribe `.github/workflows/ci.yml` (build y test en push y PR, permisos mínimos, timeout de 10 min, versiones fijas). Push y verde en Actions. Instalar la Claude GitHub App, correr `claude setup-token`, guardar el secreto `CLAUDE_CODE_OAUTH_TOKEN` y crear `claude.yml` con 5 turnos. Ambos en `main`. | C3, C4 |
+| 3 · La falla | 25 | En una rama, romper una línea a mano, abrir el PR y ver el CI en rojo. Comentar «@claude ¿por qué falla este job? Solo diagnostica, no hagas commits.». Decidir (aceptar, ajustar o rechazar), corregir a mano, verde y merge. Completar el registro. | C1, C4 |
+| Cierre | 5 | Dos alumnos muestran su PR: el comentario de Claude y su decisión. | — |
 
 **Qué se espera, sin darte la respuesta.**
-- Un test nuevo vale si fallaría ante un error real. Pruébalo rompiendo el código a propósito.
-- Si tu `claude.yml` tiene más permisos de los que necesita, o la credencial aparece en algún archivo, el pipeline no está terminado.
-- La propuesta de Claude se puede aceptar, ajustar o rechazar. Lo que importa es que justifiques la decisión.
+- Un test nuevo vale si falla ante un error real. Pruébalo rompiendo el código a mano.
+- Si tu `claude.yml` tiene más permisos de los necesarios, o el token aparece en algún archivo, el pipeline no está terminado.
+- La propuesta de Claude se puede aceptar, ajustar o rechazar: lo que importa es justificar la decisión.
 
-**Qué investigar si te trabas.**
-- El ejemplo "Respond to @claude mentions" y la sección "Protect your credentials" de la documentación de GitHub Actions [22].
-- La sintaxis de `permissions` en la documentación de GitHub.
-- Para la cobertura en .NET, el paquete `coverlet.collector`.
+**Qué investigar si te trabas.** El ejemplo "Respond to @claude mentions" y la sección "Protect your credentials" de la documentación de Claude Code GitHub Actions [22], la sintaxis de `permissions` en la documentación de GitHub y *Common workflows* para trabajar con tests [17].
 
-- **Entregable:** *Pipeline con tests automatizados asistidos por IA*: `ci.yml`, `claude.yml`, tests nuevos, reporte de cobertura antes y después, y el PR de la falla resuelta.
-- **Plan B:**
-  - Si la credencial no está disponible, el instructor demuestra el paso 3 en su repositorio, y en el paso 4 las parejas diagnostican la falla con Claude Code local a partir del log del CI.
-  - Si GitHub Actions falla, ejecutar los pasos del pipeline en local con `dotnet build && dotnet test`.
-- **Extensión opcional:** agregar un workflow programado (`schedule`) que genere un resumen diario de los PR abiertos.
+- **Entregable:** *Pipeline con tests automatizados asistidos por IA*: `ci.yml` en verde, `claude.yml` en `main`, tests revisados, PR con el diagnóstico de `@claude` resuelto y `docs/calidad/registro-u6.md`.
+- **Puntos de control:**
+  - **Preparación:** `dotnet test` sin rojos y commit hecho.
+  - **Etapa 1:** cada test nuevo falló al menos una vez ante un cambio hecho a mano.
+  - **Etapa 2:** `ci.yml` en verde y `claude.yml` en `main`.
+  - **Etapa 3:** PR en verde, merge hecho y registro completo.
+- **Errores frecuentes:**
+  - `@claude` no responde → revisa que la App esté instalada, que `claude.yml` esté en `main` y el nombre exacto del secreto.
+  - El CI sigue verde tras romper el código → rompiste código sin tests: elige una línea que cubran tus tests.
+  - Token pegado en un archivo → genera otro con `claude setup-token` y actualiza el secreto.
+  - CI en rojo por la U5 → márcalo con `Skip` y su motivo.
+- **Plan B:** carpeta `unidad-6/taller/u6-respaldo` del repo de material (no es una rama), con un `claude.yml` basado en el ejemplo oficial. Si la App o el token fallan: Claude Code local lee la falla con `claude -p`. Si GitHub Actions falla: `dotnet build` y `dotnet test` en local.
+- **Extensión opcional:** un workflow programado (`schedule`) con un `prompt` que resuma los PR abiertos (modo automatización).

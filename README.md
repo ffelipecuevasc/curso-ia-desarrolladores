@@ -362,8 +362,8 @@ Copia y adapta:
 
 ## Pendientes (TODO)
 
-- **Material de las unidades U06–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa, la U02 solo espera su infografía, y la U03, la U04 y la U05 están completas.
-- **Errores frecuentes** de los laboratorios U02 y U06–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía).
+- **Material de las unidades U07–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa, la U02 solo espera su infografía, y de la U03 a la U06 están completas.
+- **Errores frecuentes** de los laboratorios U02 y U07–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía).
 - **Foto del instructor:** opcional (`photoAvailable`).
 
 ---
