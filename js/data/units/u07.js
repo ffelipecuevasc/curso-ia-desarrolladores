@@ -268,7 +268,7 @@ dotnet test`,
   },
 
   material: [
-    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 7', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u07/presentacion-clase.pdf', peso: '6,4 MB', disponible: true },
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 7', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u07/presentacion-clase.pdf', peso: '7,4 MB', disponible: true },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Que cada cambio llegue a main revisado"', archivo: 'assets/material/u07/guia-taller.pdf', disponible: true },
     // destino: 'taller' → se ve en la pestaña Taller, no en Recursos.
     { tipo: 'enlace', titulo: 'Proyecto del taller: pedidos-web (base de la U7)', descripcion: 'El README explica qué traer a tu repo (camino A): `specs/HU-03-pedidos-por-fecha/` y `docs/checklist-revision.md`.', url: `${U7_TREE}/taller/pedidos-web`, disponible: true, destino: 'taller' },
