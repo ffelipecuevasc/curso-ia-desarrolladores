@@ -407,8 +407,8 @@ Notas para el agente:
 ## 14. Pendientes (TODO)
 
 - **Webinar «Modernizing Legacy Code with Claude Code»:** URL verificada el 10-nov-2026 en `BIBLIO.modernizingLegacyWebinar` (`js/data/links.js`) y usada en la U04 y la U05.
-- **Material de las unidades U07–U10** (guías del taller, infografías y demás tarjetas): están en «Disponible pronto». La U01 está completa, la U02 solo espera su infografía, y de la U03 a la U06 están completas (no llevan infografía).
-- **Errores frecuentes** de los laboratorios U02 y U07–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía). De la U03 a la U06 ya los tienen.
+- **Material de las unidades U08–U10** (guías del taller y demás tarjetas): están en «Disponible pronto». La U01 está completa, la U02 solo espera su infografía, y de la U03 a la U07 están completas (no llevan infografía).
+- **Errores frecuentes** de los laboratorios U02 y U08–U10: los archivos fuente no los traen (la sección se oculta mientras esté vacía). De la U03 a la U07 ya los tienen.
 - **Foto del instructor:** opcional (`photoAvailable`).
 
 ---
