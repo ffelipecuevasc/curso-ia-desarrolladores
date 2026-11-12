@@ -97,10 +97,16 @@ export const BIBLIO = {
   readDenyRoutes: { titulo: 'DEV · Las reglas deny de Read dejan pasar 4 de 11 rutas', url: 'https://dev.to/rulestack/claude-codes-read-deny-rules-let-4-of-11-routes-through-grep-r-a-python-one-liner-and-two-ajf' },
   claudeTag: { titulo: 'Claude Help Center · What is Claude Tag?', url: 'https://support.claude.com/en/articles/15594475-what-is-claude-tag' },
   certEligibility: { titulo: 'Who can take a Claude certification exam', url: 'https://anthropic-partners.skilljar.com/page/certification-eligibility' },
+  // Verificada el 12-nov-2026 (HTTP 200); citada en la presentación de la U10.
+  certFaq: { titulo: 'Claude certifications · FAQ', url: 'https://anthropic-partners.skilljar.com/page/faq-certifications' },
+  // Verificada el 12-nov-2026 (HTTP 200); citada en la presentación y la guía de la U10 (asiento Team Standard).
+  pricing: { titulo: 'Planes y precios de Claude', url: 'https://claude.com/pricing' },
   codeMigrationBlog: { titulo: 'Claude Blog · AI code migration', url: 'https://claude.com/blog/ai-code-migration' },
   // Fuente [20]. Verificada el 10-nov-2026: on demand, pide registrarse con un formulario.
   modernizingLegacyWebinar: { titulo: 'Webinar · Modernizing legacy code with Claude Code', url: 'https://claude.com/resources/webinars/modernizing-legacy-code-with-claude-code' },
   dora: { titulo: 'DORA · métricas de entrega de software', url: 'https://dora.dev/' },
+  // Verificada el 12-nov-2026 (HTTP 200); citada en la presentación y la guía de la U10.
+  doraMetrics: { titulo: 'DORA · software delivery performance metrics', url: 'https://dora.dev/guides/dora-metrics-four-keys' },
   aiNativeSdlcEs: { titulo: 'Manual de estrategias de SDLC nativo de IA', url: 'https://claude.com/es/resources/articles/the-ai-native-sdlc-playbook' },
 };
 

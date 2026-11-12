@@ -1,42 +1,50 @@
 /**
- * Unidad 10 · Fuente: fuentes/unidades/unidad-10.md
+ * Unidad 10 · Fuente: fuentes/unidades/unidad-10.md (versión 2, 12-nov-2026)
  */
-import { ACADEMY_CATALOG, BIBLIO, DOCS, academyVideo } from '../links.js';
+import { ACADEMY_COURSES, BIBLIO, DOCS, MATERIAL_REPO, academyVideo } from '../links.js';
+
+/** Carpeta de la Unidad 10 en el repositorio de material (rama main). */
+const U10_TREE = `${MATERIAL_REPO.url}/tree/main/unidad-10`;
 
 export default {
   id: 'u10',
   numero: 10,
   titulo: 'Retorno de la inversión (ROI), productividad y taller integrador',
   tituloCorto: 'ROI y taller integrador',
-  descripcionBreve: 'Métricas que importan, ROI con supuestos escritos y el plan integrado para la gerencia.',
+  descripcionBreve: 'Medir lo que importa, ROI con supuestos y un plan integrado en PDF para la gerencia.',
   dia: 5,
   bloque: 'tarde',
   nivel: '95 → 100',
 
-  foco: 'Reunir los datos reales del caso hilo, calcular el ROI con supuestos explícitos y entregar un plan integrado de una página que ayude a la gerencia a decidir.',
+  foco: 'Decirle a la gerencia, en un PDF, cuánto cuesta, cuánto aporta y qué sigue con la forma de trabajar de Pedidos Web: un ROI honesto, un informe de 1 página y un plan que conecta tus entregables.',
   // Objetivos derivados de los conceptos C1–C4 del archivo fuente.
   objetivos: [
-    'Medir velocidad y calidad (DORA), no líneas de código.',
-    'Calcular un ROI con supuestos escritos, dos escenarios y análisis de sensibilidad.',
-    'Contar para decidir: un informe ejecutivo de una página con una recomendación.',
-    'Integrar los nueve entregables del curso en un solo plan.',
+    'Medir si la forma de trabajar sirve con las 5 métricas DORA, no solo si se usa.',
+    'Calcular un ROI como rango: supuestos con tipo y fuente, dos escenarios y sensibilidad.',
+    'Contar para decidir: un informe de 1 página en 5 franjas, con recomendación y Diligencia.',
+    'Conectar tus nueve entregables en un plan que la gerencia pueda aprobar o rechazar.',
   ],
-  licencias: ['Claude Team Standard'],
-  herramientas: ['Skill `pdf-con-estilo` (Unidad 9)', 'Claude Code', 'Planilla o `roi/modelo-roi.md`'],
-  requisitos: [],
-  pendientes: [
+  licencias: ['Claude Pro (demos del instructor)', 'Claude Team Standard (taller; también funciona con Pro)'],
+  herramientas: ['Claude Code 2.1.281 o superior', 'Skill `pdf-con-estilo` de la U9 (Python con Playwright)'],
+  requisitos: [
     {
-      titulo: 'Cuestionario final',
-      texto: 'El instructor entrega `cuestionario-final.md`. A partir de ese archivo se genera una página web interactiva con puntaje y la explicación de cada respuesta, que se publica en el paso 5 del taller.',
+      titulo: 'Tu pedidos-web con lo nuevo de la Unidad 10',
+      texto: 'En el receso, Claude Code trae `docs/roi/` (el CSV y dos plantillas). Se suma; no reemplaza nada tuyo.',
+      enlace: { titulo: 'README de pedidos-web (camino A)', url: `${U10_TREE}/taller/pedidos-web` },
+    },
+    {
+      titulo: 'Tu Skill `pdf-con-estilo` funcionando',
+      texto: 'La usas en la etapa 3. Si falla, reinstala Playwright (en Windows PowerShell, `py -m` en vez de `python3 -m`).',
+      codigo: { lenguaje: 'bash', contenido: 'python3 -m pip install playwright markdown\npython3 -m playwright install chromium' },
     },
   ],
+  pendientes: [],
   catedra: [
-    { titulo: 'Apertura: conceptos fundamentales y material oficial', minutos: 5 },
-    { titulo: 'C1 · Medir lo que importa: "La métrica trampa"', minutos: 15 },
-    { titulo: 'C2 · ROI con supuestos: ROI en una planilla', minutos: 25 },
-    { titulo: 'C3 · Contar para decidir: el informe en 1 página', minutos: 15 },
-    { titulo: 'C4 · Integrar: el recorrido de 0 a 100', minutos: 15 },
-    { titulo: 'Cierre y temas para investigar', minutos: 10 },
+    { titulo: 'Apertura (láminas 1–3) y repaso «Antes del receso» (lámina 18)', minutos: 6 },
+    { titulo: 'C1 · Medir lo que importa: DORA, panel de analytics y demo «La métrica trampa» (arriendo-web)', minutos: 16 },
+    { titulo: 'C2 · ROI con supuestos: tres tipos de supuesto, escenarios, sensibilidad y demo «ROI con supuestos» (arriendo-web)', minutos: 18 },
+    { titulo: 'C3 · Contar para decidir: informe en 5 franjas, Diligencia y demo «El informe en 1 página» (arriendo-web)', minutos: 14 },
+    { titulo: 'C4 · Integrar: de 0 a 100, seis prácticas y cómo seguir', minutos: 6 },
   ],
 
   conceptos: {
@@ -44,39 +52,35 @@ export default {
       {
         slug: 'metricas-dora',
         titulo: 'Métricas DORA',
-        resumen: 'Frecuencia de despliegue, tiempo de entrega, tasa de fallas por cambio y tiempo de recuperación.',
+        resumen: 'Cinco métricas en dos grupos: throughput e inestabilidad.',
         explicacion: [
-          'Las métricas de entrega DORA miden velocidad y estabilidad: frecuencia de despliegue, tiempo de entrega de un cambio, tasa de fallas por cambio y tiempo de recuperación. Se complementan con los defectos escapados a producción.',
-          'Las métricas de adopción del panel de Claude Code (usuarios activos, líneas aceptadas, tasa de aceptación, PR con asistencia) son útiles, pero **no miden valor por sí solas**: las líneas aceptadas no descuentan las que después se borran.',
+          'DORA mide la entrega de software con **5 métricas** en 2 grupos. **Throughput:** change lead time, deployment frequency y failed deployment recovery time. **Inestabilidad:** change fail rate y deployment rework rate. La adopción dice si se usa; DORA dice si sirve.',
+          'El panel de analytics de Claude Code mide adopción: usuarios activos y sesiones, líneas aceptadas y tasa de aceptación. La contribución (PR y líneas con Claude Code) está en beta con la GitHub app y no está disponible con Zero Data Retention. Usar no es aportar, aceptar no es revisar, y las líneas aceptadas no descuentan las que después se borran.',
         ],
         ejemplo: {
           tipo: 'texto',
-          contenido: '"La métrica trampa": el equipo A acepta 10.000 líneas de IA al mes y tiene 30 defectos; el B acepta 2.000 y tiene 4. ¿Cuál rinde más y qué falta saber para decidir?',
+          contenido: 'Demo 1, «La métrica trampa» (arriendo-web): los equipos ficticios Tarifas y Reservas, 8 semanas. Primero: «Con solo la columna lineas_aceptadas, ¿qué equipo rinde más?». Después: «Ahora usa las columnas DORA, defectos y retrabajo. ¿Cambia tu respuesta?». La conclusión se da vuelta: Reservas rinde más, y cada afirmación cita una columna del CSV.',
         },
         nota: '',
-        fuente: BIBLIO.dora,
+        fuente: BIBLIO.doraMetrics,
       },
       {
         slug: 'modelo-roi',
         titulo: 'Modelo de ROI con escenarios y sensibilidad',
-        resumen: 'ROI = (beneficio − costo) / costo, con cada supuesto escrito y su fuente.',
+        resumen: 'ROI = (beneficio − costo) / costo, con cada supuesto marcado como oficial, medido o estimado.',
         explicacion: [
-          '**Costos:** asientos según el contrato, uso de API (Unidades 6 y 7), tiempo de capacitación y tiempo de adopción. Para el uso de Claude Code, `/cost` da el consumo de una sesión y el panel el de la organización.',
-          '**Beneficios:** horas ahorradas por tarea × valor hora, defectos evitados × costo de un defecto en producción y un tiempo de entrega más corto.',
-          'Siempre dos escenarios, **conservador** y **optimista**, y un análisis de sensibilidad: ¿qué pasa si el ahorro real es la mitad?',
+          '**Costos:** asientos, capacitación y curva de adopción; es decir, lo que pagas y lo que cuesta aprender. **Beneficios:** horas ahorradas × valor hora y defectos evitados × costo en producción. El uso extra se revisa con `/usage`.',
+          'Cada supuesto lleva su **tipo** y su fuente. **Oficial:** publicado por el proveedor, con fecha (asiento Team Standard, USD 25/mes en la página de precios, 12-nov-2026). **Medido:** dato del propio piloto (lead time, defectos y retrabajo del CSV). **Estimado:** juicio del equipo, siempre el más débil (valor hora de USD 20, supuesto del ejercicio). Si no puedes decir de dónde salió un número, no entra al modelo.',
+          'Siempre dos escenarios, **conservador** (el ahorro más bajo que defenderías) y **optimista** (el piloto se replica tal cual), y una sensibilidad: ¿y si el ahorro es la mitad? Si el ROI cambia de signo con un solo supuesto, ese supuesto es lo primero que hay que medir.',
         ],
         ejemplo: {
           tipo: 'codigo',
-          lenguaje: 'markdown',
-          titulo: 'roi/modelo-roi.md (estructura)',
-          contenido: `ROI = (beneficio − costo) / costo
-
-| Supuesto | Valor conservador | Valor optimista | Fuente |
-|---|---|---|---|
-| Horas ahorradas por semana | ... | ... | Unidad 1, paso 3 |
-| Defectos evitados por mes | ... | ... | Unidades 5 y 7 |
-
-Sensibilidad: ¿y si el ahorro real es la mitad?`,
+          lenguaje: 'text',
+          titulo: 'Demo 2 · resultado esperado (arriendo-web, 6 meses, 8 devs)',
+          contenido: `Costo             USD 6.000
+Conservador       +58,7 %
+Optimista         +128 %
+Ahorro a la mitad -10,7 %`,
         },
         nota: '',
         fuente: DOCS.costs,
@@ -84,14 +88,18 @@ Sensibilidad: ¿y si el ahorro real es la mitad?`,
       {
         slug: 'informe-ejecutivo',
         titulo: 'Informe ejecutivo de una página',
-        resumen: 'Problema, qué se hizo, resultados con incertidumbre, recomendación y próximo paso.',
+        resumen: 'Cinco franjas: problema, qué se hizo, resultados, recomendación y próximo paso.',
         explicacion: [
-          'Si alguien de la gerencia lee solo la primera página, debe saber qué decidir. La estructura: problema, qué se hizo, resultados con su incertidumbre, recomendación y próximo paso.',
-          'Diligencia: se declara que el informe se preparó con apoyo de IA y que los números fueron verificados por una persona.',
+          'Si alguien de la gerencia lee solo la primera página, debe saber qué decidir. Las 5 franjas: **1 Problema** (qué decisión hay que tomar y por qué ahora), **2 Qué se hizo** (el piloto en dos líneas, sin jerga), **3 Resultados** (con su rango e incertidumbre), **4 Recomendación** (una sola, que se pueda aprobar o rechazar) y **5 Próximo paso** (quién, qué y para cuándo).',
+          '**Diligencia:** el informe declara que se preparó con apoyo de IA y que una persona verificó las cifras: «Preparado con apoyo de IA; cifras verificadas por [nombre]».',
+          'En la demo 3, «El informe en 1 página» (arriendo-web), Claude Code critica `informe-malo.md` con las 5 franjas y lo reescribe en `docs/roi/informe-ejecutivo.md`, usando solo cifras de `modelo-roi.md` y con la línea de Diligencia.',
         ],
-        ejemplo: null,
+        ejemplo: {
+          tipo: 'texto',
+          contenido: 'Así no: «Implementamos subagentes y hooks; la productividad subió 300 %.» (jerga y ninguna decisión). Así sí: «Recomendamos extenderlo a [__] equipos por [__] meses. Decisión antes del [fecha].» (se aprueba o se rechaza).',
+        },
         nota: '',
-        fuente: { titulo: 'AI Fluency: Framework & Foundations · Descripción y Diligencia (Anthropic Academy)', url: ACADEMY_CATALOG },
+        fuente: ACADEMY_COURSES.aiFluency,
       },
     ],
     fundamentales: [
@@ -100,7 +108,8 @@ Sensibilidad: ¿y si el ahorro real es la mitad?`,
         titulo: 'Medir lo que importa',
         resumen: 'Velocidad y calidad, no líneas de código.',
         explicacion: [
-          'Medir solo actividad (líneas, sesiones) premia el volumen, no el valor. Lo que importa es si se entrega más rápido y con menos fallas.',
+          'Medir solo actividad (líneas, sesiones) premia el volumen, no el valor. La adopción dice si se usa; DORA dice si sirve: velocidad de entrega (throughput) y estabilidad (inestabilidad).',
+          'Ningún indicador se mira solo. En la demo 1, Tarifas y Reservas (equipos ficticios) se leen primero con `lineas_aceptadas` y después con DORA, defectos y retrabajo: la métrica trampa es quedarse con la primera lectura.',
         ],
         ejemplo: null,
         nota: '',
@@ -111,101 +120,117 @@ Sensibilidad: ¿y si el ahorro real es la mitad?`,
         titulo: 'ROI con supuestos',
         resumen: 'Sin supuestos escritos, el número no vale.',
         explicacion: [
-          'Un ROI con supuestos honestos y un resultado modesto vale más que uno espectacular sin respaldo.',
-          'Advertencia del curso: los datos de un curso son una muestra pequeña. El ROI se trabaja como **ejercicio de método**, no como evidencia de productividad.',
+          'Cada supuesto es **oficial**, **medido** o **estimado**, y lleva su fuente. Un ROI honesto y modesto convence más que uno espectacular sin respaldo.',
+          'Es un rango, no un número: conservador, optimista y sensibilidad. Si no puedes decir de dónde salió un número, no entra al modelo.',
+          'Advertencia del curso: los datos son ficticios y la muestra es pequeña. El ROI se trabaja como **ejercicio de método**, no como evidencia de productividad.',
         ],
         ejemplo: null,
         nota: '',
-        fuente: DOCS.costs,
+        fuente: BIBLIO.pricing,
       },
       {
         slug: 'contar-para-decidir',
         titulo: 'Contar para decidir',
         resumen: 'Una página, una recomendación.',
         explicacion: [
-          'Un informe malo está lleno de tecnicismos, no tiene recomendación y trae cifras sin respaldo. Uno bueno cabe en una página y termina en una decisión.',
+          'Un informe malo está lleno de tecnicismos, no tiene recomendación y trae cifras sin fuente. Uno bueno cabe en una página, abre con la recomendación y termina en una decisión.',
+          'La Diligencia declara el apoyo de IA y quién verificó las cifras. El anexo del plan no repite tus entregables: los cita.',
         ],
         ejemplo: null,
         nota: '',
-        fuente: { titulo: 'AI Fluency: Framework & Foundations (Anthropic Academy)', url: ACADEMY_CATALOG },
+        fuente: ACADEMY_COURSES.aiFluency,
       },
       {
         slug: 'integrar',
         titulo: 'Integrar',
         resumen: 'Nueve entregables, un solo plan.',
         explicacion: [
-          'Cada entregable alimenta al siguiente: el mapa del SDLC lleva al flujo SDD; de ahí salen el módulo documentado, el diagnóstico, la migración, el pipeline, el code review, la gobernanza, el plan de la BU y, finalmente, el plan integrado.',
-          'El plan integrado no repite los nueve entregables: los conecta. Próximos pasos: Comunidad Pulso Devs, cursos de Claude Academy y la ruta *Claude Certified Developer – Foundations*, que requiere pertenecer a una organización del Claude Partner Network.',
+          'De 0 a 100, cada entregable alimenta al siguiente: mapa del SDLC (U1), flujo SDD (U2), módulo documentado (U3), diagnóstico del legado (U4), plan de migración (U5), pipeline con tests (U6), code review (U7), guía de gobernanza (U8) y plan de la BU con el playbook (U9). El plan integrado (U10) no repite los nueve: los conecta.',
+          'Seis prácticas que te llevas: spec primero (U2), tú firmas (U2), pasos chicos y tests (U3 · U6), mirar sin tocar (U4 · U5), la IA comenta y tú decides (U7) y política ejecutable (U8 · U9). MCP, Agent Skills y `AGENTS.md` son estándares abiertos que otras herramientas leen en distinto grado.',
+          'Para seguir: los cursos oficiales de Claude Academy y la certificación *Claude Certified Developer – Foundations* (USD 125, solo para personas de organizaciones del Claude Partner Network).',
         ],
         ejemplo: null,
         nota: '',
-        fuente: BIBLIO.certEligibility,
+        fuente: BIBLIO.certFaq,
       },
     ],
   },
 
   laboratorio: {
     nombre: 'Plan integrado de adopción de IA',
-    modalidad: 'Grupos de 3 (los mismos de la Unidad 9)',
-    duracion: 80,
-    caso: 'Termina el piloto de modernización de Pedidos. La gerencia general debe decidir si extiende la forma de trabajar del equipo de Pedidos Web a toda la empresa, y pide **un solo documento** que lo resuma todo.',
-    problematica: 'El equipo tiene muchos artefactos (mapa, specs, diagnóstico, código migrado, pipeline, `REVIEW.md`, gobernanza y plan de la BU), pero repartidos y escritos para técnicos. La gerencia necesita saber **cuánto cuesta, cuánto aporta, qué riesgos hay y qué sigue**.',
-    objetivo: 'Reunir los datos reales del caso hilo, calcular el ROI con supuestos explícitos y entregar el plan integrado como PDF, con la Skill `pdf-con-estilo` de la Unidad 9.',
+    modalidad: 'Individual',
+    duracion: 90,
+    caso: 'Terminó el piloto. La gerencia decide si extiende la forma de trabajar de Pedidos Web, y no va a leer nueve documentos.',
+    problematica: 'La gerencia necesita cuatro respuestas: **¿cuánto cuesta?** (asientos, capacitación y aprendizaje), **¿cuánto aporta?** (horas, defectos y tiempos de entrega), **¿qué riesgos hay?** (qué podría salir mal y cómo se controla) y **¿qué sigue?** (la recomendación y el próximo paso). Los datos son ficticios y la muestra es pequeña: este ROI es un ejercicio de método, no una prueba de productividad.',
+    objetivo: 'Decirle a la gerencia, en un PDF, cuánto cuesta, cuánto aporta y qué sigue con la forma de trabajar de Pedidos Web.',
     // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
-    resumen: 'Termina el piloto y la gerencia general debe decidir si extiende la forma de trabajar de Pedidos Web a toda la empresa. Los artefactos del caso hilo están repartidos y escritos para técnicos; la gerencia necesita saber cuánto cuesta, cuánto aporta, qué riesgos hay y qué sigue. En grupos de 3, reúnes los datos reales de las unidades anteriores, calculas el ROI con supuestos explícitos y escenarios, redactas el informe ejecutivo de 1 página y generas el plan integrado en PDF con `pdf-con-estilo`. Cierras con las presentaciones y el cuestionario final. Todo el paso a paso está en la guía.',
+    resumen: 'Trabajas solo en tu `pedidos-web` para decirle a la gerencia, en un PDF, cuánto cuesta, cuánto aporta y qué sigue con la forma de trabajar de Pedidos Web. Terminó el piloto y la gerencia decide si la extiende; no va a leer nueve documentos. Traes `docs/roi/` con Claude Code (el CSV del piloto y dos plantillas) y avanzas en 3 etapas. Primero mides: reúnes `datos-piloto.csv` y tu evidencia de las unidades 5 a 9, cada número con su fuente y FALTA donde no hay dato. Después armas `modelo-roi.md`: cada supuesto con su tipo (oficial, medido o estimado), dos escenarios y la sensibilidad. Por último completas `plan-integrado.md` (informe de 1 página en 5 franjas y anexo) y generas `plan-integrado.pdf` con tu Skill `pdf-con-estilo`. Cierras con «Tu reto», obligatorio: el punto de equilibrio, como sección nueva en tu modelo y en tu PDF. Los datos son ficticios y la muestra es pequeña: es un ejercicio de método. El paso a paso está en la guía.',
     pasos: [
-      { minutos: 15, texto: 'Reunir los datos del caso hilo con Claude: tiempos con y sin IA (U1), tests y cobertura (U6), defectos corregidos (U5), hallazgos de revisión (U7) y riesgos validados (U8). Usar el dataset de respaldo si falta algún dato.', conceptos: ['C1'] },
-      { minutos: 20, texto: 'Calcular el ROI en `roi/modelo-roi.md` o en una planilla: costos, beneficios y supuestos con su fuente, escenarios conservador y optimista, y una sensibilidad.', conceptos: ['C2'] },
-      { minutos: 20, texto: 'Redactar el **informe ejecutivo de 1 página** y armar el plan integrado: roadmap, indicadores, gobernanza, ganancias estimadas y estrategia de evolución. Generar el PDF con `pdf-con-estilo`.', conceptos: ['C3', 'C4'] },
-      { minutos: 15, texto: '**Entrega y presentaciones.** Todos los grupos suben su PDF. Se sortean 3 grupos que presentan 4 minutos cada uno, con 3 minutos de comentarios en total.', conceptos: ['C3'] },
-      { minutos: 10, texto: '**Cuestionario final** (página web interactiva) y cierre del curso.', conceptos: [] },
+      { minutos: 5, texto: 'Preparación: pídele a Claude Code que traiga a tu repo lo nuevo de la Unidad 10 (`docs/roi/` con `datos-piloto.csv`, `modelo-roi.md` y `plan-integrado.md`), sin tocar ningún otro archivo y mostrándote el diff antes del commit. Comprueba que tu Skill `pdf-con-estilo` genera un PDF de prueba.', conceptos: [] },
+      { minutos: 20, texto: 'Medir: pídele a Claude Code que lea `docs/roi/datos-piloto.csv` y tus entregables de las unidades 5 a 9, y que complete la sección «Datos» de `docs/roi/modelo-roi.md` con cada número y su fuente (archivo y semanas). Si un dato no está, que escriba FALTA.', conceptos: ['C1'] },
+      { minutos: 30, texto: 'ROI con supuestos: pídele a Claude Code que complete `docs/roi/modelo-roi.md`: cada supuesto con su tipo (oficial, medido o estimado) y su fuente, escenarios conservador y optimista, y la sensibilidad con el ahorro a la mitad, mostrando cada cálculo. Revisa a mano al menos una cuenta y sube el commit.', conceptos: ['C2'] },
+      { minutos: 35, texto: 'Plan integrado en PDF: pídele a Claude Code que complete `docs/roi/plan-integrado.md` (informe de 1 página en 5 franjas, con la línea de Diligencia, y el anexo), solo con cifras de `modelo-roi.md`, y que genere `docs/roi/plan-integrado.pdf` con tu Skill `pdf-con-estilo`, sin tocar su CSS. Súbelo a `main`.', conceptos: ['C3', 'C4'] },
+      // Etapa obligatoria sin minutos asignados: si no alcanzas en clase, se termina en casa.
+      { minutos: null, texto: 'Tu reto (obligatorio): ¿cuántas horas ahorradas por dev al mes dejan el ROI en 0? Súmalo como sección «Punto de equilibrio» a tu modelo y a tu PDF, con el mismo modelo de la etapa 2, y revisa tú el despeje. El pedido a Claude Code lo escribes tú, con contexto, qué quieres y cómo sabes que quedó bien.', conceptos: ['C2'] },
     ],
-    puntosControl: ['Cada número del modelo de ROI tiene su supuesto escrito (paso 2).'],
+    puntosControl: [
+      '`docs/roi/` está en tu repo, el diff no muestra nada más y tu Skill genera un PDF de prueba (preparación).',
+      'Cada dato tiene archivo y semanas; lo que falta dice FALTA (etapa 1).',
+      'Ningún número sin supuesto: cada uno con su tipo y su fuente (etapa 2).',
+      'El PDF abre con la recomendación en la página 1 y la línea de Diligencia (etapa 3).',
+      '`modelo-roi.md` y `plan-integrado.pdf` tienen la sección «Punto de equilibrio» y están en `main` (Tu reto).',
+    ],
     resultadoEsperado: [
-      'Un ROI con supuestos honestos y un resultado modesto vale más que uno espectacular sin respaldo.',
-      'Si alguien de la gerencia lee solo la primera página, debe saber qué decidir.',
-      'El plan integrado no repite los nueve entregables: los conecta.',
+      'Un ROI honesto, con sus supuestos: un rango, no un solo número.',
+      'Un informe de 1 página para decidir: la recomendación está en la página 1.',
+      'Un plan que conecta tus entregables: el anexo los cita, no los repite.',
+      'Un ROI honesto y modesto convence más que uno espectacular sin respaldo.',
     ],
     siTeTrabas: [
-      'Las definiciones de las métricas DORA.',
-      'La documentación de costos y de analytics de Claude Code.',
-      'Tu propia Skill `pdf-con-estilo` de la Unidad 9.',
+      '*Track team usage with analytics*, para entender qué mide el panel y qué no (etapa 1).',
+      '*DORA\'s software delivery performance metrics*, para las 5 métricas en dos grupos (etapa 1).',
+      '*Manage costs effectively*, para los costos de Claude Code por dev (etapa 2).',
+      '*Planes y precios de Claude*, para el asiento Team Standard (etapa 2).',
+      '*AI Fluency: Framework & Foundations*, para Descripción y Diligencia (etapa 3).',
     ],
-    erroresFrecuentes: [], // TODO: el archivo fuente no trae una lista de errores frecuentes
-    planB: [
-      'Dataset de respaldo para grupos sin mediciones completas.',
-      'Si la Skill de PDF falla, se entrega el HTML.',
+    erroresFrecuentes: [
+      'El ROI da 900 % → ¿multiplicaste una sola tarea por todo el horizonte? Revisa las horas ahorradas.',
+      'Los costos son solo los asientos → faltan la capacitación y la curva de adopción.',
+      'Claude agregó un dato que no está en el CSV → cada número necesita archivo y semanas; si no está, dice FALTA.',
+      'El ROI da negativo → no es un error: infórmalo con su rango y el supuesto que lo mueve.',
+      'La Skill no genera el PDF → ¿está Playwright instalado y la Skill en `.claude/skills/pdf-con-estilo/`?',
     ],
+    planB: [],
     extension: '',
   },
 
   material: [
-    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 10', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u10/presentacion-clase.pdf', disponible: false },
-    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller integrador', archivo: 'assets/material/u10/guia-taller.pdf', disponible: false },
-    { tipo: 'pdf', titulo: 'Plantilla de informe ejecutivo de 1 página', archivo: 'assets/material/u10/plantilla-informe.pdf', disponible: false },
-    { tipo: 'png', titulo: 'Infografía: el recorrido de 0 a 100', archivo: 'assets/material/u10/infografia.png', disponible: false },
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 10', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u10/presentacion-clase.pdf', peso: '6,8 MB', disponible: true },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Plan integrado de adopción de IA"', archivo: 'assets/material/u10/guia-taller.pdf', disponible: true },
+    // destino: 'taller' → se ve en la pestaña Taller, no en Recursos.
+    { tipo: 'enlace', titulo: 'Proyecto del taller: pedidos-web (base de la U10)', descripcion: 'El README explica qué traer a tu repo (camino A): solo se suma `docs/roi/`.', url: `${U10_TREE}/taller/pedidos-web`, disponible: true, destino: 'taller' },
+    { tipo: 'enlace', titulo: 'Demos de la unidad: arriendo-web', descripcion: 'Mide, calcula y cuenta.', url: `${U10_TREE}/demos`, disponible: true },
   ],
 
   videos: [
     academyVideo('aiFluency', 'Descripción y Diligencia.'),
     academyVideo('aiNativeSdlc'),
-    academyVideo('claudePlatform101', 'Curso previo de la ruta Claude Certified Developer – Foundations.'),
+    academyVideo('claudePlatform101', 'Curso de Claude Academy sobre la plataforma.'),
   ],
 
   paraInvestigar: [
     'API de analytics de Enterprise y OpenTelemetry para métricas propias.',
     'Estudios publicados sobre productividad con IA en desarrollo de software (citar siempre la fecha y la muestra).',
     'El marco DORA completo.',
-    'Ruta *Claude Certified Developer – Foundations* y su curso previo *Claude Platform 101*.',
+    'La certificación *Claude Certified Developer – Foundations* (USD 125, solo para personas de organizaciones del Claude Partner Network).',
   ],
 
   entregable: {
     nombre: 'Plan integrado de adopción de IA',
     criterios: [
-      'Informe ejecutivo de 1 página con recomendación y próximo paso.',
-      'ROI con supuestos escritos y su fuente, escenarios conservador y optimista, y sensibilidad.',
-      'Roadmap, indicadores, gobernanza y estrategia de evolución.',
-      'PDF generado con la Skill `pdf-con-estilo`.',
+      '`docs/roi/modelo-roi.md` con cada número con su tipo y su fuente, dos escenarios y la sensibilidad.',
+      '`docs/roi/plan-integrado.pdf` en `main` con el informe de 1 página en 5 franjas, la línea de Diligencia y el anexo, generado con `pdf-con-estilo`.',
+      'La sección «Punto de equilibrio» en el modelo y en el PDF (tu reto).',
     ],
     alimentaA: null, // Cierre del curso
   },

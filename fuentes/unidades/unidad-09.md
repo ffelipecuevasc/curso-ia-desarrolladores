@@ -100,7 +100,7 @@ Las etapas con minutos suman 80'. «Tu reto» no tiene minutos asignados en el s
 
 **Qué investigar si te trabas** (fuentes de la guía, consultadas el 12-nov-2026). Etapa 1: *Rastrear el uso del equipo con análisis* (`code.claude.com/docs/es/analytics`). Etapa 2: *Create a Claude Code plugin* (`code.claude.com/docs/en/plugins/create`) y *Use Claude Academy from Claude* (`academy.claude.com/help/mcp`). Etapa 2 y tu reto: *Create a marketplace* (`code.claude.com/docs/en/plugin-marketplaces`). Etapa 3: *Extend Claude with skills* (`code.claude.com/docs/en/skills`).
 
-- **Entregable:** *Plan de evolución de la IA para una Business Unit* en PDF (`docs/adopcion/plan-evolucion.md` con el diagnóstico de los 4 equipos y su PDF, generado con `pdf-con-estilo`) más `pedidos-playbook` 1.0.0 en `main`, instalado por un compañero (incluye `planificador-proyectos-web` y el MCP `claude-academy`), y la versión 1.1.0 recibida por tu compañero (tu reto). Hereda a la Unidad 10: la Skill `pdf-con-estilo` y los grupos de 3. No borres tu plugin ni tu marketplace: los vuelves a usar.
+- **Entregable:** *Plan de evolución de la IA para una Business Unit* en PDF (`docs/adopcion/plan-evolucion.md` con el diagnóstico de los 4 equipos y su PDF, generado con `pdf-con-estilo`) más `pedidos-playbook` 1.0.0 en `main`, instalado por un compañero (incluye `planificador-proyectos-web` y el MCP `claude-academy`), y la versión 1.1.0 recibida por tu compañero (tu reto). Hereda a la Unidad 10: la Skill `pdf-con-estilo`. El taller de la U10 es individual y no toca tu plugin ni tu marketplace, pero no los borres.
 - **Puntos de control:**
   - **Preparación:** el diff solo muestra los 2 archivos nuevos en `docs/adopcion/` y tu repo sigue público en GitHub.
   - **Etapa 1:** cada equipo tiene un nivel y dos indicadores del CSV que lo respaldan, escritos en `plan-evolucion.md`.
@@ -117,4 +117,4 @@ Las etapas con minutos suman 80'. «Tu reto» no tiene minutos asignados en el s
 - **Extensión opcional:** ninguna definida en esta versión.
 
 ## Cierre (15')
-Tres alumnos muestran el plugin instalado en el equipo de su compañero y su PDF. **Entregable:** plan de evolución en PDF más `pedidos-playbook` en `main`. **Esta tarde, Unidad 10:** workshop integrador; llevas `pdf-con-estilo` y tu grupo de 3. Idea final: *las buenas prácticas no se leen: se instalan con un comando.*
+Tres alumnos muestran el plugin instalado en el equipo de su compañero y su PDF. **Entregable:** plan de evolución en PDF más `pedidos-playbook` en `main`. **Esta tarde, Unidad 10:** workshop integrador, individual; llevas tu Skill `pdf-con-estilo` y tu `pedidos-web`. Idea final: *las buenas prácticas no se leen: se instalan con un comando.*
