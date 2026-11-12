@@ -1,43 +1,54 @@
 /**
- * Unidad 9 · Fuente: fuentes/unidades/unidad-09.md
+ * Unidad 9 · Fuente: fuentes/unidades/unidad-09.md (versión 2, 12-nov-2026)
  */
-import { ACADEMY_CATALOG, BIBLIO, DOCS, STANDARDS, academyVideo } from '../links.js';
+import { ACADEMY_CATALOG, BIBLIO, DOCS, MATERIAL_REPO, STANDARDS, academyVideo } from '../links.js';
+
+/** Carpeta de la Unidad 9 en el repositorio de material (rama main). */
+const U9_TREE = `${MATERIAL_REPO.url}/tree/main/unidad-9`;
 
 export default {
   id: 'u09',
   numero: 9,
   titulo: 'Escalabilidad, madurez organizacional y adopción de la IA',
   tituloCorto: 'Madurez y adopción',
-  descripcionBreve: 'Modelo de madurez, multiplicadores, playbook como plugin y MCP de solo lectura.',
+  descripcionBreve: 'Madurez, multiplicadores, playbook como plugin instalable y el MCP de Claude Academy.',
   dia: 5,
   bloque: 'mañana',
   nivel: '88 → 95',
 
-  foco: 'Diagnosticar la madurez de una Business Unit, diseñar su roadmap y entregar un playbook instalable (plugin con MCP de solo lectura) y un plan en PDF generado por una Skill propia.',
+  foco: 'Que otro equipo instale con un comando la forma de trabajar de Pedidos Web, y entregar a la BU un plan de evolución en PDF: diagnóstico de madurez, playbook como plugin y una Skill de PDF.',
   // Objetivos derivados de los conceptos C1–C4 del archivo fuente.
   objetivos: [
-    'Ubicar equipos en un modelo de madurez de 5 niveles con indicadores de adopción.',
-    'Diseñar una estrategia de adopción con piloto, champions y multiplicadores.',
-    'Empaquetar las buenas prácticas como plugin instalable desde un marketplace interno.',
-    'Elegir superficie y modelo según la tarea, y apoyarse en estándares abiertos para no quedar atado.',
+    'Ubicar equipos en el modelo de madurez de 5 niveles, con indicadores del panel como evidencia.',
+    'Armar una adopción con piloto chico, champions por equipo y un senior que multiplica.',
+    'Empaquetar tus buenas prácticas en un plugin que otro equipo instala con un comando.',
+    'Elegir superficie y modelo según la tarea, y apoyarte en estándares abiertos para no quedar atado.',
   ],
-  licencias: ['Claude Team Standard'],
-  herramientas: ['Docker con `pedidos-pg` (Unidad 5)', 'Python 3 con Playwright', 'Plugins y marketplaces de Claude Code', 'Servidor MCP de PostgreSQL'],
+  licencias: ['Claude Pro (demos del instructor)', 'Claude Team Standard (taller; también funciona con Pro)', 'GitHub gratis con repo público'],
+  herramientas: ['Claude Code 2.1.281 o superior (plugins y marketplaces)', '`claude plugin validate`', '`/plugin` y `/mcp`', 'MCP `claude-academy`', 'Python 3 con Playwright', 'Git Bash (solo Windows)'],
   requisitos: [
     {
-      titulo: 'Preparación previa',
-      texto: 'Lo usa la Skill de PDF del taller. Si falla, sirve Chrome o Edge en modo headless.',
-      codigo: { lenguaje: 'bash', contenido: 'pip install playwright && playwright install chromium' },
+      titulo: 'Tu pedidos-web con lo nuevo de la Unidad 9',
+      texto: 'En el receso, Claude Code trae `docs/adopcion/` (el CSV y una plantilla). Se suma; no reemplaza nada tuyo.',
+      enlace: { titulo: 'README de pedidos-web (camino A)', url: `${U9_TREE}/taller/pedidos-web` },
+    },
+    {
+      titulo: 'Playwright, antes de la clase',
+      texto: 'Lo usa tu Skill de PDF en la etapa 3. En Windows PowerShell usa `py -m` en vez de `python3 -m`.',
+      codigo: { lenguaje: 'bash', contenido: 'python3 -m pip install playwright markdown\npython3 -m playwright install chromium' },
+    },
+    {
+      titulo: 'Repo público y un compañero de tu grupo de 3',
+      texto: 'Tu compañero instala tu plugin desde tu GitHub: sin repo público no hay plugin. Decide quién instalará el tuyo.',
     },
   ],
   pendientes: [],
   catedra: [
-    { titulo: 'Apertura: conceptos fundamentales y material oficial', minutos: 5 },
-    { titulo: 'C1 · Madurez: modelo de 5 niveles e indicadores', minutos: 15 },
-    { titulo: 'C2 · Multiplicadores: piloto, champions y ritmo', minutos: 10 },
-    { titulo: 'C3 · Playbook como código: plugins y marketplace', minutos: 25 },
-    { titulo: 'C4 · Herramienta justa: superficie, modelo y MCP', minutos: 20 },
-    { titulo: 'Cierre y temas para investigar', minutos: 10 },
+    { titulo: 'Apertura (láminas 1–3) y repaso «Antes del receso» (lámina 22)', minutos: 6 },
+    { titulo: 'C1 · Madurez: modelo de 5 niveles, analytics y actividad «¿En qué nivel estamos?»', minutos: 10 },
+    { titulo: 'C2 · Multiplicadores: piloto, champions, ritmo y tres errores', minutos: 6 },
+    { titulo: 'C3 · Playbook como código: plugins, marketplace y demos «Empaqueta lo que ya funciona» e «Instálalo como otro equipo» (arriendo-web)', minutos: 25 },
+    { titulo: 'C4 · Herramienta justa: superficie, modelo, actividad y demo «Súmale datos de solo lectura» (arriendo-web)', minutos: 13 },
   ],
 
   conceptos: {
@@ -47,44 +58,44 @@ export default {
         titulo: 'Plugin de Claude Code',
         resumen: 'Empaqueta Skills, subagentes, hooks y servidores MCP en una unidad versionada.',
         explicacion: [
-          'Un plugin reúne Skills, subagentes, hooks y servidores MCP para instalarlos de una vez. Su estructura mínima es `.claude-plugin/plugin.json` más las carpetas `skills/`, `agents/`, `hooks/` y `.mcp.json`.',
-          'Limitación: `AGENTS.md` no viaja dentro del plugin, porque es un archivo de cada repositorio. El playbook lo entrega como **plantilla** para copiar.',
-          'El plugin se valida en una máquina que no sea la de quien lo creó: si solo funciona en la máquina de A, no es un playbook.',
+          'Un plugin reúne Skills, subagentes, hooks y servidores MCP en una unidad versionada que se instala con un comando. `plugin.json` es opcional (solo `name` es obligatorio), pero lo usamos para declarar la `version`. Solo ese archivo va dentro de `.claude-plugin/`: el resto va en la raíz del plugin.',
+          'Todo lo del plugin lleva prefijo (`arriendo-playbook:revisor`) y las rutas internas usan `${CLAUDE_PLUGIN_ROOT}`, nunca una ruta de tu máquina. Se valida con `claude plugin validate`.',
+          '**Lo que no viaja:** `AGENTS.md`, `CLAUDE.md`, `REVIEW.md` y las reglas de permisos son archivos de cada repositorio, así que el playbook los entrega como **plantilla** para copiar. Los secretos tampoco viajan: se piden al instalar. Y un plugin se valida en otra máquina: si solo funciona en la tuya, no es un playbook.',
         ],
         ejemplo: {
           tipo: 'codigo',
           lenguaje: 'text',
-          titulo: 'pedidos-playbook/',
-          contenido: `pedidos-playbook/
+          titulo: 'arriendo-playbook/ (demo 1)',
+          contenido: `arriendo-playbook/
 ├── .claude-plugin/plugin.json
 ├── skills/
-│   ├── documentar-modulo/SKILL.md
-│   └── planificador-proyectos-web/SKILL.md
 ├── agents/revisor.md
-├── hooks/
-├── .mcp.json
-└── plantillas/AGENTS.md`,
+├── hooks/hooks.json
+├── scripts/guardian.sh
+└── .mcp.json`,
         },
         nota: '**Implementación de Claude Code:** el formato de plugins y marketplaces es propio de Claude Code; las Skills y MCP que empaqueta son estándares abiertos.',
-        fuente: BIBLIO.pluginsEs,
+        fuente: DOCS.pluginsCreate,
       },
       {
         slug: 'marketplace',
         titulo: 'Marketplace interno',
         resumen: 'Un repo de GitHub con `.claude-plugin/marketplace.json` desde donde los equipos instalan.',
         explicacion: [
-          'Un marketplace interno es un repositorio de GitHub con `.claude-plugin/marketplace.json`. Los equipos lo agregan una vez y luego instalan los plugins que publica.',
-          'Así, "las buenas prácticas se instalan, no se leen": una actualización del playbook llega a todos los equipos.',
+          'Un marketplace interno es un repositorio de GitHub con `.claude-plugin/marketplace.json`: su `name`, un `owner` y la lista de `plugins`, cada uno con su `source` (por ejemplo `./plugins/arriendo-playbook`). En el taller, tu propio repo `pedidos-web` es el marketplace.',
+          'El id de un plugin es `plugin@marketplace` (`arriendo-playbook@arriendo-vela`). Una actualización llega a los equipos cuando cambia `version`. En el curso, los repos son públicos y sin secretos.',
+          'Así las buenas prácticas se instalan con un comando, en vez de leerse.',
         ],
         ejemplo: {
           tipo: 'codigo',
           lenguaje: 'bash',
           titulo: 'Dentro de Claude Code',
-          contenido: `/plugin marketplace add org/repo
-/plugin install pedidos-playbook`,
+          contenido: `/plugin marketplace add <ruta-local>
+/plugin install arriendo-playbook@arriendo-vela
+/plugin marketplace update arriendo-vela`,
         },
         nota: '',
-        fuente: BIBLIO.pluginsReference,
+        fuente: DOCS.pluginMarketplaces,
       },
       {
         slug: 'mcp',
@@ -92,12 +103,12 @@ export default {
         resumen: 'Un protocolo abierto para conectar agentes con herramientas y datos externos.',
         explicacion: [
           'MCP define cómo un agente se conecta con servidores que exponen herramientas y datos. Un mismo servidor MCP sirve para distintos clientes compatibles.',
-          'En la demo "Mi primer MCP en 3 minutos" se conecta el servidor MCP oficial de Claude Academy (solo lectura, sin autenticación), se le pide buscar cursos sobre subagentes y se revisan sus herramientas en `/mcp`.',
+          'Un servidor MCP también puede viajar dentro de un plugin, en su `.mcp.json`. En la demo 3, «Súmale datos de solo lectura», el instructor lo hace con el MCP de Claude Academy; en el taller lo sumas tú a `pedidos-playbook`.',
         ],
         ejemplo: {
           tipo: 'codigo',
           lenguaje: 'bash',
-          titulo: 'Conectar un servidor MCP por HTTP',
+          titulo: 'Conectar un servidor MCP por HTTP, a mano',
           contenido: 'claude mcp add --transport http claude-academy https://academy.claude.com/mcp',
         },
         nota: '**Estándar abierto:** MCP (modelcontextprotocol.io). **Implementación de Claude Code:** el comando `claude mcp add`, el archivo `.mcp.json` y `/mcp`.',
@@ -105,16 +116,22 @@ export default {
       },
       {
         slug: 'mcp-solo-lectura',
-        titulo: 'MCP de PostgreSQL en modo solo lectura',
-        resumen: '"Solo lectura" se demuestra: una instrucción de escritura debe ser rechazada.',
+        titulo: 'MCP de solo lectura: claude-academy',
+        resumen: 'Un servidor que solo consulta: si no tiene una herramienta para escribir, no se puede escribir.',
         explicacion: [
-          'Los equipos de reportes necesitan consultar la base del portal **sin permiso de escritura**. En el plugin se agrega en `.mcp.json` un servidor MCP de PostgreSQL en modo restringido apuntando a `pedidos-pg`.',
-          'Punto de control: preguntar "¿cuántos pedidos hay por estado?" y verificar que una instrucción de escritura sea rechazada. Si Claude logra escribir en la base, el MCP está mal configurado.',
-          'En Linux, para que el contenedor alcance la base, agrega `--add-host=host.docker.internal:host-gateway`.',
+          'Sumas datos externos al playbook con un `.mcp.json` en la raíz del plugin, no dentro de `.claude-plugin/`. El servidor `claude-academy` usa transporte HTTP y es de solo lectura: busca cursos y devuelve enlaces.',
+          'Punto de control de la demo 3: `/mcp` muestra `claude-academy` con 3 herramientas y, al pedir «Busca en Claude Academy un curso sobre plugins» sin nombrar la herramienta, la búsqueda trae enlaces. Si le pides escribir, no hay herramienta para hacerlo.',
+          'Para llegar a los equipos, el cambio se publica como una versión nueva (1.1.0) y se trae con `/plugin marketplace update arriendo-vela`.',
         ],
-        ejemplo: null,
-        nota: '**Servidor de terceros:** Postgres MCP Pro (modo `--access-mode=restricted`). Anthropic no audita servidores MCP de terceros.',
-        fuente: BIBLIO.postgresMcp,
+        ejemplo: {
+          tipo: 'codigo',
+          lenguaje: 'bash',
+          titulo: 'Dentro de Claude Code (demo 3)',
+          contenido: `/plugin marketplace update arriendo-vela
+/mcp`,
+        },
+        nota: '**Implementación de Claude Code:** `.mcp.json`, `/mcp` y la actualización de plugins por versión.',
+        fuente: BIBLIO.academyMcp,
       },
     ],
     fundamentales: [
@@ -124,7 +141,8 @@ export default {
         resumen: 'Mide dónde estás antes de decidir hacia dónde ir.',
         explicacion: [
           'Modelo de 5 niveles de Vela LATAM: **1** Uso a escondidas · **2** Uso individual · **3** Equipo con reglas (`AGENTS.md`, `REVIEW.md` y hooks compartidos) · **4** Proceso AI-native (spec → plan → CI → revisión) · **5** Organización que mide y mejora.',
-          'Indicadores del panel de analytics: usuarios activos, sesiones, líneas aceptadas, tasa de aceptación y PR con asistencia de Claude Code. En clase se muestran con datos ficticios.',
+          'El panel de analytics de Claude Code muestra usuarios activos, sesiones, líneas aceptadas, tasa de aceptación y PR con Claude Code. Está en Team y Enterprise y lo ven Admin y Owner. Mucho uso con poca aceptación no es éxito: es una señal, así que ningún indicador se mira solo. En clase y en el taller se usan datos ficticios.',
+          'En la actividad «¿En qué nivel estamos?» ubicas 4 equipos ficticios (Alfa, Beta, Gamma y Delta) y propones un siguiente paso concreto para cada uno.',
         ],
         ejemplo: null,
         nota: '',
@@ -135,8 +153,9 @@ export default {
         titulo: 'Multiplicadores',
         resumen: 'La adopción la empujan personas, no licencias.',
         explicacion: [
-          'Estrategia: un piloto chico, champions por equipo y un desarrollador senior que actúa como multiplicador. Ritmo: estandarizar flujos, medir, ajustar y escalar.',
-          'Errores típicos: comprar licencias sin capacitar, imponer sin piloto y medir solo líneas de código.',
+          'Pocos primero, todos después: un **piloto chico** (un equipo, un objetivo medible), **champions** por equipo (muestran, no imponen) y un **senior multiplicador** (revisa, enseña y ajusta).',
+          'El ritmo tiene 4 pasos: **estandarizar** un flujo común, **medir** uso y resultados, **ajustar** lo que no funcionó y **escalar** al siguiente equipo.',
+          'Tres errores típicos: comprar licencias sin capacitar (todos tienen la herramienta, nadie cambia cómo trabaja), imponer sin piloto y medir solo líneas de código (premia generar mucho, no entregar bien).',
         ],
         ejemplo: null,
         nota: '',
@@ -147,8 +166,8 @@ export default {
         titulo: 'Playbook como código',
         resumen: 'Las buenas prácticas se instalan, no se leen.',
         explicacion: [
-          'Un documento de buenas prácticas se olvida; un plugin instalado se usa. El playbook del equipo incluye Skills, subagente revisor, el hook guardián de la Unidad 8 y la plantilla de `AGENTS.md`.',
-          'En la demo, el instructor publica `vela-playbook` con la Skill `planificador-proyectos-web` y los alumnos lo instalan en vivo.',
+          'Un documento de buenas prácticas se olvida; un plugin instalado se usa. El playbook del equipo reúne el subagente `revisor`, las Skills, el hook guardián de la Unidad 8 y la plantilla de `AGENTS.md`, y se instala con un comando.',
+          'En las demos 1 y 2 (arriendo-web), el instructor empaqueta el plugin `arriendo-playbook`, lo publica en el marketplace `arriendo-vela` y lo instala como lo haría otro equipo. Punto de control de la demo 2: `/plugin` lo muestra y el guardián bloquea leer `.env`.',
         ],
         ejemplo: null,
         nota: '',
@@ -159,8 +178,9 @@ export default {
         titulo: 'Herramienta justa',
         resumen: 'Superficie y modelo según la tarea; estándares para no quedar atado.',
         explicacion: [
-          'Dentro del ecosistema: qué superficie usar (chat, Claude Code en terminal o IDE, Desktop, web, CI) y qué modelo (Haiku para tareas simples y baratas, Sonnet para el día a día, Opus para lo complejo).',
-          'Portabilidad: MCP, Agent Skills y `AGENTS.md` son formatos abiertos, así que reducen el costo de cambiar de herramienta en el futuro.',
+          '**Superficie:** el chat (pensar, planificar, documentos y specs), Claude Code en terminal o IDE (el trabajo diario en el repo), Desktop (lo mismo, con interfaz gráfica; opcional), la web (tareas en la nube, en paralelo; opcional) y CI (revisiones y diagnósticos sin pedirlos). La pregunta: ¿necesita tu repo, tu terminal o que nadie lo pida?',
+          '**Modelo, por familia:** Haiku para tareas simples y rápidas (menos costo), Sonnet para el día a día del código (el predeterminado) y Opus para razonamiento complejo (más capacidad). Con `opusplan`, Opus planifica y Sonnet ejecuta. Confírmalo con `/model` en tu cuenta.',
+          '**Portabilidad:** MCP, Agent Skills y `AGENTS.md` son formatos abiertos, así que reducen el costo de cambiar de herramienta. Copilot, Codex y Gemini CLI los leen en distinto grado.',
         ],
         ejemplo: null,
         nota: '**Estándares abiertos:** MCP, Agent Skills y `AGENTS.md`.',
@@ -170,54 +190,59 @@ export default {
   },
 
   laboratorio: {
-    nombre: 'Plan de evolución para una Business Unit',
-    modalidad: 'Grupos de 3',
-    duracion: 80,
-    caso: 'La BU de Desarrollo de la distribuidora tiene 4 equipos. El de Pedidos Web ya trabaja como en este curso. La gerencia quiere que los otros tres adopten la misma forma de trabajar y pide un **plan de evolución** en PDF y un **playbook instalable**.',
-    problematica: '`analytics-ficticio.csv` muestra una adopción muy dispar: un equipo usa Claude Code a diario y bien, otro casi no lo usa y otro lo usa mucho pero con una tasa de aceptación bajísima. Cada equipo tiene sus reglas, y los equipos de reportes piden consultar la base del portal **sin permiso de escritura**.',
-    objetivo: 'Diagnosticar la BU, diseñar el roadmap y entregar el plugin del playbook (con acceso de solo lectura a la base vía MCP) y el plan en PDF generado por una Skill propia.',
-    roles: [
-      '**A, arquitecto del playbook:** plugin + MCP.',
-      '**B, diseñador:** Skill de PDF.',
-      '**C, estratega:** diagnóstico y roadmap.',
-    ],
+    nombre: 'Tu playbook instalable y el plan de la BU',
+    modalidad: 'Individual',
+    duracion: 90,
+    caso: 'La BU de Desarrollo tiene 4 equipos y cada uno adoptó la IA a su manera. La gerencia quiere que todos trabajen como Pedidos Web.',
+    problematica: 'Pedidos Web ya trabaja en el nivel 4 (el equipo del curso, de la U1 a la U8). Facturación, Bodega y Reportes no: su nivel lo descubres en `analytics-ficticio.csv`. Un documento de buenas prácticas se olvida; lo que se instala, se usa.',
+    objetivo: 'Que otro equipo instale con un comando la forma de trabajar de Pedidos Web, y entregar el plan para que la BU la adopte.',
     // Resumen visible en la pestaña Taller (máx. 1000 caracteres; el detalle está en la guía PDF).
-    resumen: 'La BU de Desarrollo tiene 4 equipos con una adopción muy dispar, y la gerencia quiere que los otros tres trabajen como el de Pedidos Web: pide un plan de evolución en PDF y un playbook instalable. En grupos de 3, ubicas a cada equipo en el modelo de madurez a partir de `analytics-ficticio.csv`, creas el plugin `pedidos-playbook` con un servidor MCP de PostgreSQL en solo lectura, creas la Skill `pdf-con-estilo` y redactas el roadmap a 6 y 12 meses. Cada integrante instala el plugin y el grupo genera el PDF. Todo el paso a paso está en la guía.',
+    resumen: 'Trabajas solo en tu `pedidos-web` para que otro equipo instale con un comando la forma de trabajar de Pedidos Web, y para entregar a la BU el plan con que la adopte. Traes `docs/adopcion/` con Claude Code y avanzas en 3 etapas. Primero ubicas a los 4 equipos en el modelo de madurez con `analytics-ficticio.csv`: cada nivel con 2 indicadores del CSV, sin inventar datos. Después armas `pedidos-playbook` con el revisor, `documentar-modulo`, `planificador-proyectos-web`, el guardián, la plantilla de `AGENTS.md` y el MCP `claude-academy`, lo publicas en tu marketplace y un compañero de tu grupo de 3 lo instala desde tu GitHub. Por último creas la Skill `pdf-con-estilo` y generas `plan-evolucion.pdf`. Cierras con «Tu reto», obligatorio: publicar la versión 1.1.0 y lograr que tu compañero la reciba. El paso a paso está en la guía.',
     pasos: [
-      { minutos: 10, quien: 'Todos', texto: 'Leer `analytics-ficticio.csv` con Claude y ubicar a cada equipo en el modelo de madurez.', conceptos: ['C1'] },
-      { minutos: 35, quien: 'A', texto: 'Crear el plugin `pedidos-playbook`: subagente `revisor`, Skills `documentar-modulo` y `planificador-proyectos-web`, hook guardián de la Unidad 8 y plantilla `AGENTS.md`. Agregar en `.mcp.json` un servidor MCP de PostgreSQL **en modo de solo lectura** apuntando a `pedidos-pg`. Publicarlo en un marketplace del grupo.', conceptos: ['C3', 'C4'] },
-      { minutos: 35, quien: 'B', texto: 'Crear la Skill `.claude/skills/pdf-con-estilo/`: un `SKILL.md` con la paleta y la tipografía que elija el grupo, una plantilla HTML con CSS profesional (portada, encabezados, tablas e índice) y un script que convierta el HTML a PDF.', conceptos: ['C3'] },
-      { minutos: 35, quien: 'C', texto: 'Redactar el contenido del plan: diagnóstico por equipo, roadmap a 6 y 12 meses con hitos e indicadores, champions y plan de adopción.', conceptos: ['C1', 'C2'] },
-      { minutos: 20, quien: 'Todos', texto: 'Cada integrante instala el plugin desde el marketplace del grupo. Revisión cruzada de los tres trabajos.', conceptos: ['C3', 'C4'] },
-      { minutos: 10, quien: 'Todos', texto: 'Generar el PDF con la Skill de B a partir del contenido de C, revisarlo y corregirlo.', conceptos: ['C3'] },
-      { minutos: 5, quien: '—', texto: 'Cierre: tres grupos muestran su PDF y su `/plugin` instalado.', conceptos: [] },
+      { minutos: 7, texto: 'Preparación: pídele a Claude Code que traiga a tu repo lo nuevo de la Unidad 9 (`docs/adopcion/analytics-ficticio.csv` y `docs/adopcion/plan-evolucion.md`), sin tocar ningún otro archivo y mostrándote el diff antes del commit. Deja tu repo al día y público en GitHub, y define qué compañero de tu grupo de 3 instalará tu plugin.', conceptos: [] },
+      { minutos: 18, texto: 'Diagnóstico: pídele a Claude Code que lea `docs/adopcion/analytics-ficticio.csv` y ubique a cada uno de los 4 equipos en el modelo de 5 niveles, con al menos dos indicadores como evidencia, y que escriba el diagnóstico en `docs/adopcion/plan-evolucion.md` siguiendo la plantilla, sin inventar datos que no estén en el CSV. Revisa que cada nivel tenga sus 2 indicadores y sube el commit.', conceptos: ['C1'] },
+      { minutos: 35, texto: 'Playbook instalable: pídele a Claude Code que arme `plugins/pedidos-playbook/` versión 1.0.0 con el revisor, `documentar-modulo`, `planificador-proyectos-web`, el guardián de la U8 (`scripts/guardian.sh`), la plantilla de `AGENTS.md` y el MCP `claude-academy` de solo lectura, que lo publique en `.claude-plugin/marketplace.json` con el nombre `pedidos-<usuario-github>` y que lo valide. Súbelo a `main`: tu compañero lo instala desde tu GitHub y ve `claude-academy` en `/mcp`.', conceptos: ['C3', 'C4'] },
+      { minutos: 20, texto: 'El plan en PDF: pídele a Claude Code que cree la Skill `.claude/skills/pdf-con-estilo/` con `SKILL.md`, `assets/plantilla.html` y `scripts/html_a_pdf.py` (Playwright), y que la use para convertir `docs/adopcion/plan-evolucion.md` en `plan-evolucion.pdf`. Pruébala también con `docs/gobernanza/politica-ia.md`: si tienes que tocar el CSS para que se vea bien, todavía no es reutilizable.', conceptos: ['C3'] },
+      // Etapa obligatoria sin minutos asignados: si no alcanzas en clase, se termina en casa.
+      { minutos: null, texto: 'Tu reto (obligatorio): haz un cambio tuyo en `pedidos-playbook` (por ejemplo, mejora la `description` de una Skill o suma una regla al revisor), publícalo como versión 1.1.0 y logra que tu compañero lo reciba. El pedido a Claude Code lo escribes tú, con contexto, qué quieres y cómo sabes que quedó bien.', conceptos: ['C3'] },
     ],
-    puntosControl: ['Punto de control MCP: preguntar "¿cuántos pedidos hay por estado?" y verificar que una instrucción de escritura sea rechazada (paso 3).'],
+    puntosControl: [
+      'El diff solo muestra los 2 archivos nuevos en `docs/adopcion/` y tu repo sigue público en GitHub (preparación).',
+      'Cada equipo tiene un nivel y dos indicadores del CSV que lo respaldan, escritos en `plan-evolucion.md` (etapa 1).',
+      'Tu compañero instala tu plugin desde tu GitHub y ve `claude-academy` en `/mcp` (etapa 2).',
+      '`plan-evolucion.pdf` tiene portada, títulos y tablas legibles, y `politica-ia.md` sale con el mismo diseño (etapa 3).',
+      'Tu compañero ve la versión 1.1.0 y tu cambio funciona en su equipo (Tu reto).',
+    ],
     resultadoEsperado: [
-      '**El plugin se valida en una máquina que no sea la de quien lo creó.** Si solo funciona en la máquina de A, no es un playbook.',
-      '**"Solo lectura" se demuestra.** Si Claude logra escribir en la base, el MCP está mal configurado.',
-      '**La Skill de PDF tiene que poder reutilizarse.** Con otro contenido, debe producir un documento con el mismo diseño, sin tocar el CSS.',
+      'Ningún indicador solo basta: mucho uso con poca aceptación es una señal, no un éxito.',
+      'Un plugin que solo funciona en tu máquina no es un playbook: se valida cuando tu compañero lo instala desde tu GitHub.',
+      'Una Skill reutilizable separa el diseño del contenido: si tienes que tocar el CSS para que se vea bien, todavía no lo es.',
     ],
     siTeTrabas: [
-      'La estructura de `plugin.json` y `marketplace.json`.',
-      'La configuración del servidor Postgres MCP en modo restringido. En Linux agrega `--add-host=host.docker.internal:host-gateway`.',
-      'La estructura de una Skill con `assets/` y `scripts/`, usando el planificador como modelo.',
-      'Para el PDF, `page.pdf()` de Playwright y CSS `@page`.',
+      '*Rastrear el uso del equipo con análisis* (analytics), para entender qué mide cada indicador.',
+      '*Create a Claude Code plugin*, para la estructura del plugin.',
+      '*Create a marketplace*, para `marketplace.json`, en la etapa 2 y en tu reto.',
+      '*Use Claude Academy from Claude*, para conectar el MCP `claude-academy`.',
+      '*Extend Claude with skills*, para la estructura de una Skill.',
     ],
-    erroresFrecuentes: [], // TODO: el archivo fuente no trae una lista de errores frecuentes
-    planB: [
-      'Si Playwright no instala, el script usa Chrome o Edge headless: `--headless --print-to-pdf`.',
-      'Si el MCP no conecta, se documenta la configuración y se valida durante la Unidad 10.',
-      'Hay una estructura de plugin de ejemplo lista para completar.',
+    erroresFrecuentes: [
+      'Tu compañero no logra agregar tu marketplace → ¿tu repo es público? ¿`marketplace.json` está en `.claude-plugin/`, en la raíz?',
+      'La validación marca una ruta del plugin → la ruta parte de la raíz del marketplace con `./` y la carpeta existe.',
+      'El guardián no corre en el equipo de tu compañero → la ruta a `guardian.sh` usa `${CLAUDE_PLUGIN_ROOT}`, no una ruta de tu máquina.',
+      '`claude-academy` no aparece en `/mcp` → `.mcp.json` va en la raíz del plugin, no dentro de `.claude-plugin/`.',
+      'El PDF sale sin colores de fondo → el script debe imprimir el fondo y el CSS no debe desactivarlo.',
     ],
-    extension: 'Agregar al plugin un comando o Skill que genere el informe de madurez de un equipo a partir del CSV.',
+    planB: [],
+    extension: '',
   },
 
   material: [
-    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 9', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u09/presentacion-clase.pdf', disponible: false },
-    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Plan de evolución para una BU"', archivo: 'assets/material/u09/guia-taller.pdf', disponible: false },
-    { tipo: 'pdf', titulo: 'Modelo de madurez de 5 niveles', archivo: 'assets/material/u09/modelo-madurez.pdf', disponible: false },
-    { tipo: 'png', titulo: 'Infografía: anatomía de un plugin', archivo: 'assets/material/u09/infografia.png', disponible: false },
+    { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 9', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u09/presentacion-clase.pdf', peso: '6,9 MB', disponible: true },
+    { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Tu playbook instalable y el plan de la BU"', archivo: 'assets/material/u09/guia-taller.pdf', disponible: true },
+    // destino: 'taller' → se ve en la pestaña Taller, no en Recursos.
+    { tipo: 'enlace', titulo: 'Proyecto del taller: pedidos-web (base de la U9)', descripcion: 'El README explica qué traer a tu repo (camino A): solo se suma `docs/adopcion/`.', url: `${U9_TREE}/taller/pedidos-web`, disponible: true, destino: 'taller' },
+    { tipo: 'enlace', titulo: 'Skill planificador-proyectos-web', descripcion: 'La copias dentro de tu plugin en la etapa 2.', url: BIBLIO.planificador.url, disponible: true, destino: 'taller' },
+    { tipo: 'enlace', titulo: 'Demos de la unidad: arriendo-web', descripcion: 'Empaqueta, instala y súmale MCP.', url: `${U9_TREE}/demos`, disponible: true },
   ],
 
   videos: [
@@ -230,18 +255,21 @@ export default {
 
   paraInvestigar: [
     'Comparación con otros proveedores y estrategias multi-proveedor (lectura complementaria).',
+    'Curso *Deploying Claude Enterprise with confidence* (Anthropic Academy).',
     'Informes organizacionales de Claude Academy para medir la capacitación.',
     'API de analytics de Enterprise.',
+    '*Introduction to MCP* (Anthropic Academy).',
+    'Plays "skills como conocimiento institucional" y "sesiones paralelas y subagentes" del AI-native SDLC.',
     'CSS para impresión: `@page`, saltos de página y fuentes embebidas.',
   ],
 
   entregable: {
     nombre: 'Plan de evolución de la IA para una Business Unit',
     criterios: [
-      'Plan en PDF generado con la Skill `pdf-con-estilo` del grupo.',
-      'Repositorio del marketplace con el plugin `pedidos-playbook`.',
-      'MCP de PostgreSQL de solo lectura, demostrado con una escritura rechazada.',
-      'Plugin instalado y probado en una máquina distinta a la de quien lo creó.',
+      '`docs/adopcion/plan-evolucion.md` con el diagnóstico de los 4 equipos y su PDF generado con `pdf-con-estilo`.',
+      '`pedidos-playbook` 1.0.0 en `main`, instalado por un compañero (incluye `planificador-proyectos-web` y el MCP `claude-academy`).',
+      'La Skill `pdf-con-estilo` reutilizable.',
+      'La versión 1.1.0 de `pedidos-playbook`, recibida por tu compañero (tu reto).',
     ],
     alimentaA: 'u10',
   },

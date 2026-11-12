@@ -69,6 +69,8 @@ export const DOCS = {
   sessions: cc('sessions', 'Manage sessions'),
   securityGuidance: cc('security-guidance', 'Security guidance plugin'),
   pluginsOverview: cc('plugins/overview', 'Plugins overview'),
+  pluginsCreate: cc('plugins/create', 'Create plugins'),
+  pluginMarketplaces: cc('plugin-marketplaces', 'Create and distribute a plugin marketplace'),
   // Versiones en español entregadas en la bibliografía del curso
   jetbrainsEs: { titulo: 'IDEs de JetBrains (en español)', url: 'https://code.claude.com/docs/es/jetbrains' },
   codeReviewLocalEs: { titulo: 'Revisa localmente con /code-review (en español)', url: 'https://code.claude.com/docs/es/code-review-local' },
@@ -88,10 +90,10 @@ export const BIBLIO = {
   martinelli: { titulo: 'Martinelli · Spec-Driven Development (Apress, 2026)', url: 'https://link.springer.com/book/10.1007/979-8-8688-2851-5' },
   planificador: { titulo: 'planificador-proyectos-web (Skill del instructor, MIT)', url: 'https://github.com/ffelipecuevasc/planificador-proyectos-web' },
   agentsMdSupport: { titulo: 'Classmethod · Claude Code v2.1.277–278: soporte de AGENTS.md', url: 'https://dev.classmethod.jp/en/articles/20260919-cc-updates-v2-1-278/' },
-  dockerPostgres: { titulo: 'Docker Hub · imagen oficial postgres', url: 'https://hub.docker.com/_/postgres' },
   pluginsEs: { titulo: 'Plugins de Claude Code (en español)', url: 'https://docs.claude.com/es/docs/claude-code/plugins' },
   pluginsReference: { titulo: 'Plugins reference', url: 'https://docs.claude.com/en/docs/claude-code/plugins-reference' },
-  postgresMcp: { titulo: 'Postgres MCP Pro (servidor MCP de terceros)', url: 'https://mcp.so/server/postgres-mcp' },
+  // Verificada el 12-nov-2026 (HTTP 200); citada en la presentación y la guía de la U9.
+  academyMcp: { titulo: 'Claude Academy MCP', url: 'https://academy.claude.com/help/mcp' },
   readDenyRoutes: { titulo: 'DEV · Las reglas deny de Read dejan pasar 4 de 11 rutas', url: 'https://dev.to/rulestack/claude-codes-read-deny-rules-let-4-of-11-routes-through-grep-r-a-python-one-liner-and-two-ajf' },
   claudeTag: { titulo: 'Claude Help Center · What is Claude Tag?', url: 'https://support.claude.com/en/articles/15594475-what-is-claude-tag' },
   certEligibility: { titulo: 'Who can take a Claude certification exam', url: 'https://anthropic-partners.skilljar.com/page/certification-eligibility' },
