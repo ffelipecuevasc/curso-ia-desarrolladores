@@ -896,7 +896,8 @@
     gap: 1.1rem;
     padding: 1.15rem 1.1rem;
     border-width: 1px;
-    border-color: var(--border);
+    /* Mismo borde que la tarjeta de la presentación (.resource-card--presentacion), en ambos temas */
+    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
     border-radius: 16px;
     background: linear-gradient(135deg, var(--orient-50) 0%, var(--white) 70%);
     box-shadow: var(--elev-soft);
