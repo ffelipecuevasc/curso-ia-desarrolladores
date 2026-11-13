@@ -217,13 +217,13 @@ Claude Code solo debe editar `js/config/units.config.js`. Revisa el diff antes d
 
    Sin archivo disponible, la tarjeta queda atenuada y dice «Disponible pronto». Los logos son los oficiales de cada lenguaje: se guardan tal cual en `assets/icons/lang-*.svg` y no se recolorean. `?debug` avisa si falta el archivo o el ícono, o si el peso no tiene el formato correcto.
 
-9. **Cuestionario final** (hoy solo en la U10): una tarjeta con `variante: 'cuestionario'` se muestra destacada y a todo el ancho, **justo después de la presentación**, en Recursos. Lleva los logos de Claude y Anthropic, las píldoras «N preguntas», «N min» y «Aprueba con X» (de `preguntas`, `minutos` y `aprobacion`), la línea «Práctica independiente; no es el examen oficial.» y el botón «Comenzar cuestionario», que abre la `url` en una pestaña nueva. La URL vive en `COURSE_SITES` (`js/data/links.js`); `?debug` avisa si falta alguno de esos campos:
+9. **Cuestionario final** (hoy solo en la U10): una tarjeta con `variante: 'cuestionario'` se muestra destacada y a todo el ancho, **justo después de la presentación**, en Recursos. Tiene estilo «Marcador»: el logo de Claude (con la animación `latido`), las cifras `preguntas` y `minutos`, un anillo con el umbral `aprobacion`, el botón «Comenzar cuestionario», que abre la `url` en una pestaña nueva, y la línea «Práctica independiente; no es el examen oficial.». La URL vive en `COURSE_SITES` (`js/data/links.js`); `?debug` avisa si falta alguno de esos campos:
 
    ```js
    { id: 'cuestionario', tipo: 'enlace', variante: 'cuestionario', titulo: 'Cuestionario final del curso', descripcion: '…', url: COURSE_SITES.cuestionarioFinal.url, preguntas: 30, minutos: 20, aprobacion: '70 %', disponible: true },
    ```
 
-   Con `disponible: false`, queda atenuada y dice «Disponible pronto». El wordmark de Anthropic (`assets/icons/anthropic.svg`) va en línea (`anthropicWordmark()` en `js/utils/icons.js`) porque usa `currentColor` y debe seguir el tema; un `<img>` no lo haría.
+   Con `disponible: false`, queda atenuada y dice «Disponible pronto». La animación `latido` es una clase de Tailwind (`motion-safe:animate-latido`): si la cambias, recompila Tailwind.
 
 Mientras `PROGRAM_PDF_AVAILABLE` sea `false`, el botón del programa no se muestra.
 
@@ -381,6 +381,6 @@ Copia y adapta:
 - Contenido académico: Felipe Cuevas, a partir de `fuentes/unidades/`.
 - Tipografías autoalojadas en `assets/fonts/` (subconjunto latino, con su licencia OFL junto a cada archivo).
 - Íconos: [Material Symbols Light](https://icon-sets.iconify.design/material-symbols-light/) de Google vía Iconify, licencia **Apache 2.0**. Los SVG están en `assets/icons/` y en línea en `js/utils/icons-data.js`, sin dependencia en runtime.
-- Claude y Claude Code son marcas de Anthropic; sus logos se usan solo como marca, con su color oficial. El wordmark de Anthropic se usa solo en la tarjeta del cuestionario final, para identificar el origen de la práctica (que es independiente y no el examen oficial).
+- Claude y Claude Code son marcas de Anthropic; sus logos se usan solo como marca, con su color oficial.
 - Los logos de Delphi, C#, Java, Python, JavaScript y PHP (`assets/icons/lang-*.svg`) son marcas de sus respectivos titulares; se usan solo para identificar cada apunte de lenguaje, con su color oficial.
 - Tipografías: Cinzel, Josefin Sans y JetBrains Mono (SIL Open Font License 1.1), autoalojadas.

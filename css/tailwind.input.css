@@ -16,6 +16,19 @@
         --color-*: initial;
       }
 
+      /* Animación «latido»: solo para el logo de Claude de la tarjeta del cuestionario (U10 › Recursos).
+         Se usa como `motion-safe:animate-latido`, así que con «reducir movimiento» no se aplica. */
+      @theme {
+        --animate-latido: latido 2.4s ease-in-out infinite;
+
+        @keyframes latido {
+          0%, 60%, 100% { transform: scale(1) rotate(0deg); }
+          15% { transform: scale(1.18) rotate(-8deg); }
+          30% { transform: scale(1) rotate(0deg); }
+          45% { transform: scale(1.1) rotate(6deg); }
+        }
+      }
+
       /* Tokens: apuntan a las variables de css/tokens.css (cambian bajo .dark) */
       @theme inline {
         --color-orient-50: var(--orient-50);

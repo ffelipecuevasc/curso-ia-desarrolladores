@@ -7,7 +7,7 @@
  */
 import { unitCode } from '../data/units/index.js';
 import { attr, escapeHtml, qsa, rich } from '../utils/dom.js';
-import { anthropicWordmark, claudeLogo, icon, iconImage } from '../utils/icons.js';
+import { claudeLogo, icon, iconImage } from '../utils/icons.js';
 import { isPreview } from '../utils/schedule.js';
 
 /** id de la tarjeta de material que es la guía del taller (se descarga desde Taller). */
@@ -27,6 +27,12 @@ export const QUIZ_VARIANT = 'cuestionario';
 
 /** Rótulos de interfaz de la tarjeta del cuestionario. Título, descripción y cifras salen de los datos. */
 const QUIZ_LABELS = {
+  kicker: 'Simulacro',
+  questions: 'preguntas',
+  minutes: 'minutos',
+  passing: 'aprueba',
+  passingSr: 'Aprueba con',
+  scoreboard: 'Datos del cuestionario',
   note: 'Práctica independiente; no es el examen oficial.',
   action: 'Comenzar cuestionario',
   unavailable: 'Disponible pronto',
@@ -190,38 +196,61 @@ function presentationCard(item) {
         </li>`;
 }
 
+/** Porcentaje (de 1 a 100) de un texto como '70 %'; null si no se puede leer. */
+function parsePercent(text) {
+  const value = Number.parseInt(text, 10);
+  return Number.isInteger(value) && value > 0 && value <= 100 ? value : null;
+}
+
 /**
- * Tarjeta destacada del cuestionario final (variante 'cuestionario'): misma estructura y clases que la
- * de la presentación, con los logos de Claude y Anthropic a la izquierda. El botón abre el sitio del
- * cuestionario en una pestaña nueva. Sin `disponible` queda atenuada y sin enlace.
- * Los logos son decorativos (el nombre va en el texto); el de Claude conserva su color oficial y el
- * wordmark de Anthropic usa currentColor, así que sigue el tema (ver anthropicWordmark en icons.js).
+ * Tarjeta destacada del cuestionario final (variante 'cuestionario'), estilo «Marcador»: las cifras
+ * (preguntas, minutos y umbral de aprobación) son las protagonistas. Va justo después de la presentación.
+ * El botón abre el sitio del cuestionario en una pestaña nueva. Sin `disponible` queda atenuada,
+ * sin enlace y sin animaciones.
+ * El logo de Claude conserva su color oficial y es la única pieza con la animación `latido`
+ * (definida en tailwind.input.css). El anillo es decorativo: el texto oculto dice «Aprueba con 70 %».
  */
 function quizCard(item) {
   const available = Boolean(item.disponible && item.url);
-  const pill = (text) => `<span class="material-pill tabular">${escapeHtml(text)}</span>`;
-  const pills = [
-    item.preguntas ? pill(`${item.preguntas} preguntas`) : '',
-    item.minutos ? pill(`${item.minutos} min`) : '',
-    item.aprobacion ? pill(`Aprueba con ${item.aprobacion}`) : '',
-  ].join('');
+  const percent = parsePercent(item.aprobacion);
+  const figure = (value, label) => `
+              <div class="quiz-score__item">
+                <dt class="quiz-score__label">${escapeHtml(label)}</dt>
+                <dd class="quiz-score__value tabular">${escapeHtml(value)}</dd>
+              </div>`;
+  const ring = percent
+    ? `<svg class="quiz-ring" viewBox="0 0 40 40" aria-hidden="true" focusable="false" style="--quiz-pct:${percent}"><circle class="quiz-ring__track" cx="20" cy="20" r="16" pathLength="100"/><circle class="quiz-ring__arc" cx="20" cy="20" r="16" pathLength="100"/></svg>`
+    : '';
+  const passing = item.aprobacion
+    ? `
+              <div class="quiz-score__item">
+                <dt class="quiz-score__label">${escapeHtml(QUIZ_LABELS.passing)}</dt>
+                <dd class="quiz-score__pass">
+                  <span class="visually-hidden">${escapeHtml(QUIZ_LABELS.passingSr)} ${escapeHtml(item.aprobacion)}</span>
+                  <span class="quiz-score__pass-visual" aria-hidden="true">${ring}<span class="quiz-score__percent tabular">${escapeHtml(item.aprobacion)}</span></span>
+                </dd>
+              </div>`
+    : '';
   const action = available
-    ? `<a class="btn btn--primary presentation-card__action" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${icon('external')}<span>${escapeHtml(QUIZ_LABELS.action)}<span class="visually-hidden"> (se abre en una pestaña nueva)</span></span></a>`
-    : `<p class="presentation-card__soon">${icon('hourglass')}<span>${escapeHtml(QUIZ_LABELS.unavailable)}</span></p>`;
+    ? `<a class="btn quiz-card__action" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${icon('external')}<span>${escapeHtml(QUIZ_LABELS.action)}<span class="visually-hidden"> (se abre en una pestaña nueva)</span></span></a>`
+    : `<p class="quiz-card__soon">${icon('hourglass')}<span>${escapeHtml(QUIZ_LABELS.unavailable)}</span></p>`;
+  // Sin latido si la tarjeta está atenuada; `motion-safe:` lo apaga con «reducir movimiento»
+  const logoMotion = available ? ' origin-center motion-safe:animate-latido' : '';
   return `
         <li class="resource-grid__feature">
-          <article class="resource-card resource-card--presentacion resource-card--cuestionario${available ? '' : ' resource-card--soon'}">
-            <span class="quiz-card__logos" aria-hidden="true">
-              ${claudeLogo({ decorative: true, className: 'quiz-card__claude' })}
-              ${anthropicWordmark({ className: 'quiz-card__wordmark' })}
-            </span>
-            <div class="presentation-card__body">
-              <p class="resource-card__title presentation-card__title">${escapeHtml(item.titulo)}</p>
-              ${item.descripcion ? `<p class="presentation-card__text">${rich(item.descripcion)}</p>` : ''}
-              <p class="presentation-card__pills">${pills}</p>
-              <p class="quiz-card__note">${escapeHtml(QUIZ_LABELS.note)}</p>
-            </div>
+          <article class="resource-card resource-card--cuestionario${available ? '' : ' resource-card--soon'}">
+            <header class="quiz-card__head">
+              <div>
+                <p class="quiz-card__kicker">${escapeHtml(QUIZ_LABELS.kicker)}</p>
+                <p class="quiz-card__title">${escapeHtml(item.titulo)}</p>
+              </div>
+              ${claudeLogo({ decorative: true, className: `quiz-card__logo${logoMotion}` })}
+            </header>
+            ${item.descripcion ? `<p class="quiz-card__text">${rich(item.descripcion)}</p>` : ''}
+            <dl class="quiz-score" aria-label="${escapeHtml(QUIZ_LABELS.scoreboard)}">${item.preguntas ? figure(item.preguntas, QUIZ_LABELS.questions) : ''}${item.minutos ? figure(item.minutos, QUIZ_LABELS.minutes) : ''}${passing}
+            </dl>
             ${action}
+            <p class="quiz-card__note">${escapeHtml(QUIZ_LABELS.note)}</p>
           </article>
         </li>`;
 }

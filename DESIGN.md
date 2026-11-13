@@ -98,6 +98,7 @@ Todo par nuevo de este sitio (por ejemplo `surface-raised`, `code-bg` o estados 
 - No se usan en botones, enlaces, textos, bordes ni estados de la interfaz (única excepción: el logo de LinkedIn dentro del enlace del instructor).
 - Los SVG de Claude, Claude Code y LinkedIn conservan su color de marca en ambos temas.
 - Los robots de Claude Code del fondo del hero van con opacidad entre 0,06 y 0,2; nunca compiten con el logo de Claude ni con el texto.
+- El wordmark de Anthropic no tiene color de marca propio y no suma ningún token: si se usa, va en línea con `currentColor`, tomando `--heading` (blanco en oscuro, `orient-950` en claro). Hoy no se muestra en ninguna parte (la tarjeta del cuestionario lleva solo el logo de Claude); `anthropicWordmark()` queda disponible.
 
 ### 2.6 Estados de unidad
 
@@ -179,6 +180,7 @@ Todo lo siguiente es propio de este sitio y puede diseñarse distinto a felipecu
   - nada de CLS por animaciones;
   - el contenido es legible aunque falle JavaScript (al menos el resumen de unidades y el pie).
 - Permitido aquí: robots flotando lentamente en el hero, leve parallax con el mouse, respiración del logo de Claude, aparición suave de tarjetas al hacer scroll (sin dejar contenido invisible si falla el script).
+- Tarjeta del cuestionario final (U10 › Recursos), estilo «Marcador»: las cifras (preguntas, minutos y umbral de aprobación) son las protagonistas, con un anillo dorado que se llena hasta el porcentaje de aprobación (900 ms, una sola vez). El logo de Claude de esa tarjeta lleva la animación `latido` (`motion-safe:animate-latido`, definida en `tailwind.input.css`): es la única excepción de movimiento para un logo de Claude en Recursos y no se aplica a ningún otro logo. Ambas animaciones se apagan con `prefers-reduced-motion: reduce` y con la tarjeta atenuada («Disponible pronto»).
 - Duraciones sugeridas: 200 ms (hover, chevrons), 250 ms (color y borde), 400 ms (elevación, acordeón).
 
 ### 4.4 Iconografía
@@ -186,6 +188,7 @@ Todo lo siguiente es propio de este sitio y puede diseñarse distinto a felipecu
 - Íconos de contorno de Material Symbols Light (colección `material-symbols-light` de Iconify), variantes `-outline`, en SVG en línea con `currentColor` y `viewBox="0 0 24 24"`. Licencia Apache 2.0: conservar el aviso en el README.
 - Decorativos con `aria-hidden="true"`; si son el único contenido de un control, el control lleva nombre accesible.
 - Las marcas (Claude, Claude Code, LinkedIn, GitHub, Anthropic Academy) conservan sus SVG propios.
+- El wordmark de Anthropic (`assets/icons/anthropic.svg`, `viewBox="0 0 182 24"`) es la excepción: se inserta en línea con `anthropicWordmark()` y `currentColor`, porque un `<img>` no hereda el color del tema. Debe ser decorativo (`aria-hidden`) cuando el nombre de la marca ya esté en el texto vecino.
 
 ## 5. Tema claro y oscuro
 

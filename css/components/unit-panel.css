@@ -886,79 +886,279 @@
   }
 }
 
-/* ---- Cuestionario final: tarjeta destacada, justo después de la presentación ---------- */
+/* ---- Cuestionario final: tarjeta «Marcador», justo después de la presentación -------- */
 @layer components {
-  /* Hereda de .resource-card--presentacion la grilla, los radios, la sombra, el título, las píldoras y el
-     botón. Solo suma el acento (borde superior y un halo de `accent`) y el bloque de logos. */
+  /* Las cifras son las protagonistas. Fondo en degradado de la paleta (claro: orient-50 → white;
+     oscuro: orient-800 → orient-950). El estilo de borde (sólido o punteado) lo decide .resource-card. */
   .resource-card--cuestionario {
-    border-top: 3px solid var(--accent);
-    background:
-      radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 55%),
-      var(--surface-raised);
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 1.1rem;
+    padding: 1.15rem 1.1rem;
+    border-width: 1px;
+    border-color: var(--border);
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--orient-50) 0%, var(--white) 70%);
+    box-shadow: var(--elev-soft);
   }
 
-  /* Logos de Claude y Anthropic, juntos. Decorativos: el nombre va en el texto. */
-  .quiz-card__logos {
+  .dark .resource-card--cuestionario {
+    background: linear-gradient(135deg, var(--orient-800) 0%, var(--orient-950) 70%);
+  }
+
+  @media (min-width: 640px) {
+    .resource-card--cuestionario {
+      padding: 1.4rem 1.6rem;
+    }
+  }
+
+  /* Encabezado: rótulo y título a la izquierda, logo de Claude a la derecha */
+  .quiz-card__head {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: space-between;
     gap: 0.75rem;
-    align-self: start;
+  }
+
+  .quiz-card__head > div {
+    min-width: 0;
+  }
+
+  .quiz-card__kicker {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--kicker);
+  }
+
+  .quiz-card__title {
+    margin-top: 0.3rem;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--heading);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  /* Desde ~360 px de pantalla cabe el tamaño completo (~1,2 rem) */
+  @media (min-width: 360px) {
+    .quiz-card__title {
+      font-size: 1.2rem;
+    }
+  }
+
+  /* Conserva su color oficial en ambos temas (fill propio en icons.js). El latido lo pone la clase
+     `motion-safe:animate-latido` de Tailwind (tailwind.input.css), solo a este logo. */
+  .quiz-card__logo {
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .quiz-card__text {
+    max-width: 56ch;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  /* Marcador: preguntas, minutos y umbral de aprobación en una sola fila. En celular los tres caben
+     hasta ~360 px de pantalla; en uno más angosto, el último baja a la fila siguiente (flex-wrap). */
+  .quiz-score {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.9rem 0.5rem;
+    max-width: 30rem;
+    margin: 0;
+    padding-block: 0.9rem;
+    border-block: 1px solid var(--border);
+  }
+
+  @media (min-width: 640px) {
+    .quiz-score {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+  }
+
+  /* Cifra arriba y rótulo debajo, aunque en el HTML el rótulo (dt) va primero para los lectores de pantalla */
+  .quiz-score__item {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .quiz-score__value,
+  .quiz-score__pass {
+    margin: 0;
+  }
+
+  .quiz-score__value {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: clamp(1.75rem, 3vw, 2.1rem);
+    font-weight: 500;
+    line-height: 1;
     color: var(--heading);
   }
 
-  /* El ícono de Claude conserva su color oficial en ambos temas (fill propio en icons.js) */
-  .quiz-card__claude {
-    flex: none;
-    width: 2.25rem;
-    height: 2.25rem;
+  /* Rótulo (Josefin 600, mayúsculas). En celular, más chico y con menos interletraje para que quepan los tres. */
+  .quiz-score__label {
+    font-size: 0.59rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-soft);
   }
 
-  /* El wordmark usa currentColor: sigue al tema (blanco en oscuro, orient-950 en claro) */
-  .quiz-card__wordmark {
-    flex: none;
-    width: 7.6rem;
-    height: 1rem;
-  }
-
-  /* Pantallas anchas: el panel de la unidad mide ~650 px, así que tres columnas dejarían el texto
-     angosto. Dos columnas: logos a la izquierda; texto y botón (bajo el texto) a la derecha. */
   @media (min-width: 640px) {
-    .resource-card--cuestionario {
-      grid-template-columns: auto minmax(0, 1fr);
-      align-items: start;
-      column-gap: 1.5rem;
-      row-gap: 1.1rem;
+    .quiz-score__label {
+      font-size: 0.625rem;
+      letter-spacing: 0.14em;
+    }
+  }
+
+  /* Umbral de aprobación: anillo y porcentaje. Si no caben juntos (celular angosto), el porcentaje baja. */
+  .quiz-score__pass-visual {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.2rem 0.35rem;
+  }
+
+  .quiz-score__percent {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--highlight);
+  }
+
+  /* Anillo decorativo de 40 × 40 (pathLength 100): el círculo arranca arriba, a las 12 */
+  .quiz-ring {
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    transform: rotate(-90deg);
+  }
+
+  .quiz-ring circle {
+    fill: none;
+    stroke-width: 4;
+  }
+
+  .quiz-ring__track {
+    stroke: var(--surface-raised);
+  }
+
+  .quiz-ring__arc {
+    stroke: var(--highlight-fill);
+    stroke-linecap: round;
+    stroke-dasharray: var(--quiz-pct) 100;
+  }
+
+  /* El arco se llena de 0 al umbral al mostrarse el panel. Sin esta media query (movimiento reducido)
+     el arco aparece completo y quieto. */
+  @media (prefers-reduced-motion: no-preference) {
+    .quiz-ring__arc {
+      animation: quiz-ring-fill 900ms ease-out both;
     }
 
-    .quiz-card__logos {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.65rem;
+    @keyframes quiz-ring-fill {
+      from {
+        stroke-dasharray: 0 100;
+      }
+      to {
+        stroke-dasharray: var(--quiz-pct) 100;
+      }
     }
+  }
 
-    .resource-card--cuestionario .presentation-card__action,
-    .resource-card--cuestionario .presentation-card__soon {
-      grid-column: 2;
+  /* Botón de contorno (no relleno). `.btn.` gana a .btn de utilities.css, que carga después en la misma capa.
+     En claro el texto va en `kicker` (orient-600): `accent` sobre el tramo orient-50 del fondo solo vale
+     para texto grande (DESIGN.md 2.3). El borde sí usa `accent`. */
+  .btn.quiz-card__action {
+    justify-self: stretch;
+    border: 1.5px solid var(--accent);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--kicker);
+  }
+
+  .btn.quiz-card__action:hover {
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    color: var(--kicker);
+  }
+
+  /* En oscuro, `accent` (vibrant) llega a 4,8:1 incluso sobre orient-800; `kicker` (orient-400) no */
+  .dark .btn.quiz-card__action,
+  .dark .btn.quiz-card__action:hover,
+  .dark .quiz-card__kicker {
+    color: var(--accent);
+  }
+
+  @media (min-width: 640px) {
+    .btn.quiz-card__action {
       justify-self: start;
+      white-space: nowrap;
+    }
+
+    .quiz-ring {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .quiz-score__percent {
+      font-size: 0.95rem;
     }
   }
 
   .quiz-card__note {
-    margin-top: 0.6rem;
     font-size: 0.8125rem;
     line-height: 1.4;
     color: var(--text-soft);
   }
 
-  /* No disponible: atenuada, sin acento ni enlace */
-  .resource-card--cuestionario.resource-card--soon {
-    border-top: 1px solid var(--border-strong);
-    background: transparent;
+  .quiz-card__soon {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--text-soft);
   }
 
-  .resource-card--cuestionario.resource-card--soon .quiz-card__logos {
+  .quiz-card__soon svg {
+    width: 1.05rem;
+    height: 1.05rem;
+    flex: none;
+    margin-top: 0.1rem;
+  }
+
+  /* No disponible: atenuada, sin enlace, sin latido (la clase no se pone) ni llenado del anillo */
+  .resource-card--cuestionario.resource-card--soon {
+    border-color: var(--border-strong);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .resource-card--cuestionario.resource-card--soon .quiz-score,
+  .resource-card--cuestionario.resource-card--soon .quiz-card__logo {
     opacity: 0.55;
     filter: grayscale(0.6);
+  }
+
+  .resource-card--cuestionario.resource-card--soon .quiz-ring__arc {
+    animation: none;
   }
 }
 
