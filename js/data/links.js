@@ -113,6 +113,12 @@ export const BIBLIO = {
 /** Repositorio con los proyectos de las demos y los talleres. */
 export const MATERIAL_REPO = { titulo: 'Repositorio de material (demos y talleres)', url: 'https://github.com/ffelipecuevasc/material-curso-ia-desarrolladores' };
 
+/** Sitios propios del curso (publicados aparte; no son bibliografía). */
+export const COURSE_SITES = {
+  // Práctica independiente de 30 preguntas; no es el examen oficial de Anthropic.
+  cuestionarioFinal: { titulo: 'Cuestionario de práctica · Claude Certified Developer – Foundations', url: 'https://ffelipecuevasc.github.io/certificacion-claude-developer/' },
+};
+
 /** Columna "Enlaces de interés" del footer. */
 export const FOOTER_LINKS = {
   academy: { titulo: 'Anthropic Academy', url: ACADEMY_CATALOG },

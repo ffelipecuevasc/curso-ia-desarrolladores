@@ -886,6 +886,82 @@
   }
 }
 
+/* ---- Cuestionario final: tarjeta destacada, justo después de la presentación ---------- */
+@layer components {
+  /* Hereda de .resource-card--presentacion la grilla, los radios, la sombra, el título, las píldoras y el
+     botón. Solo suma el acento (borde superior y un halo de `accent`) y el bloque de logos. */
+  .resource-card--cuestionario {
+    border-top: 3px solid var(--accent);
+    background:
+      radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 55%),
+      var(--surface-raised);
+  }
+
+  /* Logos de Claude y Anthropic, juntos. Decorativos: el nombre va en el texto. */
+  .quiz-card__logos {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    align-self: start;
+    color: var(--heading);
+  }
+
+  /* El ícono de Claude conserva su color oficial en ambos temas (fill propio en icons.js) */
+  .quiz-card__claude {
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  /* El wordmark usa currentColor: sigue al tema (blanco en oscuro, orient-950 en claro) */
+  .quiz-card__wordmark {
+    flex: none;
+    width: 7.6rem;
+    height: 1rem;
+  }
+
+  /* Pantallas anchas: el panel de la unidad mide ~650 px, así que tres columnas dejarían el texto
+     angosto. Dos columnas: logos a la izquierda; texto y botón (bajo el texto) a la derecha. */
+  @media (min-width: 640px) {
+    .resource-card--cuestionario {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+      column-gap: 1.5rem;
+      row-gap: 1.1rem;
+    }
+
+    .quiz-card__logos {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.65rem;
+    }
+
+    .resource-card--cuestionario .presentation-card__action,
+    .resource-card--cuestionario .presentation-card__soon {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+
+  .quiz-card__note {
+    margin-top: 0.6rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--text-soft);
+  }
+
+  /* No disponible: atenuada, sin acento ni enlace */
+  .resource-card--cuestionario.resource-card--soon {
+    border-top: 1px solid var(--border-strong);
+    background: transparent;
+  }
+
+  .resource-card--cuestionario.resource-card--soon .quiz-card__logos {
+    opacity: 0.55;
+    filter: grayscale(0.6);
+  }
+}
+
 /* ---- Apuntes de lenguajes: bloque propio al final de Recursos ------------- */
 @layer components {
   /* Tras la grilla del resto del material, el bloque abre una sección nueva */

@@ -1,7 +1,7 @@
 /**
  * Unidad 10 · Fuente: fuentes/unidades/unidad-10.md (versión 2, 12-nov-2026)
  */
-import { ACADEMY_COURSES, BIBLIO, DOCS, MATERIAL_REPO, academyVideo } from '../links.js';
+import { ACADEMY_COURSES, BIBLIO, COURSE_SITES, DOCS, MATERIAL_REPO, academyVideo } from '../links.js';
 
 /** Carpeta de la Unidad 10 en el repositorio de material (rama main). */
 const U10_TREE = `${MATERIAL_REPO.url}/tree/main/unidad-10`;
@@ -206,6 +206,8 @@ Ahorro a la mitad -10,7 %`,
 
   material: [
     { id: 'presentacion', tipo: 'pdf', variante: 'presentacion', titulo: 'Presentación de clases · Unidad 10', descripcion: 'Las diapositivas que usamos en el encuentro, para repasar o consultar después.', archivo: 'assets/material/u10/presentacion-clase.pdf', peso: '6,8 MB', disponible: true },
+    // variante 'cuestionario' → tarjeta destacada, justo después de la presentación (sin destino: va en Recursos).
+    { id: 'cuestionario', tipo: 'enlace', variante: 'cuestionario', titulo: 'Cuestionario final del curso', descripcion: 'Practica para la certificación Claude Certified Developer – Foundations: 30 preguntas, 20 minutos y tu resultado al final.', url: COURSE_SITES.cuestionarioFinal.url, preguntas: 30, minutos: 20, aprobacion: '70 %', disponible: true },
     { id: 'guia', tipo: 'pdf', titulo: 'Guía del taller "Plan integrado de adopción de IA"', archivo: 'assets/material/u10/guia-taller.pdf', disponible: true },
     // destino: 'taller' → se ve en la pestaña Taller, no en Recursos.
     { tipo: 'enlace', titulo: 'Proyecto del taller: pedidos-web (base de la U10)', descripcion: 'El README explica qué traer a tu repo (camino A): solo se suma `docs/roi/`.', url: `${U10_TREE}/taller/pedidos-web`, disponible: true, destino: 'taller' },

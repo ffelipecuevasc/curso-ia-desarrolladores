@@ -7,7 +7,7 @@
  */
 import { unitCode } from '../data/units/index.js';
 import { attr, escapeHtml, qsa, rich } from '../utils/dom.js';
-import { icon, iconImage } from '../utils/icons.js';
+import { anthropicWordmark, claudeLogo, icon, iconImage } from '../utils/icons.js';
 import { isPreview } from '../utils/schedule.js';
 
 /** id de la tarjeta de material que es la guía del taller (se descarga desde Taller). */
@@ -20,6 +20,16 @@ export const PRESENTATION_VARIANT = 'presentacion';
 const PRESENTATION_LABELS = {
   kind: 'Presentación de clases',
   unavailable: 'Disponible después de la clase',
+};
+
+/** Valor de `variante` del cuestionario final: tarjeta destacada, justo después de la presentación. */
+export const QUIZ_VARIANT = 'cuestionario';
+
+/** Rótulos de interfaz de la tarjeta del cuestionario. Título, descripción y cifras salen de los datos. */
+const QUIZ_LABELS = {
+  note: 'Práctica independiente; no es el examen oficial.',
+  action: 'Comenzar cuestionario',
+  unavailable: 'Disponible pronto',
 };
 
 /** Valor de `variante` de los apuntes de lenguajes: van juntos, en un bloque propio al final de Recursos. */
@@ -181,6 +191,42 @@ function presentationCard(item) {
 }
 
 /**
+ * Tarjeta destacada del cuestionario final (variante 'cuestionario'): misma estructura y clases que la
+ * de la presentación, con los logos de Claude y Anthropic a la izquierda. El botón abre el sitio del
+ * cuestionario en una pestaña nueva. Sin `disponible` queda atenuada y sin enlace.
+ * Los logos son decorativos (el nombre va en el texto); el de Claude conserva su color oficial y el
+ * wordmark de Anthropic usa currentColor, así que sigue el tema (ver anthropicWordmark en icons.js).
+ */
+function quizCard(item) {
+  const available = Boolean(item.disponible && item.url);
+  const pill = (text) => `<span class="material-pill tabular">${escapeHtml(text)}</span>`;
+  const pills = [
+    item.preguntas ? pill(`${item.preguntas} preguntas`) : '',
+    item.minutos ? pill(`${item.minutos} min`) : '',
+    item.aprobacion ? pill(`Aprueba con ${item.aprobacion}`) : '',
+  ].join('');
+  const action = available
+    ? `<a class="btn btn--primary presentation-card__action" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${icon('external')}<span>${escapeHtml(QUIZ_LABELS.action)}<span class="visually-hidden"> (se abre en una pestaña nueva)</span></span></a>`
+    : `<p class="presentation-card__soon">${icon('hourglass')}<span>${escapeHtml(QUIZ_LABELS.unavailable)}</span></p>`;
+  return `
+        <li class="resource-grid__feature">
+          <article class="resource-card resource-card--presentacion resource-card--cuestionario${available ? '' : ' resource-card--soon'}">
+            <span class="quiz-card__logos" aria-hidden="true">
+              ${claudeLogo({ decorative: true, className: 'quiz-card__claude' })}
+              ${anthropicWordmark({ className: 'quiz-card__wordmark' })}
+            </span>
+            <div class="presentation-card__body">
+              <p class="resource-card__title presentation-card__title">${escapeHtml(item.titulo)}</p>
+              ${item.descripcion ? `<p class="presentation-card__text">${rich(item.descripcion)}</p>` : ''}
+              <p class="presentation-card__pills">${pills}</p>
+              <p class="quiz-card__note">${escapeHtml(QUIZ_LABELS.note)}</p>
+            </div>
+            ${action}
+          </article>
+        </li>`;
+}
+
+/**
  * Tarjeta de un apunte de lenguaje (variante 'lenguaje'): reutiliza .resource-card, con el logo oficial
  * en un recuadro de 48 × 48 px en vez del ícono genérico. Sin archivo queda atenuada y sin enlace.
  * Los logos conservan su color oficial (excepción de color; ver ICON_FILES en icons.js).
@@ -220,6 +266,7 @@ function languageCard(item) {
 /** Tarjeta de un material (no disponible, enlace externo o archivo descargable). */
 function materialCard(item) {
   if (item.variante === PRESENTATION_VARIANT) return presentationCard(item);
+  if (item.variante === QUIZ_VARIANT) return quizCard(item);
   const type = item.tipo.toUpperCase();
   const iconName = MATERIAL_ICONS[item.tipo] ?? 'file';
   if (!item.disponible) {
@@ -269,9 +316,11 @@ function materialTab(unit) {
   const languages = shown.filter((item) => item.variante === LANGUAGE_VARIANT);
   const items = shown.filter((item) => item.variante !== LANGUAGE_VARIANT);
   if (!items.length && !languages.length) return '<p class="text-text-muted">Esta unidad todavía no tiene material.</p>';
-  // La presentación de clases va siempre primero, aunque en los datos esté en otro lugar.
-  const isFeatured = (item) => item.variante === PRESENTATION_VARIANT;
-  items.sort((a, b) => Number(isFeatured(b)) - Number(isFeatured(a)));
+  // Tarjetas destacadas, aunque en los datos estén en otro lugar: la presentación de clases primero y,
+  // justo después, el cuestionario. El resto conserva su orden (Array.sort es estable).
+  const featuredRank = (item) => [PRESENTATION_VARIANT, QUIZ_VARIANT].indexOf(item.variante);
+  const rank = (item) => (featuredRank(item) === -1 ? 2 : featuredRank(item));
+  items.sort((a, b) => rank(a) - rank(b));
   const grid = items.length ? `<ul class="resource-grid">${items.map(materialCard).join('')}</ul>` : '';
   const languageBlock = languages.length
     ? `<section class="lang-block" aria-labelledby="${unit.id}-lenguajes-title">

@@ -262,6 +262,14 @@ Después del cambio, el agente propone el mensaje de commit (§0.2). El desarrol
 
    Los 6 logos (`assets/icons/lang-*.svg`) son los oficiales de cada lenguaje: se guardan tal cual y **no se recolorean**. Van como `<img>` (el de Python usa ids de gradiente que chocarían en línea) y son otra excepción de color, igual que el ícono de PDF (pendiente de sumarla a DESIGN.md 2.5). El logo de PHP es blanco puro, así que su recuadro (`.lang-card__icon--php`) usa el morado oficial `#777BB4` de fondo; los demás van sobre `white`. Estilos en `css/components/unit-panel.css` (`.resource-card--lenguaje`, `.lang-card__icon`).
 
+9. **Cuestionario final** (hoy solo en la U10). Una tarjeta con `variante: 'cuestionario'` (`QUIZ_VARIANT` en `js/components/unit-panel.js`) se muestra destacada y a todo el ancho, **justo después de la presentación** (el orden lo fija `materialTab()`: presentación, cuestionario y el resto), en Recursos. Reutiliza las clases de la tarjeta de la presentación y suma `.resource-card--cuestionario` (borde superior y halo de `accent`) y `.quiz-card__*` en `css/components/unit-panel.css`. Lleva los logos de Claude (`claudeLogo()`) y de Anthropic (`anthropicWordmark()`, ambos decorativos, `aria-hidden`), las píldoras «N preguntas», «N min» y «Aprueba con X» (de `preguntas`, `minutos` y `aprobacion`), la línea «Práctica independiente; no es el examen oficial.» y el botón «Comenzar cuestionario», que abre `url` con `target="_blank" rel="noopener noreferrer"`. La URL vive en `COURSE_SITES` (`js/data/links.js`). `?debug` valida que sea `tipo: 'enlace'`, con `url` https, `preguntas`, `minutos` y `aprobacion`. Sin `destino` (va en Recursos, no en Taller):
+
+   ```js
+   { id: 'cuestionario', tipo: 'enlace', variante: 'cuestionario', titulo: 'Cuestionario final del curso', descripcion: '…', url: COURSE_SITES.cuestionarioFinal.url, preguntas: 30, minutos: 20, aprobacion: '70 %', disponible: true },
+   ```
+
+   Con `disponible: false`, queda atenuada y dice «Disponible pronto». El wordmark de Anthropic (`assets/icons/anthropic.svg`) va **en línea**, no como `<img>` ni en `ICON_FILES`, porque usa `currentColor` (`var(--heading)`) para seguir el tema: es una marca sin color propio. El ícono de Claude conserva su `#D97757` (DESIGN.md 2.5). Pendiente: sumar el wordmark de Anthropic a DESIGN.md 2.5/4.4 junto a las otras marcas.
+
 Mientras `disponible` sea `false`, la tarjeta dice «Disponible pronto» y no hay enlace roto. **Nunca** marcar `disponible: true` si el archivo no existe en la ruta.
 
 ### 6.0 Material que vive en el repositorio de material
@@ -417,6 +425,6 @@ Notas para el agente:
 
 - Contenido académico: Felipe Cuevas, a partir de `fuentes/unidades/`.
 - Íconos: [Material Symbols Light](https://icon-sets.iconify.design/material-symbols-light/) de Google vía Iconify, licencia **Apache 2.0**. Los SVG están en `assets/icons/` y en línea en `js/utils/icons-data.js`, sin dependencia en runtime.
-- Claude y Claude Code son marcas de Anthropic; sus logos se usan solo como marca, con su color oficial.
+- Claude y Claude Code son marcas de Anthropic; sus logos se usan solo como marca, con su color oficial. El wordmark de Anthropic se usa solo en la tarjeta del cuestionario final, para identificar el origen de la práctica (que es independiente y no el examen oficial).
 - Los logos de Delphi, C#, Java, Python, JavaScript y PHP (`assets/icons/lang-*.svg`) son marcas de sus respectivos titulares; se usan solo para identificar cada apunte de lenguaje, con su color oficial.
 - Tipografías: Cinzel, Josefin Sans y JetBrains Mono (SIL Open Font License 1.1), autoalojadas en `assets/fonts/`.

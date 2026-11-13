@@ -9,6 +9,7 @@
  * - un material con disponible: true apunta a un archivo local que no responde;
  * - un material tiene una `variante` desconocida, o la presentación no es PDF, no tiene archivo
  *   o su `peso` no tiene el formato '4,2 MB';
+ * - un cuestionario (variante 'cuestionario') no es un enlace https, o le faltan `preguntas`, `minutos` o `aprobacion`;
  * - un apunte de lenguaje (variante 'lenguaje') no es PDF, no tiene archivo, no tiene `icono` registrado
  *   en ICON_FILES o su `peso` no tiene el formato '4,2 MB'.
  */
@@ -18,7 +19,7 @@ import { ICON_FILES } from './icons.js';
 export const MAX_SHORT_DESCRIPTION = 100;
 export const MAX_LAB_SUMMARY = 1000;
 /** Valores admitidos de `variante` en un material. */
-export const MATERIAL_VARIANTS = ['presentacion', 'lenguaje'];
+export const MATERIAL_VARIANTS = ['presentacion', 'lenguaje', 'cuestionario'];
 
 /**
  * Avisa en consola si un material con `disponible: true` apunta a un archivo local
@@ -78,6 +79,16 @@ export function validateData(units) {
         if (item.peso && !/^\d+(,\d)? MB$/.test(item.peso)) {
           problems.push(`${unit.id}: peso «${item.peso}» no tiene el formato '4,2 MB'.`);
         }
+      }
+      if (item.variante === 'cuestionario') {
+        if (item.tipo !== 'enlace') problems.push(`${unit.id}: el cuestionario «${item.titulo}» debe ser tipo 'enlace'.`);
+        if (!/^https:\/\//.test(item.url ?? '')) problems.push(`${unit.id}: el cuestionario «${item.titulo}» necesita una url https.`);
+        ['preguntas', 'minutos'].forEach((key) => {
+          if (!Number.isInteger(item[key]) || item[key] <= 0) {
+            problems.push(`${unit.id}: el cuestionario «${item.titulo}» necesita ${key} (número entero positivo).`);
+          }
+        });
+        if (!item.aprobacion) problems.push(`${unit.id}: el cuestionario «${item.titulo}» necesita aprobacion (por ejemplo '70 %').`);
       }
       if (item.variante === 'lenguaje') {
         if (item.tipo !== 'pdf') problems.push(`${unit.id}: el apunte «${item.titulo}» debe ser tipo 'pdf'.`);
